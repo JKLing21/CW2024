@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.util.*;
+
 import java.util.stream.Collectors;
 
 import javafx.animation.*;
@@ -10,8 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.util.Duration;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
-public abstract class LevelParent extends Observable {
+public abstract class LevelParent {
 
 	private static final double SCREEN_HEIGHT_ADJUSTMENT = 150;
 	private static final int MILLISECOND_DELAY = 50;
@@ -24,6 +27,7 @@ public abstract class LevelParent extends Observable {
 	private final UserPlane user;
 	private final Scene scene;
 	private final ImageView background;
+	private ShieldImage shieldImage;
 
 	private final List<ActiveActorDestructible> friendlyUnits;
 	private final List<ActiveActorDestructible> enemyUnits;
@@ -32,6 +36,7 @@ public abstract class LevelParent extends Observable {
 	
 	private int currentNumberOfEnemies;
 	private LevelView levelView;
+	private final StringProperty nextLevelProperty = new SimpleStringProperty();
 
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
 		this.root = new Group();
@@ -65,17 +70,23 @@ public abstract class LevelParent extends Observable {
 		initializeBackground();
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
+		shieldImage = new ShieldImage(100, 100);
+		root.getChildren().add(shieldImage);
 		return scene;
 	}
 
 	public void startGame() {
 		background.requestFocus();
 		timeline.play();
+		shieldImage.showShield();
 	}
 
 	public void goToNextLevel(String levelName) {
-		setChanged();
-		notifyObservers(levelName);
+		nextLevelProperty.set(levelName);
+	}
+	
+	public StringProperty nextLevelProperty() {
+		return nextLevelProperty;
 	}
 
 	private void updateScene() {
@@ -91,6 +102,7 @@ public abstract class LevelParent extends Observable {
 		updateKillCount();
 		updateLevelView();
 		checkIfGameOver();
+		
 	}
 
 	private void initializeTimeline() {
