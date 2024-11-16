@@ -1,9 +1,7 @@
 package com.example.demo;
 
 import java.util.*;
-
 import java.util.stream.Collectors;
-
 import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -37,6 +35,12 @@ public abstract class LevelParent {
 	private int currentNumberOfEnemies;
 	private LevelView levelView;
 	private final StringProperty nextLevelProperty = new SimpleStringProperty();
+	private boolean isSpaceBarPressed = false;
+	private boolean isSpaceBarHeld = false;
+	private static final int FIRE_RATE_DELAY = 200;
+	private long lastFireTime = 0;
+    private static final int RAPID_FIRE_DELAY = 150;
+    private long lastPressTime = 0;
 
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
 		this.root = new Group();
@@ -48,7 +52,7 @@ public abstract class LevelParent {
 		this.userProjectiles = new ArrayList<>();
 		this.enemyProjectiles = new ArrayList<>();
 
-		this.background = new ImageView(new Image(getClass().getResource(backgroundImageName).toExternalForm()));
+		this.background = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(backgroundImageName)).toExternalForm()));
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
 		this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
@@ -103,6 +107,22 @@ public abstract class LevelParent {
 		updateLevelView();
 		checkIfGameOver();
 		
+		if (isSpaceBarHeld) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastFireTime >= FIRE_RATE_DELAY) {
+                fireProjectile();
+                lastFireTime = currentTime;
+            }
+        }
+
+        if (isSpaceBarPressed) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastPressTime >= RAPID_FIRE_DELAY) {
+                fireProjectile();
+                lastPressTime = currentTime;
+                isSpaceBarPressed = false;
+            }
+        }
 	}
 
 	private void initializeTimeline() {
@@ -116,27 +136,37 @@ public abstract class LevelParent {
 		background.setFitHeight(screenHeight);
 		background.setFitWidth(screenWidth);
 		background.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			public void handle(KeyEvent e) {
-				KeyCode kc = e.getCode();
-				if (kc == KeyCode.UP) user.moveUp();
-				if (kc == KeyCode.DOWN) user.moveDown();
-				if (kc == KeyCode.SPACE) fireProjectile();
-			}
-		});
+            public void handle(KeyEvent e) {
+                KeyCode kc = e.getCode();
+                if (kc == KeyCode.UP) user.moveUp();
+                if (kc == KeyCode.DOWN) user.moveDown();
+                if (kc == KeyCode.SPACE) {
+                    if (!isSpaceBarHeld) {
+                        isSpaceBarPressed = true;
+                    }
+                    isSpaceBarHeld = true;
+                }
+            }
+        });
+
 		background.setOnKeyReleased(new EventHandler<KeyEvent>() {
-			public void handle(KeyEvent e) {
-				KeyCode kc = e.getCode();
-				if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stop();
-			}
-		});
+            public void handle(KeyEvent e) {
+                KeyCode kc = e.getCode();
+                if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stop();
+                if (kc == KeyCode.SPACE) {
+                    isSpaceBarHeld = false;
+                }
+            }
+        });
+		
 		root.getChildren().add(background);
 	}
 
 	private void fireProjectile() {
-		ActiveActorDestructible projectile = user.fireProjectile();
-		root.getChildren().add(projectile);
-		userProjectiles.add(projectile);
-	}
+        ActiveActorDestructible projectile = user.fireProjectile();
+        root.getChildren().add(projectile);
+        userProjectiles.add(projectile);
+    }
 
 	private void generateEnemyFire() {
 		enemyUnits.forEach(enemy -> spawnEnemyProjectile(((FighterPlane) enemy).fireProjectile()));
@@ -250,6 +280,10 @@ public abstract class LevelParent {
 
 	protected double getScreenWidth() {
 		return screenWidth;
+	}
+	
+	protected double getScreenHeight() {
+		return screenHeight;
 	}
 
 	protected boolean userIsDestroyed() {
