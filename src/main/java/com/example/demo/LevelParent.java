@@ -76,6 +76,9 @@ public abstract class LevelParent {
 		levelView.showHeartDisplay();
 		shieldImage = new ShieldImage(100, 100);
 		root.getChildren().add(shieldImage);
+		 if (!root.getChildren().contains(shieldImage)) {
+		        root.getChildren().add(shieldImage);
+		    }
 		return scene;
 	}
 
@@ -166,6 +169,7 @@ public abstract class LevelParent {
         ActiveActorDestructible projectile = user.fireProjectile();
         root.getChildren().add(projectile);
         userProjectiles.add(projectile);
+        levelView.addHitboxesToScene(projectile);
     }
 
 	private void generateEnemyFire() {
@@ -176,6 +180,7 @@ public abstract class LevelParent {
 		if (projectile != null) {
 			root.getChildren().add(projectile);
 			enemyProjectiles.add(projectile);
+	        levelView.addHitboxesToScene(projectile);
 		}
 	}
 
@@ -197,6 +202,7 @@ public abstract class LevelParent {
 		List<ActiveActorDestructible> destroyedActors = actors.stream().filter(actor -> actor.isDestroyed())
 				.collect(Collectors.toList());
 		root.getChildren().removeAll(destroyedActors);
+		destroyedActors.forEach(actor -> actor.destroy(root));
 		actors.removeAll(destroyedActors);
 	}
 
@@ -272,6 +278,7 @@ public abstract class LevelParent {
 	protected void addEnemyUnit(ActiveActorDestructible enemy) {
 		enemyUnits.add(enemy);
 		root.getChildren().add(enemy);
+		levelView.addHitboxesToScene(enemy);
 	}
 
 	protected double getEnemyMaximumYPosition() {
@@ -293,5 +300,9 @@ public abstract class LevelParent {
 	private void updateNumberOfEnemies() {
 		currentNumberOfEnemies = enemyUnits.size();
 	}
+	
+	 protected LevelView getLevelView() {
+	        return levelView;
+	    }
 
 }

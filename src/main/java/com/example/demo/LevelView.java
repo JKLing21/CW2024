@@ -8,8 +8,8 @@ public class LevelView {
 	private static final double HEART_DISPLAY_Y_POSITION = 25;
 	private static final int WIN_IMAGE_X_POSITION = 355;
 	private static final int WIN_IMAGE_Y_POSITION = 175;
-	private static final int LOSS_SCREEN_X_POSITION = -160;
-	private static final int LOSS_SCREEN_Y_POSITION = -375;
+	private static final int LOSS_SCREEN_X_POSITION = 50;
+	private static final int LOSS_SCREEN_Y_POSITION = 85;
 	private final Group root;
 	private final WinImage winImage;
 	private final GameOverImage gameOverImage;
@@ -41,5 +41,16 @@ public class LevelView {
 			heartDisplay.removeHeart();
 		}
 	}
+	
+	public void addHitboxesToScene(ActiveActor... actors) {
+        for (ActiveActor actor : actors) {
+            actor.addHitboxToScene(root);
+        }
+    }
 
+    public void removeHitboxesFromScene(ActiveActor... actors) {
+        for (ActiveActor actor : actors) {
+            actor.removeHitboxFromScene(root);
+        }
+    }
 }

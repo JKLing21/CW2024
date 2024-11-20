@@ -7,7 +7,7 @@ import java.util.Objects;
 public class ShieldImage extends ImageView {
 	
 	private static final String IMAGE_NAME = "/com/example/demo/images/shield.png";
-	private static final int SHIELD_SIZE = 200;
+	private static final int SHIELD_SIZE = 50;
 	
 	public ShieldImage(double xPosition, double yPosition) {
 		this.setLayoutX(xPosition);
