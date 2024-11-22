@@ -3,6 +3,7 @@ package com.example.demo;
 public class UserPlane extends FighterPlane {
 
 	private static final String IMAGE_NAME = "userplane.png";
+	private double screenWidth;
 	private static final double Y_UPPER_BOUND = 0;
 	private static final double Y_LOWER_BOUND = 680.0;
 	private static final double INITIAL_X_POSITION = 5.0;
@@ -17,8 +18,9 @@ public class UserPlane extends FighterPlane {
 	private long lastShotTime;
 	private static final long FIRE_INTERVAL = 300;
 
-	public UserPlane(int initialHealth) {
+	public UserPlane(int initialHealth, double screenWidth) {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth);
+		this.screenWidth = screenWidth;
 		velocityMultiplier = 0;
 		lastShotTime = System.currentTimeMillis();
 	}
@@ -48,7 +50,7 @@ public class UserPlane extends FighterPlane {
 	public ActiveActorDestructible fireProjectile() {
 	    double projectileX = getLayoutX() + getTranslateX() + PROJECTILE_X_POSITION;
 	    double projectileY = getLayoutY() + getTranslateY() + PROJECTILE_Y_POSITION_OFFSET;
-	    return new UserProjectile(projectileX, projectileY);
+	    return new UserProjectile(projectileX, projectileY, screenWidth); 
 	}
 
 	private boolean isMoving() {
@@ -82,6 +84,10 @@ public class UserPlane extends FighterPlane {
 	public void incrementKillCount() {
 		numberOfKills++;
 	}
+	
+	 public void setNumberOfKills(int numberOfKills) {
+	        this.numberOfKills = numberOfKills;
+	    }
 	
 	public int getVelocityMultiplier() {
 	    return velocityMultiplier;
