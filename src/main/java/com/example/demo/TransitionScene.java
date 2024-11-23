@@ -28,8 +28,8 @@ public class TransitionScene {
 
         Image planeImage = new Image(getClass().getResource("/com/example/demo/images/userplane.png").toExternalForm());
         planeImageView = new ImageView(planeImage);
-        planeImageView.setFitWidth(100); 
-        planeImageView.setFitHeight(100);
+        planeImageView.setFitWidth(120); 
+        planeImageView.setFitHeight(30);
 
         Pane transitionPane = new Pane(transitionText, planeImageView);
         transitionPane.setStyle("-fx-background-color: white;");

@@ -16,7 +16,7 @@ public class Controller {
 	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelOne";
 	private final Stage stage;
 
-	public Controller(Stage stage) {
+	public Controller(Stage stage, double screenWidth) {
 		this.stage = stage;
 	}
 
@@ -47,7 +47,6 @@ public class Controller {
 			Scene scene = myLevel.initializeScene();
 			stage.setScene(scene);
 			myLevel.startGame();
-			
 			applyFadeInTransition(scene);
 	}
 	
