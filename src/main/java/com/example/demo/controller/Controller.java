@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.MainMenu;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import javafx.scene.Scene;
@@ -19,6 +20,15 @@ public class Controller {
 	public Controller(Stage stage, double screenWidth) {
 		this.stage = stage;
 	}
+	
+	 public void showMainMenu() {
+	        MainMenu mainMenu = new MainMenu(this);
+	        Scene menuScene = new Scene(mainMenu.getMenuPane(), stage.getWidth(), stage.getHeight());
+	        menuScene.getStylesheets().add(getClass().getResource("/com/example/demo/css/MainMenu.css").toExternalForm());
+	        stage.setScene(menuScene);
+	        stage.show();
+	        applyFadeInTransition(menuScene);
+	    }
 
 	public void launchGame() throws ClassNotFoundException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
@@ -45,21 +55,21 @@ public class Controller {
     });
 			
 			Scene scene = myLevel.initializeScene();
+	        scene.getStylesheets().add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
 			stage.setScene(scene);
 			myLevel.startGame();
 			applyFadeInTransition(scene);
 	}
 	
-	 private void applyFadeInTransition(Scene scene) {
-	        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), scene.getRoot());
-	        fadeIn.setFromValue(0);
-	        fadeIn.setToValue(1);
-	        fadeIn.setCycleCount(1);
-	        fadeIn.setAutoReverse(false);
-	        fadeIn.play();
-	    }
+	private void applyFadeInTransition(Scene scene) {
+	       FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), scene.getRoot());
+	       fadeIn.setFromValue(0);
+	       fadeIn.setToValue(1);
+	       fadeIn.setCycleCount(1);
+	       fadeIn.setAutoReverse(false);
+	       fadeIn.play();
+	}
 
-	
 	private void goToNextLevel(String levelName) {
 		try {
 			goToLevel(levelName);
@@ -70,4 +80,12 @@ public class Controller {
 			alert.show();
 		}
 	}
+	
+	public void showSettings() {
+        GameSettings gameSettings = new GameSettings(this);
+        Scene settingsScene = new Scene(gameSettings.getSettingsPane(), stage.getWidth(), stage.getHeight());
+        settingsScene.getStylesheets().add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
+        stage.setScene(settingsScene);
+        applyFadeInTransition(settingsScene);
+    }
 }
