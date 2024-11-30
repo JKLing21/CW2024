@@ -6,15 +6,23 @@
     -fx-font-size: 22px;
     -fx-padding: 10 20;
     -fx-background-color: #FF9000;
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
     -fx-text-fill: white;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 5px;
+    -fx-border-radius: 11px;
+    -fx-background-radius: 11px;
 	-fx-pref-width: 200px;
 	-fx-max-width: 200px;
 }
 
 .button:hover {
     -fx-background-color: #E67300;
+}
+
+.button:focused {
+    -fx-border-color: white;
+    -fx-border-radius: 11px;
+    -fx-border-width: 2px;
 }
 
 .custom-dialog-pane {
@@ -39,9 +47,15 @@
     -fx-font-weight: bold;
     -fx-padding: 10 20;
     -fx-border-radius: 10px;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 11px;
     -fx-pref-width: 200px;
     -fx-max-width: 200px;
+}
+
+.custom-dialog-pane .button:focused {
+	-fx-border-color: grey;
+    -fx-border-width: 3px;
+    -fx-border-radius: 11px;
 }
 
 .custom-dialog-pane .button:hover {

@@ -1,17 +1,18 @@
 package com.example.demo;
 
+import com.example.demo.controller.Controller;
+
 public class LevelTwo extends LevelParent {
 
 	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background2.jpg";
-	private static final int PLAYER_INITIAL_HEALTH = 5;
 	private final Boss boss;
-	private LevelViewLevelTwo levelView;
 
-	public LevelTwo(double screenHeight, double screenWidth) {
-		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, PLAYER_INITIAL_HEALTH);
-		boss = new Boss();
+	public LevelTwo(double screenHeight, double screenWidth, Controller controller) {
+        super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, 5, controller);
+	    boss = new Boss();
+	    this.levelView = instantiateLevelView(); 
 	}
-
+	
 	@Override
 	protected void initializeFriendlyUnits() {
 		getRoot().getChildren().add(getUser());
@@ -36,13 +37,11 @@ public class LevelTwo extends LevelParent {
 
 	@Override
 	protected LevelView instantiateLevelView() {
-		levelView = new LevelViewLevelTwo(getRoot(), PLAYER_INITIAL_HEALTH);
-		return levelView;
+	    return new LevelView(getRoot(), getInitialHealth());
 	}
 	
 	@Override
 	protected int getKillTarget() {
 	    return 0;
 	}
-
 }

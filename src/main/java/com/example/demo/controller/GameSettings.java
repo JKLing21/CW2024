@@ -17,6 +17,7 @@ public class GameSettings {
 
     public GameSettings(Controller controller) {
         this.controller = controller;
+        settingsPane = new BorderPane();
 
         prefs = Preferences.userNodeForPackage(GameSettings.class);
         Label settingsTitle = new Label("Settings");
@@ -58,8 +59,8 @@ public class GameSettings {
             prefs.putBoolean("backgroundMusicOn", newValue);
         });
 
-        backButton.setOnAction(e -> goBackToMainMenu());
-        backButton.getStyleClass().add("button");
+        backButton.setOnAction(e -> goBackToPreviousScene());
+        settingsPane.setBottom(backButton);
         
         resetToDefaultButton.setOnAction(e -> resetToDefault());
         resetToDefaultButton.getStyleClass().add("button"); 
@@ -109,7 +110,7 @@ public class GameSettings {
         prefs.putBoolean("backgroundMusicOn", true);
     }
 
-    private void goBackToMainMenu() {
-        controller.showMainMenu();
+    private void goBackToPreviousScene() {
+        controller.goBack();
     }
 }

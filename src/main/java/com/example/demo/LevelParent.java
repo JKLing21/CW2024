@@ -1,17 +1,17 @@
 package com.example.demo;
 
+import com.example.demo.controller.Controller;
 import java.util.*;
 import java.util.stream.Collectors;
 import javafx.animation.*;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.*;
-import javafx.scene.input.*;
 import javafx.util.Duration;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 public abstract class LevelParent {
 
@@ -26,29 +26,33 @@ public abstract class LevelParent {
     private final UserPlane user;
     private final Scene scene;
     private final ImageView background;
+    private PauseScreen pauseScreen;
     private ShieldImage shieldImage;
+    private KeyEventHandlers keyEventHandlers;
+    private int initialHealth;
 
     private final List<ActiveActorDestructible> friendlyUnits;
     private final List<ActiveActorDestructible> enemyUnits;
     private final List<ActiveActorDestructible> userProjectiles;
     private final List<ActiveActorDestructible> enemyProjectiles;
 
-    private LevelView levelView;
+    protected LevelView levelView;
     private final StringProperty nextLevelProperty = new SimpleStringProperty();
-    private boolean isSpaceBarPressed = false;
-    private boolean isSpaceBarHeld = false;
     private static final int FIRE_RATE_DELAY = 200;
     private long lastFireTime = 0;
     private static final int RAPID_FIRE_DELAY = 150;
     private long lastPressTime = 0;
     private boolean isGameOver = false;
     private boolean transitioningToNextLevel = false;
+    private boolean isPaused = false;
 
-    public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
+    public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth, Controller controller) {
         this.root = new Group();
         this.scene = new Scene(root, screenWidth, screenHeight);
+        this.pauseScreen = new PauseScreen(root, scene, this, controller);
         this.timeline = new Timeline();
         this.user = new UserPlane(playerInitialHealth, screenWidth);
+        this.initialHealth = playerInitialHealth;
         this.friendlyUnits = new ArrayList<>();
         this.enemyUnits = new ArrayList<>();
         this.userProjectiles = new ArrayList<>();
@@ -61,6 +65,9 @@ public abstract class LevelParent {
         this.levelView = instantiateLevelView();
         initializeTimeline();
         friendlyUnits.add(user);
+
+        this.keyEventHandlers = new KeyEventHandlers(user, this);
+        keyEventHandlers.attachHandlers(scene);
     }
 
     protected abstract void initializeFriendlyUnits();
@@ -77,18 +84,40 @@ public abstract class LevelParent {
         initializeBackground();
         initializeFriendlyUnits();
         levelView.showHeartDisplay();
+
         shieldImage = new ShieldImage(100, 100);
-        root.getChildren().add(shieldImage);
         if (!root.getChildren().contains(shieldImage)) {
             root.getChildren().add(shieldImage);
         }
+        Group uiLayer = new Group();
+
+        Image pauseImage = new Image(Objects.requireNonNull(getClass().getResource("/com/example/demo/images/pause.png")).toExternalForm());
+        ImageView pauseImageView = new ImageView(pauseImage);
+        pauseImageView.setFitWidth(50);
+        pauseImageView.setFitHeight(50);
+        pauseImageView.setLayoutX(screenWidth - 60);
+        pauseImageView.setLayoutY(10);
+        pauseImageView.setOnMouseClicked(e -> togglePause());
+      
+        uiLayer.getChildren().add(pauseImageView);
+
+        Pane layeredPane = new Pane();
+        layeredPane.getChildren().addAll(root, uiLayer);
+
+        Scene scene = new Scene(layeredPane, screenWidth, screenHeight);
+        keyEventHandlers.attachHandlers(scene);
+
         return scene;
     }
 
     public void startGame() {
-        background.requestFocus();
+        root.requestFocus();
         timeline.play();
         shieldImage.showShield();
+    }
+    
+    public int getInitialHealth() {
+        return initialHealth;
     }
 
     public void goToNextLevel(String levelName) {
@@ -104,7 +133,7 @@ public abstract class LevelParent {
     }
 
     private void updateScene() {
-        if (isGameOver || transitioningToNextLevel) {
+        if (isGameOver || transitioningToNextLevel || isPaused) {
             return;
         }
 
@@ -121,7 +150,7 @@ public abstract class LevelParent {
             updateLevelView();
         }
 
-        if (isSpaceBarHeld) {
+        if (keyEventHandlers.isSpaceBarHeld()) {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastFireTime >= FIRE_RATE_DELAY) {
                 fireProjectile();
@@ -129,12 +158,12 @@ public abstract class LevelParent {
             }
         }
 
-        if (isSpaceBarPressed) {
+        if (keyEventHandlers.isSpaceBarPressed()) {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastPressTime >= RAPID_FIRE_DELAY) {
                 fireProjectile();
                 lastPressTime = currentTime;
-                isSpaceBarPressed = false;
+                keyEventHandlers.setSpaceBarPressed(false);
             }
         }
     }
@@ -149,30 +178,6 @@ public abstract class LevelParent {
         background.setFocusTraversable(true);
         background.setFitHeight(screenHeight);
         background.setFitWidth(screenWidth);
-        background.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent e) {
-                KeyCode kc = e.getCode();
-                if (kc == KeyCode.UP) user.moveUp();
-                if (kc == KeyCode.DOWN) user.moveDown();
-                if (kc == KeyCode.SPACE) {
-                    if (!isSpaceBarHeld) {
-                        isSpaceBarPressed = true;
-                    }
-                    isSpaceBarHeld = true;
-                }
-            }
-        });
-
-        background.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent e) {
-                KeyCode kc = e.getCode();
-                if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stop();
-                if (kc == KeyCode.SPACE) {
-                    isSpaceBarHeld = false;
-                }
-            }
-        });
-
         root.getChildren().add(background);
     }
 
@@ -340,5 +345,22 @@ public abstract class LevelParent {
 
     protected LevelView getLevelView() {
         return levelView;
+    }
+    
+    public boolean isPaused() {
+        return isPaused;
+    }
+    
+    public void togglePause() {
+        isPaused = !isPaused;
+        if (isPaused) {
+            timeline.pause();
+            pauseScreen.showPauseMenu();
+        } else {
+            timeline.play();
+            pauseScreen.hidePauseMenu();
+            root.requestFocus();
+        }
+        root.requestFocus();
     }
 }
