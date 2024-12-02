@@ -8,11 +8,11 @@ public class LevelTwo extends LevelParent {
 	private final Boss boss;
 
 	public LevelTwo(double screenHeight, double screenWidth, Controller controller) {
-        super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, 5, controller);
-	    boss = new Boss();
-	    this.levelView = instantiateLevelView(); 
+		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, 5, controller);
+		boss = new Boss();
+		this.levelView = instantiateLevelView();
 	}
-	
+
 	@Override
 	protected void initializeFriendlyUnits() {
 		getRoot().getChildren().add(getUser());
@@ -22,8 +22,7 @@ public class LevelTwo extends LevelParent {
 	protected void checkIfGameOver() {
 		if (userIsDestroyed()) {
 			loseGame();
-		}
-		else if (boss.isDestroyed()) {
+		} else if (boss.isDestroyed()) {
 			winGame();
 		}
 	}
@@ -32,16 +31,20 @@ public class LevelTwo extends LevelParent {
 	protected void spawnEnemyUnits() {
 		if (getCurrentNumberOfEnemies() == 0) {
 			addEnemyUnit(boss);
+			if (!getRoot().getChildren().contains(boss.getHealthBarBackground())) {
+				getRoot().getChildren().addAll(boss.getHealthBarBackground(), boss.getHealthBar(),
+						boss.getBossNameText(), boss.getBossHealthBar().getShieldIcon());
+			}
 		}
 	}
 
 	@Override
 	protected LevelView instantiateLevelView() {
-	    return new LevelView(getRoot(), getInitialHealth());
+		return new LevelView(getRoot(), getInitialHealth());
 	}
-	
+
 	@Override
 	protected int getKillTarget() {
-	    return 0;
+		return 0;
 	}
 }
