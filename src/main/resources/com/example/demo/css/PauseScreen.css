@@ -1,0 +1,31 @@
+.menu-items {
+    -fx-padding: 25px;
+    -fx-spacing: 10px;
+}
+
+.pause-text {
+    -fx-font-family: "Arial";
+    -fx-font-size: 30px;
+    -fx-fill: white;
+    -fx-translate-x: 0; 
+    -fx-translate-y: -30;
+}
+
+.pause-button {
+    -fx-font-size: 14px;
+    -fx-padding: 5px 10px;
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.pause-button:hover {
+    -fx-background-color: #45a049;
+}
+
+.settings-button {
+    -fx-translate-x: 5;
+}
+
+.restart-button {
+    -fx-translate-x: 10;
+}

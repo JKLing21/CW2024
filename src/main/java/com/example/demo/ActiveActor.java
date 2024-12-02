@@ -7,42 +7,41 @@ import javafx.scene.paint.Color;
 import javafx.scene.Group;
 
 public abstract class ActiveActor extends ImageView {
-	
-	private static final String IMAGE_LOCATION = "/com/example/demo/images/";
-	private Rectangle hitbox;
-	
+	 
+    private static final String IMAGE_LOCATION = "/com/example/demo/images/";
+    private Rectangle hitbox;
+    
     public ActiveActor(String imageName, int imageHeight, double initialXPos, double initialYPos) {
-		//this.setImage(new Image(IMAGE_LOCATION + imageName));
-		Image image = new Image(Objects.requireNonNull(getClass().getResource(IMAGE_LOCATION + imageName)).toExternalForm());
+        Image image = new Image(Objects.requireNonNull(getClass().getResource(IMAGE_LOCATION + imageName)).toExternalForm());
         this.setImage(image);
         this.setLayoutX(initialXPos);
         this.setLayoutY(initialYPos);
         this.setFitHeight(imageHeight);
         this.setPreserveRatio(true);
-        
+
         this.hitbox = new Rectangle();
         this.hitbox.setFill(Color.TRANSPARENT);
-        this.hitbox.setStroke(Color.TRANSPARENT); 
+        this.hitbox.setStroke(Color.TRANSPARENT);
         updateHitbox();
     }
 
-	public abstract void updatePosition();
+    public abstract void updatePosition();
 
-	protected void moveHorizontally(double horizontalMove) {
-		this.setTranslateX(getTranslateX() + horizontalMove);
-		this.hitbox.setX(this.hitbox.getX() + horizontalMove);	
-	}
+    protected void moveHorizontally(double horizontalMove) {
+        this.setTranslateX(getTranslateX() + horizontalMove);
+        this.hitbox.setX(this.hitbox.getX() + horizontalMove);
+    }
 
-	protected void moveVertically(double verticalMove) {
-		this.setTranslateY(getTranslateY() + verticalMove);
-		this.hitbox.setY(this.hitbox.getY() + verticalMove);
-	}
-	
-	public Rectangle getHitbox() {
+    protected void moveVertically(double verticalMove) {
+        this.setTranslateY(getTranslateY() + verticalMove);
+        this.hitbox.setY(this.hitbox.getY() + verticalMove);
+    }
+
+    public Rectangle getHitbox() {
         return hitbox;
     }
-	
-	public void addHitboxToScene(Group root) {
+
+    public void addHitboxToScene(Group root) {
         if (!root.getChildren().contains(hitbox)) {
             root.getChildren().add(hitbox);
         }
@@ -65,5 +64,4 @@ public abstract class ActiveActor extends ImageView {
         hitbox.setX(this.getLayoutX());
         hitbox.setY(this.getLayoutY());
     }
-
 }

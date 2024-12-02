@@ -1,73 +1,108 @@
 package com.example.demo.controller;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import com.example.demo.MainMenu;
+import com.example.demo.LevelParent;
+import com.example.demo.TransitionScene;
+import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import com.example.demo.LevelParent;
-import com.example.demo.TransitionScene;
-import javafx.animation.FadeTransition;
 import javafx.util.Duration;
+import java.lang.reflect.Constructor;
+import java.util.Stack;
 
 public class Controller {
 
-	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelOne";
-	private final Stage stage;
+    private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelOne";
+    private final Stage stage;
+    private Stack<Scene> sceneStack = new Stack<>();
 
-	public Controller(Stage stage, double screenWidth) {
-		this.stage = stage;
-	}
+    public Controller(Stage stage, double screenWidth) {
+        this.stage = stage;
+    }
 
-	public void launchGame() throws ClassNotFoundException, NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+    public void showMainMenu() {
+        MainMenu mainMenu = new MainMenu(this);
+        Scene menuScene = new Scene(mainMenu.getMenuPane(), stage.getWidth(), stage.getHeight());
+        menuScene.getStylesheets().add(getClass().getResource("/com/example/demo/css/MainMenu.css").toExternalForm());
+        pushScene(menuScene);
+    }
 
-			stage.show();
-			goToLevel(LEVEL_ONE_CLASS_NAME);
-	}
+    public void launchGame() throws Exception {
+        stage.show();
+        goToLevel(LEVEL_ONE_CLASS_NAME);
+    }
 
-	private void goToLevel(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
-    InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    Class<?> myClass = Class.forName(className);
-    Constructor<?> constructor = myClass.getConstructor(double.class, double.class);
-    LevelParent myLevel = (LevelParent) constructor.newInstance(stage.getHeight(), stage.getWidth());
-    myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
-        if (newValue != null && !newValue.isEmpty()) {
-            TransitionScene.fadeOutCurrentScene(stage, () -> {
-                TransitionScene transitionScene = new TransitionScene(stage, "A mighty foe stands before you...",
-                        stage.getWidth(), stage.getHeight());
-                transitionScene.showTransition(() -> {
-                    goToNextLevel(newValue);
+    private void goToLevel(String className) throws Exception {
+        Class<?> myClass = Class.forName(className);
+        Constructor<?> constructor = myClass.getConstructor(double.class, double.class, Controller.class);
+        LevelParent myLevel = (LevelParent) constructor.newInstance(stage.getHeight(), stage.getWidth(), this);
+        myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                TransitionScene.fadeOutCurrentScene(stage, () -> {
+                    TransitionScene transitionScene = new TransitionScene(stage, "A mighty foe stands before you...",
+                            stage.getWidth(), stage.getHeight());
+                    transitionScene.showTransition(() -> {
+                        goToNextLevel(newValue);
+                    });
                 });
-            });
-        }
-    });
-			
-			Scene scene = myLevel.initializeScene();
-			stage.setScene(scene);
-			myLevel.startGame();
-			applyFadeInTransition(scene);
-	}
-	
-	 private void applyFadeInTransition(Scene scene) {
-	        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), scene.getRoot());
-	        fadeIn.setFromValue(0);
-	        fadeIn.setToValue(1);
-	        fadeIn.setCycleCount(1);
-	        fadeIn.setAutoReverse(false);
-	        fadeIn.play();
-	    }
+            }
+        });
 
-	
-	private void goToNextLevel(String levelName) {
-		try {
-			goToLevel(levelName);
-		} catch (ClassNotFoundException | NoSuchMethodException | InstantiationException
-				| IllegalAccessException | InvocationTargetException e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("Error occurred while loading level: " + e.getMessage());
-			alert.show();
-		}
-	}
+        Scene scene = myLevel.initializeScene();
+        scene.getStylesheets().add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
+        pushScene(scene);
+        myLevel.startGame();
+        applyFadeInTransition(scene);
+    }
+
+    private void applyFadeInTransition(Scene scene) {
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), scene.getRoot());
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.setCycleCount(1);
+        fadeIn.setAutoReverse(false);
+        fadeIn.play();
+    }
+
+    private void goToNextLevel(String levelName) {
+        try {
+            goToLevel(levelName);
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("Error occurred while loading level: " + e.getMessage());
+            alert.show();
+        }
+    }
+
+    public void showSettings() {
+        GameSettings gameSettings = new GameSettings(this);
+        Scene settingsScene = new Scene(gameSettings.getSettingsPane(), stage.getWidth(), stage.getHeight());
+        settingsScene.getStylesheets().add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
+        pushScene(settingsScene);
+    }
+
+    public void goToMainMenu() {
+        showMainMenu();
+    }
+
+    private void pushScene(Scene scene) {
+        sceneStack.push(scene);
+        stage.setScene(scene);
+        stage.show();
+        applyFadeInTransition(scene);
+    }
+
+    public void goBack() {
+        if (!sceneStack.isEmpty()) {
+            sceneStack.pop();
+            if (!sceneStack.isEmpty()) {
+                Scene previousScene = sceneStack.peek();
+                stage.setScene(previousScene);
+                stage.show();
+                applyFadeInTransition(previousScene);
+            }
+        }
+    }
 }

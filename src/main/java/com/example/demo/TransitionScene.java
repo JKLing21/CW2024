@@ -2,12 +2,14 @@ package com.example.demo;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.animation.ParallelTransition;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -23,7 +25,8 @@ public class TransitionScene {
         this.stage = stage;
 
         transitionText = new Text(message);
-        transitionText.setFont(Font.font("Arial", 55));
+        transitionText.setFont(Font.font("Arial", FontWeight.BOLD, 50));
+
         transitionText.setFill(Color.RED);
 
         Image planeImage = new Image(getClass().getResource("/com/example/demo/images/userplane.png").toExternalForm());
@@ -31,8 +34,12 @@ public class TransitionScene {
         planeImageView.setFitWidth(120); 
         planeImageView.setFitHeight(30);
 
-        Pane transitionPane = new Pane(transitionText, planeImageView);
-        transitionPane.setStyle("-fx-background-color: white;");
+        Image backgroundImage = new Image(getClass().getResource("/com/example/demo/images/stormy_sky.jpg").toExternalForm());
+        ImageView backgroundImageView = new ImageView(backgroundImage);
+        backgroundImageView.setFitWidth(width);
+        backgroundImageView.setFitHeight(height);
+
+        Pane transitionPane = new Pane(backgroundImageView, transitionText, planeImageView);
         this.transitionScene = new Scene(transitionPane, width, height);
 
         transitionText.setLayoutX(width / 2 - transitionText.getLayoutBounds().getWidth() / 2);
@@ -42,25 +49,24 @@ public class TransitionScene {
     }
 
     public void showTransition(Runnable onTransitionEnd) {
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), transitionText);
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(1);
-        fadeIn.setCycleCount(4);
-        fadeIn.setAutoReverse(true);
 
-        TranslateTransition planeAnimation = new TranslateTransition(Duration.seconds(3), planeImageView);
+        FadeTransition fadeInText = new FadeTransition(Duration.seconds(3), transitionText);
+        fadeInText.setFromValue(0);
+        fadeInText.setToValue(1);
+        fadeInText.setCycleCount(1);
+        fadeInText.setAutoReverse(true);
+
+        TranslateTransition planeAnimation = new TranslateTransition(Duration.seconds(2.2), planeImageView);
         planeAnimation.setFromX(-planeImageView.getFitWidth());
-        
         planeAnimation.setToX(transitionScene.getWidth() + planeImageView.getFitWidth());
-
         planeAnimation.setCycleCount(1);
         planeAnimation.setAutoReverse(false);
 
-        stage.setScene(transitionScene);
+        ParallelTransition parallelTransition = new ParallelTransition(fadeInText, planeAnimation);
+        parallelTransition.setOnFinished(event -> onTransitionEnd.run());
 
-        fadeIn.play();
-        planeAnimation.play();
-        planeAnimation.setOnFinished(event -> onTransitionEnd.run());
+        stage.setScene(transitionScene);
+        parallelTransition.play();
     }
 
     public Scene getTransitionScene() {
@@ -69,10 +75,17 @@ public class TransitionScene {
 
     public static void fadeOutCurrentScene(Stage stage, Runnable callback) {
         Scene currentScene = stage.getScene();
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), currentScene.getRoot());
-        fadeOut.setFromValue(1);
-        fadeOut.setToValue(0);
-        fadeOut.setOnFinished(event -> callback.run());
-        fadeOut.play();
+        if (currentScene != null) {
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), currentScene.getRoot());
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+            fadeOut.setOnFinished(event -> {
+                stage.setScene(null);
+                callback.run();
+            });
+            fadeOut.play();
+        } else {
+            callback.run();
+        }
     }
 }
