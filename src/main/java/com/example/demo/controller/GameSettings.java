@@ -1,9 +1,18 @@
 package com.example.demo.controller;
 
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.geometry.Pos;
 import java.util.prefs.Preferences;
+
+import com.example.demo.ComponentsFactory;
+
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class GameSettings {
 
@@ -15,36 +24,26 @@ public class GameSettings {
     private ToggleButton soundEffectsToggle;
     private ToggleButton backgroundMusicToggle;
 
-    public GameSettings(Controller controller) {
+    public GameSettings(Controller controller, ComponentsFactory componentsFactory) {
         this.controller = controller;
         settingsPane = new BorderPane();
 
         prefs = Preferences.userNodeForPackage(GameSettings.class);
-        Label settingsTitle = new Label("Settings");
-        Button backButton = new Button("Return");
-        Button resetToDefaultButton = new Button("Reset to Default");
-        settingsTitle.getStyleClass().add("settings-title");
+        Label settingsTitle = componentsFactory.createLabel("Settings", "settings-title");
+        Button backButton = componentsFactory.createButton("Return", e -> goBackToPreviousScene());
+        Button resetToDefaultButton = componentsFactory.createButton("Reset to Default", e -> resetToDefault());
+        resetToDefaultButton.getStyleClass().add("button");
+        resetToDefaultButton.getStyleClass().add("default-btn");
 
-        Label soundEffectsLabel = new Label("Sound Effects");
-        soundEffectsLabel.getStyleClass().add("music-label");
-        soundEffectsLabel.getStyleClass().add("SE-btn");
-        soundEffectsSlider = new Slider(0, 100, prefs.getDouble("soundEffectsVolume", 50.0));
-        soundEffectsSlider.setMaxWidth(300.0);
-        soundEffectsSlider.getStyleClass().add("slider");
+        Label soundEffectsLabel = componentsFactory.createLabel("Sound Effects", "music-label", "SE-btn");
+        soundEffectsSlider = componentsFactory.createSlider(0, 100, prefs.getDouble("soundEffectsVolume", 50.0), 300.0);
+        soundEffectsToggle = componentsFactory.createToggleButton(prefs.getBoolean("soundEffectsOn", true));
+		soundEffectsToggle.getStyleClass().add("toggle-switch");
 
-        soundEffectsToggle = new ToggleButton();
-        soundEffectsToggle.getStyleClass().add("toggle-switch");
-        soundEffectsToggle.setSelected(prefs.getBoolean("soundEffectsOn", true));
-
-        Label backgroundMusicLabel = new Label("Background Music");
-        backgroundMusicLabel.getStyleClass().add("music-label");
-        backgroundMusicSlider = new Slider(0, 100, prefs.getDouble("backgroundMusicVolume", 50.0));
-        backgroundMusicSlider.setMaxWidth(300.0); 
-        backgroundMusicSlider.getStyleClass().add("slider");
-
-        backgroundMusicToggle = new ToggleButton();
-        backgroundMusicToggle.getStyleClass().add("toggle-switch");
-        backgroundMusicToggle.setSelected(prefs.getBoolean("backgroundMusicOn", true));
+        Label backgroundMusicLabel = componentsFactory.createLabel("Background Music", "music-label");
+        backgroundMusicSlider = componentsFactory.createSlider(0, 100, prefs.getDouble("backgroundMusicVolume", 50.0), 300.0);
+		backgroundMusicToggle = componentsFactory.createToggleButton(prefs.getBoolean("backgroundMusicOn", true));
+		backgroundMusicToggle.getStyleClass().add("toggle-switch");
 
         soundEffectsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             prefs.putDouble("soundEffectsVolume", newValue.doubleValue());
@@ -58,13 +57,6 @@ public class GameSettings {
         backgroundMusicToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
             prefs.putBoolean("backgroundMusicOn", newValue);
         });
-
-        backButton.setOnAction(e -> goBackToPreviousScene());
-        settingsPane.setBottom(backButton);
-        
-        resetToDefaultButton.setOnAction(e -> resetToDefault());
-        resetToDefaultButton.getStyleClass().add("button"); 
-        resetToDefaultButton.getStyleClass().add("default-btn"); 
 
         HBox titleBox = new HBox(settingsTitle);
         titleBox.setAlignment(Pos.CENTER);
@@ -94,7 +86,6 @@ public class GameSettings {
 
         settingsPane = mainPane;
     }
-
     public Pane getSettingsPane() {
         return settingsPane;
     }
@@ -105,9 +96,9 @@ public class GameSettings {
         backgroundMusicSlider.setValue(50.0);
         backgroundMusicToggle.setSelected(true);
         prefs.putDouble("soundEffectsVolume", 50.0);
-        prefs.putBoolean("soundEffectsOn", true);
+		prefs.putBoolean("soundEffectsOn", true);
         prefs.putDouble("backgroundMusicVolume", 50.0);
-        prefs.putBoolean("backgroundMusicOn", true);
+		prefs.putBoolean("backgroundMusicOn", true);
     }
 
     private void goBackToPreviousScene() {

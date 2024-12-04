@@ -1,11 +1,12 @@
 package com.example.demo;
 
 public abstract class Projectile extends ActiveActorDestructible {
-	
+
 	private double screenWidth;
 
-	public Projectile(String imageName, int imageHeight, double initialXPos, double initialYPos) {
-		super(imageName, imageHeight, initialXPos, initialYPos);
+	public Projectile(String imageName, int imageHeight, double initialXPos, double initialYPos,
+			ComponentsFactory componentsFactory) {
+		super(imageName, imageHeight, initialXPos, initialYPos, componentsFactory);
 	}
 
 	@Override
@@ -14,10 +15,10 @@ public abstract class Projectile extends ActiveActorDestructible {
 	}
 
 	@Override
-	public void updatePosition() {	 
-		 if (this.getX() < 0 || this.getX() > screenWidth) {
-			    this.destroy();
-			}
+	public void updatePosition() {
+		if (this.getX() < 0 || this.getX() > screenWidth) {
+			this.destroy();
+		}
 	}
 
 }

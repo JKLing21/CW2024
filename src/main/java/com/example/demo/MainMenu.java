@@ -1,39 +1,37 @@
 package com.example.demo;
 
 import com.example.demo.controller.Controller;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Pane;
+
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class MainMenu {
 
     private StackPane root;
     private Controller controller;
 
-    public MainMenu(Controller controller) {
+    public MainMenu(Controller controller, ComponentsFactory componentsFactory) {
         this.controller = controller;
 
-        Button startButton = new Button("Start Game");
-        Button settingsButton = new Button("Settings");
-        Button exitButton = new Button("Quit");
-
-        startButton.setOnAction(e -> {
+		Button startButton = componentsFactory.createMenuButton("Start Game", e -> {
             try {
                 this.controller.launchGame();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
-        settingsButton.setOnAction(e -> this.controller.showSettings());
-        exitButton.setOnAction(e -> showQuitConfirmation());
+
+		Button settingsButton = componentsFactory.createMenuButton("Settings", e -> this.controller.showSettings());
+		Button exitButton = componentsFactory.createMenuButton("Quit", e -> showQuitConfirmation());
 
         VBox menuPane = new VBox(20);
         menuPane.setAlignment(Pos.BOTTOM_CENTER);

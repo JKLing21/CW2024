@@ -34,21 +34,20 @@ public class Boss extends FighterPlane {
 	private int framesSinceShieldDeactivated;
 	private final BossHealthBar bossHealthBar;
 
-	public Boss() {
-		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH);
+	private ProjectilesFactory projectileFactory;
+
+	public Boss(ComponentsFactory factory) {
+		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH, factory);
 		movePattern = new ArrayList<>();
-		bossHealthBar = new BossHealthBar(500);
+		this.bossHealthBar = new BossHealthBar(500, factory);
+		this.shieldImage = factory.createShieldImage(INITIAL_X_POSITION, INITIAL_Y_POSITION);
 		consecutiveMovesInSameDirection = 0;
 		indexOfCurrentMove = 0;
 		framesWithShieldActivated = 0;
 		framesSinceShieldDeactivated = SHIELD_COOLDOWN;
 		isShielded = false;
 		initializeMovePattern();
-		shieldImage = new ShieldImage(INITIAL_X_POSITION, INITIAL_Y_POSITION);
-		if (getScene() != null) {
-			Group parentContainer = (Group) getScene().getRoot();
-			parentContainer.getChildren().add(shieldImage);
-		}
+		this.projectileFactory = new ProjectilesImplement();
 		if (getScene() != null) {
 			Group parentContainer = (Group) getScene().getRoot();
 			parentContainer.getChildren().addAll(bossHealthBar.getHealthBarBackground(), bossHealthBar.getHealthBar(),
@@ -96,7 +95,8 @@ public class Boss extends FighterPlane {
 
 	@Override
 	public ActiveActorDestructible fireProjectile() {
-		return bossFiresInCurrentFrame() ? new BossProjectile(getProjectileInitialPosition()) : null;
+		return bossFiresInCurrentFrame() ? projectileFactory.createBossProjectile(getProjectileInitialPosition())
+				: null;
 	}
 
 	@Override

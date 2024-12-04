@@ -7,9 +7,11 @@ public class LevelTwo extends LevelParent {
 	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background2.jpg";
 	private final Boss boss;
 
-	public LevelTwo(double screenHeight, double screenWidth, Controller controller) {
-		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, 5, controller);
-		boss = new Boss();
+	public LevelTwo(double screenHeight, double screenWidth, Controller controller,
+			ComponentsFactory componentsFactory) {
+		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, 5, controller, componentsFactory);
+		ActorFactory actorFactory = new ActorImplement();
+		this.boss = actorFactory.createBoss();
 		this.levelView = instantiateLevelView();
 	}
 
@@ -40,7 +42,7 @@ public class LevelTwo extends LevelParent {
 
 	@Override
 	protected LevelView instantiateLevelView() {
-		return new LevelView(getRoot(), getInitialHealth());
+		return new LevelView(getRoot(), getInitialHealth(), getComponentsFactory());
 	}
 
 	@Override

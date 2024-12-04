@@ -37,6 +37,8 @@ public abstract class LevelParent {
 	private PauseScreen pauseScreen;
 	private KeyEventHandlers keyEventHandlers;
 	private int initialHealth;
+	private ProjectilesFactory projectilesFactory = new ProjectilesImplement();
+	private final ComponentsFactory componentsFactory;
 
 	private final List<ActiveActorDestructible> friendlyUnits;
 	private final List<ActiveActorDestructible> enemyUnits;
@@ -54,24 +56,27 @@ public abstract class LevelParent {
 	private boolean isPaused = false;
 
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
-			Controller controller) {
+			Controller controller, ComponentsFactory componentsFactory) {
 		this.root = new Group();
 		this.scene = new Scene(root, screenWidth, screenHeight);
-		this.pauseScreen = new PauseScreen(root, scene, this, controller);
 		this.timeline = new Timeline();
-		this.user = new UserPlane(playerInitialHealth, screenWidth);
+		ActorFactory actorFactory = new ActorImplement();
+		this.user = actorFactory.createUserPlane(playerInitialHealth, screenWidth, projectilesFactory);
+		this.componentsFactory = componentsFactory;
+		this.pauseScreen = componentsFactory.createPauseScreen(root, scene, this, controller);
 		this.initialHealth = playerInitialHealth;
 		this.friendlyUnits = new ArrayList<>();
 		this.enemyUnits = new ArrayList<>();
 		this.userProjectiles = new ArrayList<>();
 		this.enemyProjectiles = new ArrayList<>();
+		this.projectilesFactory = new ProjectilesImplement();
 
 		this.background = new ImageView(
 				new Image(Objects.requireNonNull(getClass().getResource(backgroundImageName)).toExternalForm()));
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
 		this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
-		this.levelView = instantiateLevelView();
+		this.levelView = componentsFactory.createLevelView(root, playerInitialHealth);
 		initializeTimeline();
 		friendlyUnits.add(user);
 
@@ -95,16 +100,9 @@ public abstract class LevelParent {
 		levelView.showHeartDisplay();
 
 		Group uiLayer = new Group();
-
-		Image pauseImage = new Image(
-				Objects.requireNonNull(getClass().getResource("/com/example/demo/images/pause.png")).toExternalForm());
-		ImageView pauseImageView = new ImageView(pauseImage);
-		pauseImageView.setFitWidth(50);
-		pauseImageView.setFitHeight(50);
-		pauseImageView.setLayoutX(screenWidth - 60);
-		pauseImageView.setLayoutY(10);
-		pauseImageView.setOnMouseClicked(e -> togglePause());
-
+		ImageView pauseImageView = componentsFactory.createPauseButton(screenWidth - 60,
+				10, 50, 50, "/com/example/demo/images/pause.png", e -> togglePause()
+		);
 		uiLayer.getChildren().add(pauseImageView);
 
 		Pane layeredPane = new Pane();
@@ -123,6 +121,10 @@ public abstract class LevelParent {
 
 	public int getInitialHealth() {
 		return initialHealth;
+	}
+
+	public ComponentsFactory getComponentsFactory() {
+		return componentsFactory;
 	}
 
 	public void goToNextLevel(String levelName) {
@@ -188,20 +190,27 @@ public abstract class LevelParent {
 
 	private void fireProjectile() {
 		ActiveActorDestructible projectile = user.fireProjectile();
-		root.getChildren().add(projectile);
-		userProjectiles.add(projectile);
-		levelView.addHitboxesToScene(projectile);
+		if (projectile != null) {
+			root.getChildren().add(projectile);
+			userProjectiles.add(projectile);
+			levelView.addHitboxesToScene(root, (ActiveActor) projectile);
+		}
 	}
 
 	private void generateEnemyFire() {
-		enemyUnits.forEach(enemy -> spawnEnemyProjectile(((FighterPlane) enemy).fireProjectile()));
+		enemyUnits.forEach(enemy -> {
+			if (enemy instanceof FighterPlane) {
+				ActiveActorDestructible projectile = ((FighterPlane) enemy).fireProjectile();
+				spawnEnemyProjectile(projectile);
+			}
+		});
 	}
 
 	private void spawnEnemyProjectile(ActiveActorDestructible projectile) {
 		if (projectile != null) {
 			root.getChildren().add(projectile);
 			enemyProjectiles.add(projectile);
-			levelView.addHitboxesToScene(projectile);
+			levelView.addHitboxesToScene(root, (ActiveActor) projectile);
 		}
 	}
 
@@ -328,7 +337,7 @@ public abstract class LevelParent {
 	protected void addEnemyUnit(ActiveActorDestructible enemy) {
 		enemyUnits.add(enemy);
 		root.getChildren().add(enemy);
-		levelView.addHitboxesToScene(enemy);
+		levelView.addHitboxesToScene(root, (ActiveActor) enemy);
 	}
 
 	protected double getEnemyMaximumYPosition() {

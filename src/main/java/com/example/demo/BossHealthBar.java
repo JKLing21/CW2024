@@ -2,9 +2,9 @@ package com.example.demo;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 public class BossHealthBar {
 	private final Rectangle healthBar;
@@ -13,18 +13,12 @@ public class BossHealthBar {
 	private final Text bossNameText;
 	private final ShieldImage shieldIcon;
 
-	public BossHealthBar(double width) {
+	public BossHealthBar(double width, ComponentsFactory factory) {
 		this.width = width;
-		healthBarBackground = new Rectangle(width, 15, Color.MAROON);
-		healthBar = new Rectangle(width, 15, Color.RED);
-
-		bossNameText = new Text("Skybound Tyrant");
-		bossNameText.setFill(Color.WHITE);
-		bossNameText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
-		shieldIcon = new ShieldImage(0, 0);
-		shieldIcon.setFitHeight(35);
-		shieldIcon.setFitWidth(35);
+		healthBarBackground = factory.createHealthBarBackground(width, 15, Color.MAROON);
+		healthBar = factory.createHealthBar(width, 15, Color.RED);
+		 bossNameText = factory.createBossNameText("Skybound Tyrant", Font.font("Arial", FontWeight.BOLD, 18), Color.WHITE);
+		shieldIcon = factory.createShieldIcon(0, 0, 35);
 	}
 
 	public Rectangle getHealthBar() {

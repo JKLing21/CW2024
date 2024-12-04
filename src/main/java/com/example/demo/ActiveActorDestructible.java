@@ -8,8 +8,9 @@ public abstract class ActiveActorDestructible extends ActiveActor implements Des
 	private boolean destroyedByUser;
 	private boolean hasBeenCounted = false;
 
-	public ActiveActorDestructible(String imageName, int imageHeight, double initialXPos, double initialYPos) {
-		super(imageName, imageHeight, initialXPos, initialYPos);
+	public ActiveActorDestructible(String imageName, int imageHeight, double initialXPos, double initialYPos,
+			ComponentsFactory componentsFactory) {
+		super(imageName, imageHeight, initialXPos, initialYPos, componentsFactory);
 		isDestroyed = false;
 		this.destroyedByUser = false;
 	}
@@ -26,15 +27,15 @@ public abstract class ActiveActorDestructible extends ActiveActor implements Des
 	public void destroy() {
 		setDestroyed(true);
 	}
-	
+
 	public void destroy(Group root) {
-	    setDestroyed(true);
-	    root.getChildren().remove(this);
+		setDestroyed(true);
+		root.getChildren().remove(this);
 	}
-	
+
 	public void destroyByUser() {
-	    this.destroyedByUser = true;
-	    destroy();
+		this.destroyedByUser = true;
+		destroy();
 	}
 
 	protected void setDestroyed(boolean isDestroyed) {
@@ -44,17 +45,17 @@ public abstract class ActiveActorDestructible extends ActiveActor implements Des
 	public boolean isDestroyed() {
 		return isDestroyed;
 	}
-	
+
 	public boolean isDestroyedByUser() {
-	    return destroyedByUser;
+		return destroyedByUser;
 	}
 
 	public boolean hasBeenCounted() {
-	    return hasBeenCounted;
+		return hasBeenCounted;
 	}
 
 	public void setHasBeenCounted(boolean hasBeenCounted) {
-	    this.hasBeenCounted = hasBeenCounted;
+		this.hasBeenCounted = hasBeenCounted;
 	}
-	
+
 }
