@@ -18,9 +18,15 @@ public class MainMenu {
 
     private StackPane root;
     private Controller controller;
+    private final Image MainMenuImage;
 
-    public MainMenu(Controller controller, ComponentsFactory componentsFactory) {
+    public MainMenu(Controller controller, ComponentsFactory componentsFactory, ImgAssetLoader assetLoader) {
         this.controller = controller;
+        this.MainMenuImage = assetLoader.loadImage("MainMenu");
+        if (MainMenuImage == null) {
+            System.out.println("Background image not found.");
+            return;
+        }
 
 		Button startButton = componentsFactory.createMenuButton("Start Game", e -> {
             try {
@@ -42,7 +48,7 @@ public class MainMenu {
 
         root = new StackPane();
 
-        ImageView background = new ImageView(new Image(getClass().getResource("/com/example/demo/images/MainMenu.jpeg").toString()));
+        ImageView background = new ImageView(MainMenuImage);
         background.fitWidthProperty().bind(root.widthProperty());
         background.fitHeightProperty().bind(root.heightProperty());
         background.setPreserveRatio(false);

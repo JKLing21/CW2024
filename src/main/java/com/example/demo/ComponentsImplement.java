@@ -74,7 +74,8 @@ public class ComponentsImplement implements ComponentsFactory {
 	@Override
 	public MainMenu createMainMenu(Controller controller) {
 	    ComponentsFactory componentsFactory = new ComponentsImplement();
-	    return new MainMenu(controller, componentsFactory);
+	    ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+	    return new MainMenu(controller, componentsFactory, assetLoader);
 	}
 
 	@Override

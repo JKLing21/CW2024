@@ -3,7 +3,6 @@ package com.example.demo;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,6 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -39,6 +37,8 @@ public abstract class LevelParent {
 	private int initialHealth;
 	private ProjectilesFactory projectilesFactory = new ProjectilesImplement();
 	private final ComponentsFactory componentsFactory;
+	@SuppressWarnings("unused")
+	private final AssetFactory assetFactory;
 
 	private final List<ActiveActorDestructible> friendlyUnits;
 	private final List<ActiveActorDestructible> enemyUnits;
@@ -56,7 +56,7 @@ public abstract class LevelParent {
 	private boolean isPaused = false;
 
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
-			Controller controller, ComponentsFactory componentsFactory) {
+			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory) {
 		this.root = new Group();
 		this.scene = new Scene(root, screenWidth, screenHeight);
 		this.timeline = new Timeline();
@@ -70,9 +70,9 @@ public abstract class LevelParent {
 		this.userProjectiles = new ArrayList<>();
 		this.enemyProjectiles = new ArrayList<>();
 		this.projectilesFactory = new ProjectilesImplement();
-
-		this.background = new ImageView(
-				new Image(Objects.requireNonNull(getClass().getResource(backgroundImageName)).toExternalForm()));
+		
+		this.assetFactory = assetFactory;
+		this.background = assetFactory.createBackgroundImage(backgroundImageName, screenWidth, screenHeight);
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
 		this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
@@ -180,13 +180,11 @@ public abstract class LevelParent {
 		KeyFrame gameLoop = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> updateScene());
 		timeline.getKeyFrames().add(gameLoop);
 	}
-
-	private void initializeBackground() {
-		background.setFocusTraversable(true);
-		background.setFitHeight(screenHeight);
-		background.setFitWidth(screenWidth);
-		root.getChildren().add(background);
-	}
+	
+	 private void initializeBackground() {
+	        background.setFocusTraversable(true);
+	        root.getChildren().add(background);
+	    }
 
 	private void fireProjectile() {
 		ActiveActorDestructible projectile = user.fireProjectile();
@@ -376,4 +374,4 @@ public abstract class LevelParent {
 		}
 		root.requestFocus();
 	}
-}
+} 
