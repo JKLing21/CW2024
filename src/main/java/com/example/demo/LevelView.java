@@ -35,8 +35,13 @@ public class LevelView {
 	}
 
 	public void showWinImage() {
+		removeWinImage();
 		root.getChildren().add(winImage);
 		winImage.showWinImage();
+	}
+
+	public void removeWinImage() {
+		root.getChildren().remove(winImage);
 	}
 
 	public void showGameOverImage() {

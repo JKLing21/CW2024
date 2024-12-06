@@ -8,7 +8,8 @@ import factories.interfaces.AssetFactory;
 import factories.interfaces.ComponentsFactory;
 
 public class LevelOne extends LevelParent {
-	
+
+	public static final String BACKGROUND_IMAGE = "background1";
 	private static final String NEXT_LEVEL = "com.example.demo.LevelTwo";
 	private static final int TOTAL_ENEMIES = 5;
 	private static final int KILLS_TO_ADVANCE = 5;
@@ -17,11 +18,12 @@ public class LevelOne extends LevelParent {
 
 	private final ActorFactory actorFactory;
 
-	public LevelOne(double screenHeight, double screenWidth, Controller controller,
-	        ComponentsFactory componentsFactory, AssetFactory assetFactory) {
-	    super("background1", screenHeight, screenWidth, 5, controller, componentsFactory, assetFactory);
-	    this.actorFactory = new ActorImplement();
-	    lastEnemySpawnTime = System.currentTimeMillis();
+	public LevelOne(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
+			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory) {
+		super(backgroundImageName, screenHeight, screenWidth, playerInitialHealth, controller, componentsFactory,
+				assetFactory);
+		this.actorFactory = new ActorImplement();
+		lastEnemySpawnTime = System.currentTimeMillis();
 	}
 
 	@Override

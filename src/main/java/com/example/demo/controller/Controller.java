@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.lang.reflect.Constructor;
 import java.util.Stack;
 
+import com.example.demo.ImageManager;
 import com.example.demo.ImgAssetLoader;
 import com.example.demo.LevelParent;
 import com.example.demo.MainMenu;
@@ -12,9 +13,6 @@ import factories.AssetsImplement;
 import factories.ComponentsImplement;
 import factories.interfaces.AssetFactory;
 import factories.interfaces.ComponentsFactory;
-
-import com.example.demo.ImageManager;
-
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -29,16 +27,19 @@ public class Controller {
 	private Stack<Scene> sceneStack = new Stack<>();
 	private ImageManager imageManager;
 	private AssetFactory assetFactory;
+	private ComponentsFactory componentsFactory;
 
 	public Controller(Stage stage, double screenWidth) {
 		this.stage = stage;
-		 this.imageManager = ImageManager.getInstance();
-	     this.assetFactory = new AssetsImplement(imageManager);
+		this.imageManager = ImageManager.getInstance();
+		this.assetFactory = new AssetsImplement(imageManager);
+		this.componentsFactory = new ComponentsImplement();
 	}
 
 	public void showMainMenu() {
 		ComponentsFactory componentsFactory = new ComponentsImplement();
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {
+		};
 		MainMenu mainMenu = new MainMenu(this, componentsFactory, assetLoader);
 		Scene menuScene = new Scene(mainMenu.getMenuPane(), stage.getWidth(), stage.getHeight());
 		menuScene.getStylesheets().add(getClass().getResource("/com/example/demo/css/MainMenu.css").toExternalForm());
@@ -52,11 +53,11 @@ public class Controller {
 
 	private void goToLevel(String className) throws Exception {
 		Class<?> myClass = Class.forName(className);
-		ComponentsFactory componentsFactory = new ComponentsImplement();
-		Constructor<?> constructor = myClass.getConstructor(double.class, double.class, Controller.class,
-				ComponentsFactory.class,  AssetFactory.class);
-		LevelParent myLevel = (LevelParent) constructor.newInstance(stage.getHeight(), stage.getWidth(), this,
-				componentsFactory, assetFactory);
+		String backgroundImage = (String) myClass.getField("BACKGROUND_IMAGE").get(null);
+		Constructor<?> constructor = myClass.getConstructor(String.class, double.class, double.class, int.class,
+				Controller.class, ComponentsFactory.class, AssetFactory.class);
+		LevelParent myLevel = (LevelParent) constructor.newInstance(backgroundImage, stage.getHeight(),
+				stage.getWidth(), 5, this, componentsFactory, assetFactory);
 		myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue != null && !newValue.isEmpty()) {
 				TransitionScene.fadeOutCurrentScene(stage, () -> {

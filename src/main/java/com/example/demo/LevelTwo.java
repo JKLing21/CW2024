@@ -8,16 +8,18 @@ import factories.interfaces.AssetFactory;
 import factories.interfaces.ComponentsFactory;
 
 public class LevelTwo extends LevelParent {
-	
+
+	public static final String BACKGROUND_IMAGE = "background2";
 	private ActorFactory actorFactory;
 	private final Boss boss;
 
-	public LevelTwo(double screenHeight, double screenWidth, Controller controller,
-			ComponentsFactory componentsFactory, AssetFactory assetFactory) {
-		 super("background2", screenHeight, screenWidth, 5, controller, componentsFactory, assetFactory);
-		 this.actorFactory = new ActorImplement();
-		 this.boss = actorFactory.createBoss();
-		 this.levelView = instantiateLevelView();
+	public LevelTwo(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
+			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory) {
+		super(backgroundImageName, screenHeight, screenWidth, playerInitialHealth, controller, componentsFactory,
+				assetFactory);
+		this.actorFactory = new ActorImplement();
+		this.boss = actorFactory.createBoss();
+		this.levelView = instantiateLevelView();
 	}
 
 	@Override

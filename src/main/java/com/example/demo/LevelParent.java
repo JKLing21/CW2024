@@ -1,9 +1,7 @@
 package com.example.demo;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.example.demo.controller.Controller;
@@ -45,6 +43,7 @@ public abstract class LevelParent {
 	private final ComponentsFactory componentsFactory;
 	@SuppressWarnings("unused")
 	private final AssetFactory assetFactory;
+	private CollisionManager collisionManager;
 
 	private final List<ActiveActorDestructible> friendlyUnits;
 	private final List<ActiveActorDestructible> enemyUnits;
@@ -76,11 +75,12 @@ public abstract class LevelParent {
 		this.userProjectiles = new ArrayList<>();
 		this.enemyProjectiles = new ArrayList<>();
 		this.projectilesFactory = new ProjectilesImplement();
-		
+
 		this.assetFactory = assetFactory;
 		this.background = assetFactory.createBackgroundImage(backgroundImageName, screenWidth, screenHeight);
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
+		this.collisionManager = new CollisionManager(root, screenWidth);
 		this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
 		this.levelView = componentsFactory.createLevelView(root, playerInitialHealth);
 		initializeTimeline();
@@ -106,10 +106,9 @@ public abstract class LevelParent {
 		levelView.showHeartDisplay();
 
 		Group uiLayer = new Group();
-		ImageView pauseImageView = componentsFactory.getImgViewFactory().createPauseButton(
-		        screenWidth - 60, 10, 50, 50, e -> togglePause()
-		    );
-		    uiLayer.getChildren().add(pauseImageView);
+		ImageView pauseImageView = componentsFactory.getImgViewFactory().createPauseButton(screenWidth - 60, 10, 50, 50,
+				e -> togglePause());
+		uiLayer.getChildren().add(pauseImageView);
 
 		Pane layeredPane = new Pane();
 		layeredPane.getChildren().addAll(root, uiLayer);
@@ -155,10 +154,10 @@ public abstract class LevelParent {
 			spawnEnemyUnits();
 			updateActors();
 			generateEnemyFire();
-			handleEnemyPenetration();
-			handleUserProjectileCollisions();
-			handleEnemyProjectileCollisions();
-			handlePlaneCollisions();
+			collisionManager.handleEnemyPenetration(enemyUnits, user);
+			collisionManager.handleProjectileCollisions(userProjectiles, enemyUnits, user);
+			collisionManager.handleProjectileCollisions(enemyProjectiles, friendlyUnits, user);
+			collisionManager.handlePlaneCollisions(friendlyUnits, enemyUnits);
 			removeAllDestroyedActors();
 			updateLevelView();
 		}
@@ -186,11 +185,11 @@ public abstract class LevelParent {
 		KeyFrame gameLoop = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> updateScene());
 		timeline.getKeyFrames().add(gameLoop);
 	}
-	
-	 private void initializeBackground() {
-	        background.setFocusTraversable(true);
-	        root.getChildren().add(background);
-	    }
+
+	private void initializeBackground() {
+		background.setFocusTraversable(true);
+		root.getChildren().add(background);
+	}
 
 	private void fireProjectile() {
 		ActiveActorDestructible projectile = user.fireProjectile();
@@ -243,76 +242,9 @@ public abstract class LevelParent {
 		actors.removeAll(destroyedActors);
 	}
 
-	private void handlePlaneCollisions() {
-		handleCollisions(friendlyUnits, enemyUnits);
-	}
-
-	private void handleUserProjectileCollisions() {
-		Set<ActiveActorDestructible> enemiesToRemove = new HashSet<>();
-		Set<ActiveActorDestructible> projectilesToRemove = new HashSet<>();
-
-		for (ActiveActorDestructible projectile : userProjectiles) {
-			for (ActiveActorDestructible enemy : enemyUnits) {
-				if (projectile.getBoundsInParent().intersects(enemy.getBoundsInParent())) {
-					enemy.takeDamage();
-					projectile.takeDamage();
-					if (enemy.isDestroyed()) {
-						if (!enemy.hasBeenCounted()) {
-							user.incrementKillCount();
-							enemy.setHasBeenCounted(true);
-						}
-						enemiesToRemove.add(enemy);
-					}
-					if (projectile.isDestroyed()) {
-						projectilesToRemove.add(projectile);
-					}
-				}
-			}
-		}
-
-		enemyUnits.removeAll(enemiesToRemove);
-		userProjectiles.removeAll(projectilesToRemove);
-
-		List<Node> nodesToRemove = new ArrayList<>();
-		nodesToRemove.addAll(enemiesToRemove);
-		nodesToRemove.addAll(projectilesToRemove);
-		root.getChildren().removeAll(nodesToRemove.toArray(new Node[0]));
-	}
-
-	private void handleEnemyProjectileCollisions() {
-		handleCollisions(enemyProjectiles, friendlyUnits);
-	}
-
-	private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
-		for (ActiveActorDestructible actor : actors2) {
-			for (ActiveActorDestructible otherActor : actors1) {
-				if (actor.getBoundsInParent().intersects(otherActor.getBoundsInParent())) {
-					actor.takeDamage();
-					otherActor.takeDamage();
-				}
-			}
-		}
-	}
-
-	private void handleEnemyPenetration() {
-		List<ActiveActorDestructible> enemiesToRemove = new ArrayList<>();
-		for (ActiveActorDestructible enemy : enemyUnits) {
-			if (enemyHasPenetratedDefenses(enemy)) {
-				user.takeDamage();
-				enemy.destroy(root);
-				enemiesToRemove.add(enemy);
-			}
-		}
-		enemyUnits.removeAll(enemiesToRemove);
-	}
-
 	private void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
 		levelView.updateKillCount(user.getNumberOfKills());
-	}
-
-	private boolean enemyHasPenetratedDefenses(ActiveActorDestructible enemy) {
-		return Math.abs(enemy.getTranslateX()) > screenWidth;
 	}
 
 	protected void winGame() {
@@ -380,4 +312,4 @@ public abstract class LevelParent {
 		}
 		root.requestFocus();
 	}
-} 
+}
