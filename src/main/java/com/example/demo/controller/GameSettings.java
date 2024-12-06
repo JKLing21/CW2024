@@ -2,8 +2,7 @@ package com.example.demo.controller;
 
 import java.util.prefs.Preferences;
 
-import com.example.demo.ComponentsFactory;
-
+import factories.interfaces.ComponentsFactory;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

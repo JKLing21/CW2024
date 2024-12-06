@@ -1,4 +1,13 @@
-package com.example.demo;
+package factories;
+
+import com.example.demo.Boss;
+import com.example.demo.EnemyPlane;
+import com.example.demo.ImgAssetLoader;
+import com.example.demo.UserPlane;
+
+import factories.interfaces.ActorFactory;
+import factories.interfaces.ComponentsFactory;
+import factories.interfaces.ProjectilesFactory;
 
 public class ActorImplement implements ActorFactory {
 

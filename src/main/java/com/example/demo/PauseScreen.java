@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import com.example.demo.controller.Controller;
+
+import factories.interfaces.ComponentsFactory;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -33,7 +35,7 @@ public class PauseScreen {
         pauseMenu.getStylesheets().add(getClass().getResource("/com/example/demo/css/PauseScreen.css").toExternalForm());
         pauseMenu.getStyleClass().add("pause-menu");
 
-        ImageView backgroundImageView = componentsFactory.createPauseMenuBackground(430, 300, 5, -10);
+        ImageView backgroundImageView = componentsFactory.getImgViewFactory().createPauseMenuBackground(430, 300, 5, -10);
 
         VBox menuContainer = createMenuContainer();
         pauseMenu.getChildren().addAll(backgroundImageView, menuContainer);
@@ -64,8 +66,8 @@ public class PauseScreen {
         HBox topButtonContainer = new HBox(20);
         topButtonContainer.setAlignment(Pos.CENTER);
 
-        ImageView resumeButton = componentsFactory.createResumeButton(85, 75, e -> levelParent.togglePause());
-        ImageView settingsButton = componentsFactory.createSettingsButton(90, 75, e -> showSettings());
+        ImageView resumeButton = componentsFactory.getImgViewFactory().createResumeButton(85, 75, e -> levelParent.togglePause());
+        ImageView settingsButton = componentsFactory.getImgViewFactory().createSettingsButton(90, 75, e -> showSettings());
         settingsButton.getStyleClass().add("settings-button");
 
         topButtonContainer.getChildren().addAll(resumeButton, settingsButton);
@@ -76,7 +78,7 @@ public class PauseScreen {
         HBox bottomButtonContainer = new HBox(20);
         bottomButtonContainer.setAlignment(Pos.CENTER);
 
-        ImageView mainMenuButton = componentsFactory.createMainMenuButton(85, 75, e -> controller.goToMainMenu());
+        ImageView mainMenuButton = componentsFactory.getImgViewFactory().createMainMenuButton(85, 75, e -> controller.goToMainMenu());
 
         bottomButtonContainer.getChildren().add(mainMenuButton);
         return bottomButtonContainer;

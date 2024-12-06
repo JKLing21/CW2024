@@ -2,6 +2,11 @@ package com.example.demo;
 
 import com.example.demo.controller.Controller;
 
+import factories.ActorImplement;
+import factories.interfaces.ActorFactory;
+import factories.interfaces.AssetFactory;
+import factories.interfaces.ComponentsFactory;
+
 public class LevelTwo extends LevelParent {
 	
 	private ActorFactory actorFactory;

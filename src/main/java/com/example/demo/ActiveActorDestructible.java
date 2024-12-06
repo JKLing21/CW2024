@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import factories.interfaces.ComponentsFactory;
 import javafx.scene.Group;
 
 public abstract class ActiveActorDestructible extends ActiveActor implements Destructible {

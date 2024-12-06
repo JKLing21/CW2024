@@ -1,4 +1,4 @@
-package com.example.demo;
+package factories.interfaces;
 
 import javafx.scene.image.ImageView;
 

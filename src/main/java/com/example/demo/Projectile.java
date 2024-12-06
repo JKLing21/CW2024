@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import factories.interfaces.ComponentsFactory;
+
 public abstract class Projectile extends ActiveActorDestructible {
 
 	private double screenWidth;

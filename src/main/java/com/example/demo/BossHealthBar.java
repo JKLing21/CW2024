@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import factories.interfaces.ComponentsFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;

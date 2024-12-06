@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.controller.Controller;
 
+import factories.interfaces.ComponentsFactory;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;

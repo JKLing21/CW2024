@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import factories.interfaces.ComponentsFactory;
 import javafx.scene.image.Image;
 
 public class EnemyProjectile extends Projectile {

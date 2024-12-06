@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import factories.ProjectilesImplement;
+import factories.interfaces.ComponentsFactory;
+import factories.interfaces.ProjectilesFactory;
 import javafx.scene.image.Image;
 
 public class UserPlane extends FighterPlane {

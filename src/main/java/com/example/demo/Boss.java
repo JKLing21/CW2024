@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import factories.ProjectilesImplement;
+import factories.interfaces.ComponentsFactory;
+import factories.interfaces.ProjectilesFactory;
 import javafx.scene.Group;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;

@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import factories.interfaces.ComponentsFactory;
 import javafx.scene.image.ImageView;
 
 public abstract class FighterPlane extends ActiveActorDestructible {

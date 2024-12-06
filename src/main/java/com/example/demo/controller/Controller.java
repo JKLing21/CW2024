@@ -2,14 +2,17 @@ package com.example.demo.controller;
 
 import java.lang.reflect.Constructor;
 import java.util.Stack;
-import com.example.demo.ComponentsFactory;
-import com.example.demo.ComponentsImplement;
+
 import com.example.demo.ImgAssetLoader;
 import com.example.demo.LevelParent;
 import com.example.demo.MainMenu;
 import com.example.demo.TransitionScene;
-import com.example.demo.AssetFactory;
-import com.example.demo.AssetsImplement;
+
+import factories.AssetsImplement;
+import factories.ComponentsImplement;
+import factories.interfaces.AssetFactory;
+import factories.interfaces.ComponentsFactory;
+
 import com.example.demo.ImageManager;
 
 import javafx.animation.FadeTransition;

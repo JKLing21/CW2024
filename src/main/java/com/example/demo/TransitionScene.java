@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import factories.interfaces.ComponentsFactory;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.ParallelTransition;
@@ -27,9 +28,9 @@ public class TransitionScene {
         transitionText.setFont(Font.font("Arial", FontWeight.BOLD, 50));
         transitionText.setFill(Color.RED);
 
-        planeImageView = componentsFactory.createPlaneImageView(120, 30);
+        planeImageView = componentsFactory.getImgViewFactory().createPlaneImageView(120, 30);
 
-        ImageView backgroundImageView = componentsFactory.createBackgroundImageView(width, height);
+        ImageView backgroundImageView = componentsFactory.getImgViewFactory().createBackgroundImageView(width, height);
 
         Pane transitionPane = new Pane(backgroundImageView, transitionText, planeImageView);
         this.transitionScene = new Scene(transitionPane, width, height);

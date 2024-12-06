@@ -1,5 +1,13 @@
-package com.example.demo;
+package factories.interfaces;
 
+import com.example.demo.GameOverImage;
+import com.example.demo.HeartDisplay;
+import com.example.demo.LevelParent;
+import com.example.demo.LevelView;
+import com.example.demo.MainMenu;
+import com.example.demo.PauseScreen;
+import com.example.demo.ShieldImage;
+import com.example.demo.WinImage;
 import com.example.demo.controller.Controller;
 
 import javafx.event.ActionEvent;
@@ -11,13 +19,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public interface ComponentsFactory {
+
+	ImgViewFactory getImgViewFactory();
+
 	Rectangle createHealthBar(double width, double height, Color fill);
 
 	Rectangle createHealthBarBackground(double width, double height, Color fill);
@@ -42,32 +52,17 @@ public interface ComponentsFactory {
 
 	WinImage createWinImage(double xPosition, double yPosition);
 
-	ImageView createPauseButton(double xPosition, double yPosition, double width, double height,
-            EventHandler<MouseEvent> action);
-
 	Rectangle createHitbox(double width, double height, Color color, Color stroke);
-	
+
 	Label createLabel(String text, String... styleClasses);
 
-    Button createButton(String text, EventHandler<ActionEvent> action);
+	Button createButton(String text, EventHandler<ActionEvent> action);
 
-    Slider createSlider(double min, double max, double value, double width);
+	Slider createSlider(double min, double max, double value, double width);
 
-    ToggleButton createToggleButton(boolean selected);
+	ToggleButton createToggleButton(boolean selected);
 
 	Button createMenuButton(String text, EventHandler<ActionEvent> action);
-	
-	ImageView createResumeButton(double width, double height, EventHandler<MouseEvent> action);
-	
-    ImageView createSettingsButton(double width, double height, EventHandler<MouseEvent> action);
-    
-	ImageView createMainMenuButton(double width, double height, EventHandler<MouseEvent> action);
-	
-	ImageView createPauseMenuBackground(double width, double height, double translateX, double translateY);
-	
-	ImageView createPlaneImageView(double width, double height);
-	
-    ImageView createBackgroundImageView(double width, double height);
 
 	Text createKillCountText();
 }

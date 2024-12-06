@@ -8,6 +8,12 @@ import java.util.stream.Collectors;
 
 import com.example.demo.controller.Controller;
 
+import factories.ActorImplement;
+import factories.ProjectilesImplement;
+import factories.interfaces.ActorFactory;
+import factories.interfaces.AssetFactory;
+import factories.interfaces.ComponentsFactory;
+import factories.interfaces.ProjectilesFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -100,7 +106,7 @@ public abstract class LevelParent {
 		levelView.showHeartDisplay();
 
 		Group uiLayer = new Group();
-		ImageView pauseImageView = componentsFactory.createPauseButton(
+		ImageView pauseImageView = componentsFactory.getImgViewFactory().createPauseButton(
 		        screenWidth - 60, 10, 50, 50, e -> togglePause()
 		    );
 		    uiLayer.getChildren().add(pauseImageView);

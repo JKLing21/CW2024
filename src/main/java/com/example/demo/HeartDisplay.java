@@ -1,4 +1,5 @@
 package com.example.demo;
+import factories.interfaces.ComponentsFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 

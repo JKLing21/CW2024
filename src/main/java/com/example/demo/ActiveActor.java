@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import factories.interfaces.ComponentsFactory;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
