@@ -1,8 +1,9 @@
 package com.example.demo;
 
+import javafx.scene.image.Image;
+
 public class UserPlane extends FighterPlane {
 
-	private static final String IMAGE_NAME = "userplane.png";
 	private double screenWidth;
 	private static final double Y_UPPER_BOUND = 0;
 	private static final double Y_LOWER_BOUND = 680.0;
@@ -17,11 +18,14 @@ public class UserPlane extends FighterPlane {
 	private boolean isFiring;
 	private long lastShotTime;
 	private static final long FIRE_INTERVAL = 300;
+	private final Image planeImage;
 
 	public UserPlane(int initialHealth, double screenWidth, ProjectilesFactory projectilesFactory,
-			ComponentsFactory factory) {
-		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth, factory);
+			ComponentsFactory factory, ImgAssetLoader assetLoader) {
+		super(IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth, factory);
 		this.screenWidth = screenWidth;
+		this.planeImage = assetLoader.loadImage("userplane");
+		ImageProperties.applyProperties(this, planeImage, INITIAL_X_POSITION, INITIAL_Y_POSITION, IMAGE_HEIGHT, null, true);
 		velocityMultiplier = 0;
 		this.health = 5;
 		lastShotTime = System.currentTimeMillis();

@@ -2,16 +2,16 @@ package com.example.demo;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import java.util.Objects;
 
 public class WinImage extends ImageView {
-	
-	private static final String IMAGE_NAME = "/com/example/demo/images/youwin.png";
+
 	private static final int HEIGHT = 500;
 	private static final int WIDTH = 600;
+	private final Image winImage;
 	
-	public WinImage(double xPosition, double yPosition) {
-		this.setImage(new Image(Objects.requireNonNull(getClass().getResource(IMAGE_NAME)).toExternalForm()));
+	public WinImage(double xPosition, double yPosition, ImgAssetLoader assetLoader) {
+		this.winImage = assetLoader.loadImage("youwin");
+		setImage(winImage);
 		this.setVisible(false);
 		this.setFitHeight(HEIGHT);
 		this.setFitWidth(WIDTH);

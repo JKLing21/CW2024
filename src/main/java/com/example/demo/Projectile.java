@@ -4,9 +4,9 @@ public abstract class Projectile extends ActiveActorDestructible {
 
 	private double screenWidth;
 
-	public Projectile(String imageName, int imageHeight, double initialXPos, double initialYPos,
+	public Projectile(int imageHeight, double initialXPos, double initialYPos,
 			ComponentsFactory componentsFactory) {
-		super(imageName, imageHeight, initialXPos, initialYPos, componentsFactory);
+		super(imageHeight, initialXPos, initialYPos, componentsFactory);
 	}
 
 	@Override

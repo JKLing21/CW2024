@@ -8,9 +8,9 @@ public abstract class ActiveActorDestructible extends ActiveActor implements Des
 	private boolean destroyedByUser;
 	private boolean hasBeenCounted = false;
 
-	public ActiveActorDestructible(String imageName, int imageHeight, double initialXPos, double initialYPos,
+	public ActiveActorDestructible(int imageHeight, double initialXPos, double initialYPos,
 			ComponentsFactory componentsFactory) {
-		super(imageName, imageHeight, initialXPos, initialYPos, componentsFactory);
+		super(imageHeight, initialXPos, initialYPos, componentsFactory);
 		isDestroyed = false;
 		this.destroyedByUser = false;
 	}
@@ -58,4 +58,4 @@ public abstract class ActiveActorDestructible extends ActiveActor implements Des
 		this.hasBeenCounted = hasBeenCounted;
 	}
 
-}
+} 

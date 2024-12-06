@@ -5,6 +5,7 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 public abstract class ImgAssetLoader implements AssetsLoader {
+	
 	protected static final Map<String, String> imagePaths = Map.ofEntries (
 			entry("background1", "/com/example/demo/images/background1.jpg"),
 			entry("background2", "/com/example/demo/images/background2.jpg"),

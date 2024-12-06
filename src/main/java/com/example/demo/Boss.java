@@ -6,10 +6,10 @@ import java.util.List;
 
 import javafx.scene.Group;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 
 public class Boss extends FighterPlane {
 
-	private static final String IMAGE_NAME = "bossplane.png";
 	private static final double INITIAL_X_POSITION = 1000.0;
 	private static final double INITIAL_Y_POSITION = 400;
 	private static final double PROJECTILE_Y_POSITION_OFFSET = 20.0;
@@ -29,6 +29,7 @@ public class Boss extends FighterPlane {
 	private boolean isShielded;
 	private int consecutiveMovesInSameDirection;
 	private int indexOfCurrentMove;
+	private final Image bossImage;
 	private ShieldImage shieldImage;
 	private int framesWithShieldActivated;
 	private int framesSinceShieldDeactivated;
@@ -36,9 +37,11 @@ public class Boss extends FighterPlane {
 
 	private ProjectilesFactory projectileFactory;
 
-	public Boss(ComponentsFactory factory) {
-		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH, factory);
+	public Boss(ComponentsFactory factory, ImgAssetLoader assetLoader) {
+		super(IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH, factory);
 		movePattern = new ArrayList<>();
+		this.bossImage = assetLoader.loadImage("bossplane");
+		ImageProperties.applyProperties(this, bossImage, INITIAL_X_POSITION, INITIAL_Y_POSITION, IMAGE_HEIGHT, null, true);
 		this.bossHealthBar = new BossHealthBar(500, factory);
 		this.shieldImage = factory.createShieldImage(INITIAL_X_POSITION, INITIAL_Y_POSITION);
 		consecutiveMovesInSameDirection = 0;

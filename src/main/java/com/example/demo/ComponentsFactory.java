@@ -42,8 +42,8 @@ public interface ComponentsFactory {
 
 	WinImage createWinImage(double xPosition, double yPosition);
 
-	ImageView createPauseButton(double xPosition, double yPosition, double width, double height, String imagePath,
-			EventHandler<MouseEvent> action);
+	ImageView createPauseButton(double xPosition, double yPosition, double width, double height,
+            EventHandler<MouseEvent> action);
 
 	Rectangle createHitbox(double width, double height, Color color, Color stroke);
 	
@@ -56,6 +56,18 @@ public interface ComponentsFactory {
     ToggleButton createToggleButton(boolean selected);
 
 	Button createMenuButton(String text, EventHandler<ActionEvent> action);
+	
+	ImageView createResumeButton(double width, double height, EventHandler<MouseEvent> action);
+	
+    ImageView createSettingsButton(double width, double height, EventHandler<MouseEvent> action);
+    
+	ImageView createMainMenuButton(double width, double height, EventHandler<MouseEvent> action);
+	
+	ImageView createPauseMenuBackground(double width, double height, double translateX, double translateY);
+	
+	ImageView createPlaneImageView(double width, double height);
+	
+    ImageView createBackgroundImageView(double width, double height);
 
 	Text createKillCountText();
 }

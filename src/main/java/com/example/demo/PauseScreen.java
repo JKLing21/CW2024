@@ -3,7 +3,6 @@ package com.example.demo;
 import com.example.demo.controller.Controller;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -17,6 +16,7 @@ public class PauseScreen {
     private final Scene scene;
     private final LevelParent levelParent;
     private final Controller controller;
+    private final ComponentsFactory componentsFactory;
     private StackPane pauseMenu;
 
     public PauseScreen(Group root, Scene scene, LevelParent levelParent, Controller controller) {
@@ -24,6 +24,7 @@ public class PauseScreen {
         this.scene = scene;
         this.levelParent = levelParent;
         this.controller = controller;
+        this.componentsFactory = levelParent.getComponentsFactory();
         initializePauseScreen();
     }
 
@@ -32,12 +33,7 @@ public class PauseScreen {
         pauseMenu.getStylesheets().add(getClass().getResource("/com/example/demo/css/PauseScreen.css").toExternalForm());
         pauseMenu.getStyleClass().add("pause-menu");
 
-        Image backgroundImage = new Image(getClass().getResource("/com/example/demo/images/rectangle_container.png").toExternalForm());
-        ImageView backgroundImageView = new ImageView(backgroundImage);
-        backgroundImageView.setFitWidth(430);
-        backgroundImageView.setFitHeight(300); 
-        backgroundImageView.setTranslateX(5);
-        backgroundImageView.setTranslateY(-10);
+        ImageView backgroundImageView = componentsFactory.createPauseMenuBackground(430, 300, 5, -10);
 
         VBox menuContainer = createMenuContainer();
         pauseMenu.getChildren().addAll(backgroundImageView, menuContainer);
@@ -68,14 +64,10 @@ public class PauseScreen {
         HBox topButtonContainer = new HBox(20);
         topButtonContainer.setAlignment(Pos.CENTER);
 
-        Image resumeImage = new Image(getClass().getResource("/com/example/demo/images/resume.png").toExternalForm());
-        Image settingsImage = new Image(getClass().getResource("/com/example/demo/images/settings.png").toExternalForm());
-
-        ImageView resumeButton = createImageButton(resumeImage, 85, 75, e -> levelParent.togglePause());
-        ImageView settingsButton = createImageButton(settingsImage, 90, 75, e -> showSettings());
-        
+        ImageView resumeButton = componentsFactory.createResumeButton(85, 75, e -> levelParent.togglePause());
+        ImageView settingsButton = componentsFactory.createSettingsButton(90, 75, e -> showSettings());
         settingsButton.getStyleClass().add("settings-button");
-        
+
         topButtonContainer.getChildren().addAll(resumeButton, settingsButton);
         return topButtonContainer;
     }
@@ -84,19 +76,10 @@ public class PauseScreen {
         HBox bottomButtonContainer = new HBox(20);
         bottomButtonContainer.setAlignment(Pos.CENTER);
 
-        Image mainMenuImage = new Image(getClass().getResource("/com/example/demo/images/main_menu.png").toExternalForm());
-        ImageView mainMenuButton = createImageButton(mainMenuImage, 85, 75, e -> controller.goToMainMenu());
+        ImageView mainMenuButton = componentsFactory.createMainMenuButton(85, 75, e -> controller.goToMainMenu());
 
         bottomButtonContainer.getChildren().add(mainMenuButton);
         return bottomButtonContainer;
-    }
-
-    private ImageView createImageButton(Image image, double width, double height, javafx.event.EventHandler<javafx.scene.input.MouseEvent> eventHandler) {
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(width);
-        imageView.setFitHeight(height);
-        imageView.setOnMouseClicked(eventHandler);
-        return imageView;
     }
 
     public void showPauseMenu() {

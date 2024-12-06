@@ -58,7 +58,7 @@ public class Controller {
 			if (newValue != null && !newValue.isEmpty()) {
 				TransitionScene.fadeOutCurrentScene(stage, () -> {
 					TransitionScene transitionScene = new TransitionScene(stage, "A mighty foe stands before you...",
-							stage.getWidth(), stage.getHeight());
+							stage.getWidth(), stage.getHeight(), componentsFactory);
 					transitionScene.showTransition(() -> {
 						goToNextLevel(newValue);
 					});

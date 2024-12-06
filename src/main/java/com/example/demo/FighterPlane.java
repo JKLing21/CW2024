@@ -1,15 +1,23 @@
 package com.example.demo;
 
+import javafx.scene.image.ImageView;
+
 public abstract class FighterPlane extends ActiveActorDestructible {
 
 	protected int health;
 	private int maxHealth;
+	private final ImageView imageView;
 
-	public FighterPlane(String imageName, int imageHeight, double initialXPos, double initialYPos, int health,
+	public FighterPlane(int imageHeight, double initialXPos, double initialYPos, int health,
 			ComponentsFactory componentsFactory) {
-		super(imageName, imageHeight, initialXPos, initialYPos, componentsFactory);
+		super(imageHeight, initialXPos, initialYPos, componentsFactory);
 		this.health = health;
 		this.maxHealth = health;
+		this.imageView = new ImageView();
+        this.imageView.setFitHeight(imageHeight);
+        this.imageView.setPreserveRatio(true);
+        setLayoutX(initialXPos);
+        setLayoutY(initialYPos);
 	}
 
 	public abstract ActiveActorDestructible fireProjectile();

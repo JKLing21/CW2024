@@ -5,19 +5,22 @@ public class ProjectilesImplement implements ProjectilesFactory {
 	@Override
 	public UserProjectile createUserProjectile(double initialXPos, double initialYPos, double screenWidth) {
 		ComponentsFactory factory = new ComponentsImplement();
-		return new UserProjectile(initialXPos, initialYPos, screenWidth, factory);
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+		return new UserProjectile(initialXPos, initialYPos, screenWidth, factory, assetLoader);
 	}
 
 	@Override
 	public EnemyProjectile createEnemyProjectile(double initialX, double initialY) {
 		ComponentsFactory factory = new ComponentsImplement();
-		return new EnemyProjectile(initialX, initialY, factory);
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+		return new EnemyProjectile(initialX, initialY, factory, assetLoader);
 	}
 
 	@Override
 	public BossProjectile createBossProjectile(double initialYPos) {
 		ComponentsFactory factory = new ComponentsImplement();
-		return new BossProjectile(initialYPos, factory);
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+		return new BossProjectile(initialYPos, factory, assetLoader);
 	}
 
 }

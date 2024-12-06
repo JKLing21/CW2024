@@ -100,10 +100,10 @@ public abstract class LevelParent {
 		levelView.showHeartDisplay();
 
 		Group uiLayer = new Group();
-		ImageView pauseImageView = componentsFactory.createPauseButton(screenWidth - 60,
-				10, 50, 50, "/com/example/demo/images/pause.png", e -> togglePause()
-		);
-		uiLayer.getChildren().add(pauseImageView);
+		ImageView pauseImageView = componentsFactory.createPauseButton(
+		        screenWidth - 60, 10, 50, 50, e -> togglePause()
+		    );
+		    uiLayer.getChildren().add(pauseImageView);
 
 		Pane layeredPane = new Pane();
 		layeredPane.getChildren().addAll(root, uiLayer);

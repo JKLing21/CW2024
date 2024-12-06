@@ -1,7 +1,5 @@
 package com.example.demo;
 
-import java.util.Objects;
-
 import com.example.demo.controller.Controller;
 
 import javafx.event.ActionEvent;
@@ -21,7 +19,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class ComponentsImplement implements ComponentsFactory {
-	private static final String HEART_IMAGE_NAME = "/com/example/demo/images/heart.png";
 
 	@Override
 	public Rectangle createHealthBar(double width, double height, Color fill) {
@@ -35,15 +32,17 @@ public class ComponentsImplement implements ComponentsFactory {
 
 	@Override
 	public Text createBossNameText(String name, Font font, Color color) {
-	    Text bossNameText = new Text(name);
-	    bossNameText.setFill(color);
-	    bossNameText.setFont(font);
-	    return bossNameText;
+		Text bossNameText = new Text(name);
+		bossNameText.setFill(color);
+		bossNameText.setFont(font);
+		return bossNameText;
 	}
 
 	@Override
 	public ShieldImage createShieldIcon(double xPosition, double yPosition, double size) {
-		ShieldImage shieldIcon = new ShieldImage(xPosition, yPosition);
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {
+		};
+		ShieldImage shieldIcon = new ShieldImage(xPosition, yPosition, assetLoader);
 		shieldIcon.setFitHeight(size);
 		shieldIcon.setFitWidth(size);
 		return shieldIcon;
@@ -51,7 +50,9 @@ public class ComponentsImplement implements ComponentsFactory {
 
 	@Override
 	public GameOverImage createGameOverImage(double xPosition, double yPosition) {
-		return new GameOverImage(xPosition, yPosition);
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {
+		};
+		return new GameOverImage(xPosition, yPosition, assetLoader);
 	}
 
 	@Override
@@ -62,8 +63,10 @@ public class ComponentsImplement implements ComponentsFactory {
 
 	@Override
 	public ImageView createHeartImage() {
-		return new ImageView(
-				new Image(Objects.requireNonNull(getClass().getResource(HEART_IMAGE_NAME)).toExternalForm()));
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {
+		};
+		Image heartImage = assetLoader.loadImage("heart");
+		return new ImageView(heartImage);
 	}
 
 	@Override
@@ -73,9 +76,10 @@ public class ComponentsImplement implements ComponentsFactory {
 
 	@Override
 	public MainMenu createMainMenu(Controller controller) {
-	    ComponentsFactory componentsFactory = new ComponentsImplement();
-	    ImgAssetLoader assetLoader = new ImgAssetLoader() {};
-	    return new MainMenu(controller, componentsFactory, assetLoader);
+		ComponentsFactory componentsFactory = new ComponentsImplement();
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {
+		};
+		return new MainMenu(controller, componentsFactory, assetLoader);
 	}
 
 	@Override
@@ -85,19 +89,26 @@ public class ComponentsImplement implements ComponentsFactory {
 
 	@Override
 	public ShieldImage createShieldImage(double xPosition, double yPosition) {
-		return new ShieldImage(xPosition, yPosition);
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {
+		};
+		return new ShieldImage(xPosition, yPosition, assetLoader);
 	}
 
 	@Override
 	public WinImage createWinImage(double xPosition, double yPosition) {
-		return new WinImage(xPosition, yPosition);
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {
+		};
+		return new WinImage(xPosition, yPosition, assetLoader);
 	}
 
 	@Override
 	public ImageView createPauseButton(double xPosition, double yPosition, double width, double height,
-			String imagePath, EventHandler<MouseEvent> action) {
-		ImageView pauseButton = new ImageView(
-				new Image(Objects.requireNonNull(getClass().getResource(imagePath)).toExternalForm()));
+			EventHandler<MouseEvent> action) {
+		ImgAssetLoader assetLoader = new ImgAssetLoader() {
+		};
+		Image pauseImage = assetLoader.loadImage("PauseIcon");
+
+		ImageView pauseButton = new ImageView(pauseImage);
 		pauseButton.setFitWidth(width);
 		pauseButton.setFitHeight(height);
 		pauseButton.setLayoutX(xPosition);
@@ -115,33 +126,33 @@ public class ComponentsImplement implements ComponentsFactory {
 		hitbox.setStroke(stroke);
 		return hitbox;
 	}
-	
+
 	@Override
 	public Label createLabel(String text, String... styleClasses) {
-	    Label label = new Label(text);
-	    label.getStyleClass().addAll(styleClasses);
-	    return label;
+		Label label = new Label(text);
+		label.getStyleClass().addAll(styleClasses);
+		return label;
 	}
 
 	@Override
 	public Button createButton(String text, EventHandler<ActionEvent> action) {
-	    Button button = new Button(text);
-	    button.setOnAction(action);
-	    return button;
+		Button button = new Button(text);
+		button.setOnAction(action);
+		return button;
 	}
 
 	@Override
 	public Slider createSlider(double min, double max, double value, double width) {
-	    Slider slider = new Slider(min, max, value);
-	    slider.setPrefWidth(width);
-	    return slider;
+		Slider slider = new Slider(min, max, value);
+		slider.setPrefWidth(width);
+		return slider;
 	}
 
 	@Override
 	public ToggleButton createToggleButton(boolean selected) {
-	    ToggleButton toggleButton = new ToggleButton();
-	    toggleButton.setSelected(selected);
-	    return toggleButton;
+		ToggleButton toggleButton = new ToggleButton();
+		toggleButton.setSelected(selected);
+		return toggleButton;
 	}
 
 	@Override
@@ -150,6 +161,71 @@ public class ComponentsImplement implements ComponentsFactory {
 		button.setOnAction(action);
 		button.getStyleClass().add("menu-button");
 		return button;
+	}
+	
+	@Override
+	public ImageView createResumeButton(double width, double height, EventHandler<MouseEvent> action) {
+	    ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+	    Image resumeImage = assetLoader.loadImage("ResumeIcon");
+	    ImageView imageView = new ImageView(resumeImage);
+	    imageView.setFitWidth(width);
+	    imageView.setFitHeight(height);
+	    imageView.setOnMouseClicked(action);
+	    return imageView;
+	}
+
+	@Override
+	public ImageView createSettingsButton(double width, double height, EventHandler<MouseEvent> action) {
+	    ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+	    Image settingsImage = assetLoader.loadImage("SettingsIcon");
+	    ImageView imageView = new ImageView(settingsImage);
+	    imageView.setFitWidth(width);
+	    imageView.setFitHeight(height);
+	    imageView.setOnMouseClicked(action);
+	    return imageView;
+	}
+
+	@Override
+	public ImageView createMainMenuButton(double width, double height, EventHandler<MouseEvent> action) {
+	    ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+	    Image mainMenuImage = assetLoader.loadImage("MainMenuIcon");
+	    ImageView imageView = new ImageView(mainMenuImage);
+	    imageView.setFitWidth(width);
+	    imageView.setFitHeight(height);
+	    imageView.setOnMouseClicked(action);
+	    return imageView;
+	}
+	
+	@Override
+	public ImageView createPauseMenuBackground(double width, double height, double translateX, double translateY) {
+	    ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+	    Image backgroundImage = assetLoader.loadImage("rectangle_container");
+	    ImageView backgroundImageView = new ImageView(backgroundImage);
+	    backgroundImageView.setFitWidth(width);
+	    backgroundImageView.setFitHeight(height);
+	    backgroundImageView.setTranslateX(translateX);
+	    backgroundImageView.setTranslateY(translateY);
+	    return backgroundImageView;
+	}
+	
+	@Override
+	public ImageView createPlaneImageView(double width, double height) {
+	    ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+	    Image planeImage = assetLoader.loadImage("userplane");
+	    ImageView planeImageView = new ImageView(planeImage);
+	    planeImageView.setFitWidth(width);
+	    planeImageView.setFitHeight(height);
+	    return planeImageView;
+	}
+
+	@Override
+	public ImageView createBackgroundImageView(double width, double height) {
+	    ImgAssetLoader assetLoader = new ImgAssetLoader() {};
+	    Image backgroundImage = assetLoader.loadImage("stormy_sky");
+	    ImageView backgroundImageView = new ImageView(backgroundImage);
+	    backgroundImageView.setFitWidth(width);
+	    backgroundImageView.setFitHeight(height);
+	    return backgroundImageView;
 	}
 
 	@Override
