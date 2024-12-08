@@ -11,7 +11,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.Group;
-
+/**
+ * Manages the pause menu UI in game.
+ * It creates and displays the pause menu
+ */
 public class PauseScreen {
 
     private final Group root;
@@ -20,7 +23,14 @@ public class PauseScreen {
     private final Controller controller;
     private final ComponentsFactory componentsFactory;
     private StackPane pauseMenu;
-
+    /**
+     * Constructs PauseScreen object with specified root node, scene, LevelParent, and Controller.
+     *
+     * @param root: Root node of game scene.
+     * @param scene: Game scene.
+     * @param levelParent: Manages the game state.
+     * @param controller: Controller for handling game logic.
+     */
     public PauseScreen(Group root, Scene scene, LevelParent levelParent, Controller controller) {
         this.root = root;
         this.scene = scene;
@@ -29,7 +39,9 @@ public class PauseScreen {
         this.componentsFactory = levelParent.getComponentsFactory();
         initializePauseScreen();
     }
-
+    /**
+     * Initializes pause screen by creating and positioning pause menu components.
+     */
     private void initializePauseScreen() {
         pauseMenu = new StackPane();
         pauseMenu.getStylesheets().add(getClass().getResource("/com/example/demo/css/PauseScreen.css").toExternalForm());
@@ -46,7 +58,11 @@ public class PauseScreen {
         pauseMenu.translateXProperty().bind(scene.widthProperty().divide(2).subtract(pauseMenu.widthProperty().divide(2)));
         pauseMenu.translateYProperty().bind(scene.heightProperty().divide(2).subtract(pauseMenu.heightProperty().divide(2)));
     }
-
+    /**
+     * Creates container for pause menu, including pause text and button containers.
+     *
+     * @return VBox container for pause menu.
+     */
     private VBox createMenuContainer() {
         VBox menuContainer = new VBox(20);
         menuContainer.setAlignment(Pos.CENTER);
@@ -61,7 +77,11 @@ public class PauseScreen {
         menuContainer.getChildren().addAll(pauseText, topButtonContainer, bottomButtonContainer);
         return menuContainer;
     }
-
+    /**
+     * Creates top button container, including resume and settings buttons.
+     *
+     * @return HBox container for top buttons.
+     */
     private HBox createTopButtonContainer() {
         HBox topButtonContainer = new HBox(20);
         topButtonContainer.setAlignment(Pos.CENTER);
@@ -73,7 +93,11 @@ public class PauseScreen {
         topButtonContainer.getChildren().addAll(resumeButton, settingsButton);
         return topButtonContainer;
     }
-
+    /**
+     * Creates bottom button container, including main menu button.
+     *
+     * @return HBox container for bottom button.
+     */
     private HBox createBottomButtonContainer() {
         HBox bottomButtonContainer = new HBox(20);
         bottomButtonContainer.setAlignment(Pos.CENTER);
@@ -83,24 +107,22 @@ public class PauseScreen {
         bottomButtonContainer.getChildren().add(mainMenuButton);
         return bottomButtonContainer;
     }
-
+    /**
+     * Shows pause menu by bringing it to the front and making it visible.
+     */
     public void showPauseMenu() {
-        if (pauseMenu != null) {
-            pauseMenu.toFront();
-            pauseMenu.setVisible(true);
-        } else {
-            System.out.println("pause menu is null");
-        }
+        pauseMenu.toFront();
+        pauseMenu.setVisible(true);
     }
-
+    /**
+     * Hides pause menu by making it invisible.
+     */
     public void hidePauseMenu() {
-        if (pauseMenu != null) {
-            pauseMenu.setVisible(false);
-        } else {
-            System.out.println("pause menu is null");
-        }
+        pauseMenu.setVisible(false);
     }
-
+    /**
+     * Shows settings screen by delegating to controller.
+     */
     private void showSettings() {
         controller.showSettings();
     }

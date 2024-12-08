@@ -70,6 +70,19 @@ public class KeyEventHandlers {
         }
     }
     /**
+     * Key binding for pause action
+     *
+     * @param scene: Game scene to which the pause key binding will be added.
+     * @param togglePauseAction: Action to be executed when pause key is pressed.
+     */
+    public void addPauseKeyBinding(Scene scene, Runnable togglePauseAction) {
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.P) {
+                togglePauseAction.run();
+            }
+        });
+    }
+    /**
      * Checks if space bar is being held down.
      *
      * @return true: if space bar is held down, false otherwise

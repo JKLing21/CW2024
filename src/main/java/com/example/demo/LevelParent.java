@@ -36,6 +36,7 @@ public abstract class LevelParent {
 	private final UserPlane user;
 	private final Scene scene;
 	private final ImageView background;
+	@SuppressWarnings("unused")
 	private PauseScreen pauseScreen;
 	private KeyEventHandlers keyEventHandlers;
 	private int initialHealth;
@@ -44,6 +45,7 @@ public abstract class LevelParent {
 	@SuppressWarnings("unused")
 	private final AssetFactory assetFactory;
 	private CollisionManager collisionManager;
+	private final PauseManager pauseManager;
 
 	private final List<ActiveActorDestructible> friendlyUnits;
 	private final List<ActiveActorDestructible> enemyUnits;
@@ -58,7 +60,6 @@ public abstract class LevelParent {
 	private long lastPressTime = 0;
 	private boolean isGameOver = false;
 	private boolean transitioningToNextLevel = false;
-	private boolean isPaused = false;
 
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
 			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory) {
@@ -68,6 +69,7 @@ public abstract class LevelParent {
 		ActorFactory actorFactory = new ActorImplement();
 		this.user = actorFactory.createUserPlane(playerInitialHealth, screenWidth, projectilesFactory);
 		this.componentsFactory = componentsFactory;
+		this.pauseManager = new PauseManager(root, scene, this, controller);
 		this.pauseScreen = componentsFactory.createPauseScreen(root, scene, this, controller);
 		this.initialHealth = playerInitialHealth;
 		this.friendlyUnits = new ArrayList<>();
@@ -88,6 +90,7 @@ public abstract class LevelParent {
 
 		this.keyEventHandlers = new KeyEventHandlers(user, this);
 		keyEventHandlers.attachHandlers(scene);
+		keyEventHandlers.addPauseKeyBinding(scene, () -> this.togglePause());
 	}
 
 	protected abstract void initializeFriendlyUnits();
@@ -131,6 +134,10 @@ public abstract class LevelParent {
 	public ComponentsFactory getComponentsFactory() {
 		return componentsFactory;
 	}
+	
+	public PauseManager getPauseManager() {
+        return pauseManager;
+    }
 
 	public void goToNextLevel(String levelName) {
 		if (!isGameOver && !transitioningToNextLevel && user.getHealth() > 0) {
@@ -145,7 +152,7 @@ public abstract class LevelParent {
 	}
 
 	private void updateScene() {
-		if (isGameOver || transitioningToNextLevel || isPaused) {
+		if (isGameOver || transitioningToNextLevel || pauseManager.isPaused) {
 			return;
 		}
 
@@ -184,6 +191,10 @@ public abstract class LevelParent {
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame gameLoop = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> updateScene());
 		timeline.getKeyFrames().add(gameLoop);
+	}
+	
+	public Timeline getTimeline() {
+	    return timeline;
 	}
 
 	private void initializeBackground() {
@@ -295,21 +306,9 @@ public abstract class LevelParent {
 	protected LevelView getLevelView() {
 		return levelView;
 	}
-
-	public boolean isPaused() {
-		return isPaused;
-	}
-
+	
 	public void togglePause() {
-		isPaused = !isPaused;
-		if (isPaused) {
-			timeline.pause();
-			pauseScreen.showPauseMenu();
-		} else {
-			timeline.play();
-			pauseScreen.hidePauseMenu();
-			root.requestFocus();
-		}
-		root.requestFocus();
+	    pauseManager.togglePause();
 	}
+
 }
