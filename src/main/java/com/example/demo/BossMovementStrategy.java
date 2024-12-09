@@ -40,7 +40,7 @@ public class BossMovementStrategy implements MovementStrategy {
         plane.setTranslateY(initialTranslateY + nextMove);
 
         double currentPosition = plane.getLayoutY() + plane.getTranslateY();
-        if (currentPosition < 50 || currentPosition > 633) {
+        if (currentPosition < 50 || currentPosition > 620) {
             plane.setTranslateY(initialTranslateY);
         }
     }

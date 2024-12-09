@@ -11,8 +11,7 @@ public class Boss extends FighterPlane {
 
 	private static final double INITIAL_X_POSITION = 1000.0;
 	private static final double INITIAL_Y_POSITION = 400;
-	private static final double PROJECTILE_Y_POSITION_OFFSET = 20.0;
-	private static final double BOSS_FIRE_RATE = .04;
+	private static final double PROJECTILE_Y_POSITION_OFFSET = 38.0;
 	private static final double BOSS_SHIELD_PROBABILITY = 0.008;
 	private static final int IMAGE_HEIGHT = 75;
 	private static final int HEALTH = 100;
@@ -27,6 +26,7 @@ public class Boss extends FighterPlane {
 
 	private ProjectilesFactory projectileFactory;
 	private final MovementStrategy movementStrategy;
+	private FiringStrategy firingStrategy;
 
 	public Boss(ComponentsFactory factory, ImgAssetLoader assetLoader) {
 		super(IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH, factory);
@@ -39,6 +39,7 @@ public class Boss extends FighterPlane {
 		isShielded = false;
 		this.projectileFactory = new ProjectilesImplement();
 		this.movementStrategy = new BossMovementStrategy();
+		this.firingStrategy = new BossFiringStrategy(projectileFactory);
 		if (getScene() != null) {
 			Group parentContainer = (Group) getScene().getRoot();
 			parentContainer.getChildren().addAll(bossHealthBar.getHealthBarBackground(), bossHealthBar.getHealthBar(),
@@ -81,8 +82,7 @@ public class Boss extends FighterPlane {
 
 	@Override
 	public ActiveActorDestructible fireProjectile() {
-		return bossFiresInCurrentFrame() ? projectileFactory.createBossProjectile(getProjectileInitialPosition())
-				: null;
+	    return firingStrategy.fire(this);
 	}
 
 	@Override
@@ -124,11 +124,7 @@ public class Boss extends FighterPlane {
 		}
 	}
 
-	private boolean bossFiresInCurrentFrame() {
-		return Math.random() < BOSS_FIRE_RATE;
-	}
-
-	private double getProjectileInitialPosition() {
+	public double getProjectileInitialPosition() {
 		return getLayoutY() + getTranslateY() + PROJECTILE_Y_POSITION_OFFSET;
 	}
 
