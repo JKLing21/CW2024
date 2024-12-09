@@ -46,6 +46,7 @@ public abstract class LevelParent {
 	private final AssetFactory assetFactory;
 	private CollisionManager collisionManager;
 	private final PauseManager pauseManager;
+	private final UserFiringStrategy userFiringStrategy;
 
 	private final List<ActiveActorDestructible> friendlyUnits;
 	private final List<ActiveActorDestructible> enemyUnits;
@@ -54,10 +55,6 @@ public abstract class LevelParent {
 
 	protected LevelView levelView;
 	private final StringProperty nextLevelProperty = new SimpleStringProperty();
-	private static final int FIRE_RATE_DELAY = 200;
-	private long lastFireTime = 0;
-	private static final int RAPID_FIRE_DELAY = 150;
-	private long lastPressTime = 0;
 	private boolean isGameOver = false;
 	private boolean transitioningToNextLevel = false;
 
@@ -77,6 +74,7 @@ public abstract class LevelParent {
 		this.userProjectiles = new ArrayList<>();
 		this.enemyProjectiles = new ArrayList<>();
 		this.projectilesFactory = new ProjectilesImplement();
+		this.userFiringStrategy = new UserFiringStrategy(new ProjectilesImplement(), screenWidth);
 
 		this.assetFactory = assetFactory;
 		this.background = assetFactory.createBackgroundImage(backgroundImageName, screenWidth, screenHeight);
@@ -118,7 +116,6 @@ public abstract class LevelParent {
 
 		Scene scene = new Scene(layeredPane, screenWidth, screenHeight);
 		keyEventHandlers.attachHandlers(scene);
-
 		return scene;
 	}
 
@@ -170,18 +167,18 @@ public abstract class LevelParent {
 		}
 
 		if (keyEventHandlers.isSpaceBarHeld()) {
-			long currentTime = System.currentTimeMillis();
-			if (currentTime - lastFireTime >= FIRE_RATE_DELAY) {
-				fireProjectile();
-				lastFireTime = currentTime;
+			ActiveActorDestructible projectile = userFiringStrategy.fireContinuous(user);
+			if (projectile != null) {
+				userProjectiles.add(projectile);
+				root.getChildren().add(projectile);
 			}
 		}
 
 		if (keyEventHandlers.isSpaceBarPressed()) {
-			long currentTime = System.currentTimeMillis();
-			if (currentTime - lastPressTime >= RAPID_FIRE_DELAY) {
-				fireProjectile();
-				lastPressTime = currentTime;
+			ActiveActorDestructible projectile = userFiringStrategy.fireRapid(user);
+			if (projectile != null) {
+				userProjectiles.add(projectile);
+				root.getChildren().add(projectile);
 				keyEventHandlers.setSpaceBarPressed(false);
 			}
 		}
@@ -200,15 +197,6 @@ public abstract class LevelParent {
 	private void initializeBackground() {
 		background.setFocusTraversable(true);
 		root.getChildren().add(background);
-	}
-
-	private void fireProjectile() {
-		ActiveActorDestructible projectile = user.fireProjectile();
-		if (projectile != null) {
-			root.getChildren().add(projectile);
-			userProjectiles.add(projectile);
-			levelView.addHitboxesToScene(root, (ActiveActor) projectile);
-		}
 	}
 
 	private void generateEnemyFire() {
@@ -310,5 +298,4 @@ public abstract class LevelParent {
 	public void togglePause() {
 		pauseManager.togglePause();
 	}
-
 }

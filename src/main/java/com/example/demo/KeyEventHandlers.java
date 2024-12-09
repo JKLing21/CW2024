@@ -45,10 +45,10 @@ public class KeyEventHandlers {
             case MOVE_UP -> user.moveUp();
             case MOVE_DOWN -> user.moveDown();
             case FIRE -> {
-                if (!isSpaceBarHeld) {
-                    isSpaceBarPressed = true;
+				if (!isSpaceBarHeld) {
+					isSpaceBarPressed = true;
                 }
-                isSpaceBarHeld = true;
+				isSpaceBarHeld = true;
             }
             case PAUSE -> levelParent.togglePause();
             default -> {}
