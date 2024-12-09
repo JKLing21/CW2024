@@ -18,7 +18,7 @@ public class UserPlane extends FighterPlane {
 	private long lastShotTime;
 	private static final long FIRE_INTERVAL = 300;
 	private final Image planeImage;
-	
+
 	private final UserMovementStrategy movementStrategy;
 
 	public UserPlane(int initialHealth, double screenWidth, ProjectilesFactory projectilesFactory,
@@ -26,27 +26,28 @@ public class UserPlane extends FighterPlane {
 		super(IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth, factory);
 		this.screenWidth = screenWidth;
 		this.planeImage = assetLoader.loadImage("userplane");
-		ImageProperties.applyProperties(this, planeImage, INITIAL_X_POSITION, INITIAL_Y_POSITION, IMAGE_HEIGHT, null, true);
+		ImageProperties.applyProperties(this, planeImage, INITIAL_X_POSITION, INITIAL_Y_POSITION, IMAGE_HEIGHT, null,
+				true);
 		this.health = 5;
 		lastShotTime = System.currentTimeMillis();
-		
+
 		this.movementStrategy = new UserMovementStrategy(this);
 	}
-	
+
 	@Override
 	public void updatePosition() {
-	    movementStrategy.updatePosition();
+		movementStrategy.updatePosition();
 	}
 
 	@Override
-    public void updateActor() {
-        movementStrategy.updatePosition();
+	public void updateActor() {
+		movementStrategy.updatePosition();
 
-        if (isFiring && (System.currentTimeMillis() - lastShotTime >= FIRE_INTERVAL)) {
-            fireProjectile();
-            lastShotTime = System.currentTimeMillis();
-        }
-    }
+		if (isFiring && (System.currentTimeMillis() - lastShotTime >= FIRE_INTERVAL)) {
+			fireProjectile();
+			lastShotTime = System.currentTimeMillis();
+		}
+	}
 
 	@Override
 	public ActiveActorDestructible fireProjectile() {
@@ -57,16 +58,16 @@ public class UserPlane extends FighterPlane {
 	}
 
 	public void moveUp() {
-        movementStrategy.moveUp();
-    }
+		movementStrategy.moveUp();
+	}
 
-    public void moveDown() {
-        movementStrategy.moveDown();
-    }
+	public void moveDown() {
+		movementStrategy.moveDown();
+	}
 
-    public void stop() {
-        movementStrategy.stop();
-    }
+	public void stop() {
+		movementStrategy.stop();
+	}
 
 	public void startFiring() {
 		isFiring = true;

@@ -1,9 +1,5 @@
 package com.example.demo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import factories.ProjectilesImplement;
 import factories.interfaces.ComponentsFactory;
 import factories.interfaces.ProjectilesFactory;
@@ -19,19 +15,10 @@ public class Boss extends FighterPlane {
 	private static final double BOSS_FIRE_RATE = .04;
 	private static final double BOSS_SHIELD_PROBABILITY = 0.008;
 	private static final int IMAGE_HEIGHT = 75;
-	private static final int VERTICAL_VELOCITY = 8;
 	private static final int HEALTH = 100;
-	private static final int MOVE_FREQUENCY_PER_CYCLE = 5;
-	private static final int ZERO = 0;
-	private static final int MAX_FRAMES_WITH_SAME_MOVE = 10;
-	private static final int Y_POSITION_UPPER_BOUND = 0;
-	private static final int Y_POSITION_LOWER_BOUND = 655;
 	private static final int MAX_FRAMES_WITH_SHIELD = 100;
 	private static final int SHIELD_COOLDOWN = 300;
-	private final List<Integer> movePattern;
 	private boolean isShielded;
-	private int consecutiveMovesInSameDirection;
-	private int indexOfCurrentMove;
 	private final Image bossImage;
 	private ShieldImage shieldImage;
 	private int framesWithShieldActivated;
@@ -39,21 +26,19 @@ public class Boss extends FighterPlane {
 	private final BossHealthBar bossHealthBar;
 
 	private ProjectilesFactory projectileFactory;
+	private final MovementStrategy movementStrategy;
 
 	public Boss(ComponentsFactory factory, ImgAssetLoader assetLoader) {
 		super(IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH, factory);
-		movePattern = new ArrayList<>();
 		this.bossImage = assetLoader.loadImage("bossplane");
 		ImageProperties.applyProperties(this, bossImage, INITIAL_X_POSITION, INITIAL_Y_POSITION, IMAGE_HEIGHT, null, true);
 		this.bossHealthBar = new BossHealthBar(500, factory);
 		this.shieldImage = factory.createShieldImage(INITIAL_X_POSITION, INITIAL_Y_POSITION);
-		consecutiveMovesInSameDirection = 0;
-		indexOfCurrentMove = 0;
 		framesWithShieldActivated = 0;
 		framesSinceShieldDeactivated = SHIELD_COOLDOWN;
 		isShielded = false;
-		initializeMovePattern();
 		this.projectileFactory = new ProjectilesImplement();
+		this.movementStrategy = new BossMovementStrategy();
 		if (getScene() != null) {
 			Group parentContainer = (Group) getScene().getRoot();
 			parentContainer.getChildren().addAll(bossHealthBar.getHealthBarBackground(), bossHealthBar.getHealthBar(),
@@ -63,12 +48,7 @@ public class Boss extends FighterPlane {
 
 	@Override
 	public void updatePosition() {
-		double initialTranslateY = getTranslateY();
-		moveVertically(getNextMove());
-		double currentPosition = getLayoutY() + getTranslateY();
-		if (currentPosition < Y_POSITION_UPPER_BOUND || currentPosition > Y_POSITION_LOWER_BOUND) {
-			setTranslateY(initialTranslateY);
-		}
+		movementStrategy.move(this);
 	}
 
 	@Override
@@ -117,15 +97,6 @@ public class Boss extends FighterPlane {
 		}
 	}
 
-	private void initializeMovePattern() {
-		for (int i = 0; i < MOVE_FREQUENCY_PER_CYCLE; i++) {
-			movePattern.add(VERTICAL_VELOCITY);
-			movePattern.add(-VERTICAL_VELOCITY);
-			movePattern.add(ZERO);
-		}
-		Collections.shuffle(movePattern);
-	}
-
 	private void updateShield() {
 		if (isShielded) {
 			framesWithShieldActivated++;
@@ -151,20 +122,6 @@ public class Boss extends FighterPlane {
 			setEffect(null);
 			bossHealthBar.getShieldIcon().hideShield();
 		}
-	}
-
-	private int getNextMove() {
-		int currentMove = movePattern.get(indexOfCurrentMove);
-		consecutiveMovesInSameDirection++;
-		if (consecutiveMovesInSameDirection == MAX_FRAMES_WITH_SAME_MOVE) {
-			Collections.shuffle(movePattern);
-			consecutiveMovesInSameDirection = 0;
-			indexOfCurrentMove++;
-		}
-		if (indexOfCurrentMove == movePattern.size()) {
-			indexOfCurrentMove = 0;
-		}
-		return currentMove;
 	}
 
 	private boolean bossFiresInCurrentFrame() {

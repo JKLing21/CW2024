@@ -5,7 +5,7 @@ package com.example.demo;
  */
 public class UserMovementStrategy implements MovementStrategy {
 
-    private static final double Y_UPPER_BOUND = 0;
+    private static final double Y_UPPER_BOUND = 55;
     private static final double Y_LOWER_BOUND = 680.0;
     private static final int VERTICAL_VELOCITY = 8;
 

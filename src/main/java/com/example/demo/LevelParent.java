@@ -25,7 +25,7 @@ import javafx.util.Duration;
 
 public abstract class LevelParent {
 
-	private static final double SCREEN_HEIGHT_ADJUSTMENT = 150;
+	private static final double SCREEN_HEIGHT_ADJUSTMENT = 90;
 	private static final int MILLISECOND_DELAY = 50;
 	private final double screenHeight;
 	private final double screenWidth;
@@ -134,10 +134,10 @@ public abstract class LevelParent {
 	public ComponentsFactory getComponentsFactory() {
 		return componentsFactory;
 	}
-	
+
 	public PauseManager getPauseManager() {
-        return pauseManager;
-    }
+		return pauseManager;
+	}
 
 	public void goToNextLevel(String levelName) {
 		if (!isGameOver && !transitioningToNextLevel && user.getHealth() > 0) {
@@ -192,9 +192,9 @@ public abstract class LevelParent {
 		KeyFrame gameLoop = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> updateScene());
 		timeline.getKeyFrames().add(gameLoop);
 	}
-	
+
 	public Timeline getTimeline() {
-	    return timeline;
+		return timeline;
 	}
 
 	private void initializeBackground() {
@@ -306,9 +306,9 @@ public abstract class LevelParent {
 	protected LevelView getLevelView() {
 		return levelView;
 	}
-	
+
 	public void togglePause() {
-	    pauseManager.togglePause();
+		pauseManager.togglePause();
 	}
 
 }

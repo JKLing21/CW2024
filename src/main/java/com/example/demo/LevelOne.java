@@ -47,7 +47,9 @@ public class LevelOne extends LevelParent {
 		}
 		long currentTime = System.currentTimeMillis();
 		if (currentTime - lastEnemySpawnTime >= ENEMY_SPAWN_COOLDOWN) {
-			double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();
+			double yUpperBound = 55;
+	        double yLowerBound = getEnemyMaximumYPosition();
+	        double newEnemyInitialYPosition = yUpperBound + Math.random() * (yLowerBound - yUpperBound);
 			ActiveActorDestructible newEnemy = actorFactory.createEnemyPlane(getScreenWidth(),
 					newEnemyInitialYPosition);
 			addEnemyUnit(newEnemy);
