@@ -1,5 +1,8 @@
 package com.example.demo;
-
+/**
+ * Implements the MovementStrategy interface 
+ * which defines movement behavior for user plane.
+ */
 public class UserMovementStrategy implements MovementStrategy {
 
     private static final double Y_UPPER_BOUND = 0;
