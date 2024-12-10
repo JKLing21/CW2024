@@ -19,14 +19,14 @@ public abstract class ImgAssetLoader implements AssetsLoader {
 			entry("MainMenu", "/com/example/demo/images/MainMenu.jpeg"),
 			entry("PauseIcon", "/com/example/demo/images/pause.png"),
 			entry("rectangle_container", "/com/example/demo/images/rectangle_container.png"),
+			entry("RestartIcon", "/com/example/demo/images/restart.png"),
 			entry("ResumeIcon", "/com/example/demo/images/resume.png"),
 			entry("SettingsIcon", "/com/example/demo/images/settings.png"),
 			entry("Shield", "/com/example/demo/images/shield.png"),
 			entry("stormy_sky", "/com/example/demo/images/stormy_sky.jpg"),
 			entry("userfire", "/com/example/demo/images/userfire.png"),
 			entry("userplane", "/com/example/demo/images/userplane.png"),
-			entry("youwin", "/com/example/demo/images/youwin.png")
-			
+			entry("youwin", "/com/example/demo/images/youwin.png")	
 	);
 	
 	@Override

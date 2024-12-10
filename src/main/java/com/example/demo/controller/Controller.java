@@ -50,6 +50,16 @@ public class Controller {
 		stage.show();
 		goToLevel(LEVEL_ONE_CLASS_NAME);
 	}
+	
+	public void resetAndRelaunchGame() {
+	    try {
+	        sceneStack.clear();
+	        showMainMenu();
+	        launchGame();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	private void goToLevel(String className) throws Exception {
 		Class<?> myClass = Class.forName(className);

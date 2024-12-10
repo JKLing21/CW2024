@@ -16,14 +16,14 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 		this.assetLoader = new ImgAssetLoader() {
 		};
 	}
-	
+
 	@Override
 	public ImageView createImageView(String assetName, double width, double height) {
-	    Image image = assetLoader.loadImage(assetName);
-	    ImageView imageView = new ImageView(image);
-	    imageView.setFitWidth(width);
-	    imageView.setFitHeight(height);
-	    return imageView;
+		Image image = assetLoader.loadImage(assetName);
+		ImageView imageView = new ImageView(image);
+		imageView.setFitWidth(width);
+		imageView.setFitHeight(height);
+		return imageView;
 	}
 
 	@Override
@@ -66,6 +66,16 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 	public ImageView createMainMenuButton(double width, double height, EventHandler<MouseEvent> action) {
 
 		Image mainMenuImage = assetLoader.loadImage("MainMenuIcon");
+		ImageView imageView = new ImageView(mainMenuImage);
+		imageView.setFitWidth(width);
+		imageView.setFitHeight(height);
+		imageView.setOnMouseClicked(action);
+		return imageView;
+	}
+
+	@Override
+	public ImageView createRestartButton(double width, double height, EventHandler<MouseEvent> action) {
+		Image mainMenuImage = assetLoader.loadImage("RestartIcon");
 		ImageView imageView = new ImageView(mainMenuImage);
 		imageView.setFitWidth(width);
 		imageView.setFitHeight(height);

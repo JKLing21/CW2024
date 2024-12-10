@@ -34,6 +34,7 @@ public abstract class LevelParent {
 
 	private final Group root;
 	private final Timeline timeline;
+	private final Controller controller;
 	private final UserPlane user;
 	private final Scene scene;
 	private final ImageView background;
@@ -64,6 +65,7 @@ public abstract class LevelParent {
 		this.root = new Group();
 		this.scene = new Scene(root, screenWidth, screenHeight);
 		this.timeline = new Timeline();
+		this.controller = controller;
 		ActorFactory actorFactory = new ActorImplement();
 		this.user = actorFactory.createUserPlane(playerInitialHealth, screenWidth, projectilesFactory);
 		this.componentsFactory = componentsFactory;
@@ -123,6 +125,25 @@ public abstract class LevelParent {
 	public void startGame() {
 		root.requestFocus();
 		timeline.play();
+	}
+	
+	public void restartGame() {
+	    try {
+	        timeline.stop();
+	        root.getChildren().clear();
+	        user.setHealth(initialHealth);
+	        user.setNumberOfKills(0);
+	        friendlyUnits.clear();
+	        enemyUnits.clear();
+	        userProjectiles.clear();
+	        enemyProjectiles.clear();
+	        initializeFriendlyUnits();
+	        levelView.showHeartDisplay();
+	        timeline.play();
+	        controller.resetAndRelaunchGame();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	public int getInitialHealth() {
