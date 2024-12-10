@@ -10,5 +10,6 @@ module com.example.demo {
     exports com.example.demo.controller;
     exports factories;
     exports factories.interfaces;
+    exports com.example.demo.Strategy;
     
 }

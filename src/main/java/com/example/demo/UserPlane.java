@@ -1,5 +1,9 @@
 package com.example.demo;
 
+import com.example.demo.Strategy.FiringStrategy;
+import com.example.demo.Strategy.UserFiringStrategy;
+import com.example.demo.Strategy.UserMovementStrategy;
+
 import factories.interfaces.ComponentsFactory;
 import factories.interfaces.ProjectilesFactory;
 import javafx.scene.image.Image;

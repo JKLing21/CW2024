@@ -1,5 +1,10 @@
 package com.example.demo;
 
+import com.example.demo.Strategy.BossFiringStrategy;
+import com.example.demo.Strategy.BossMovementStrategy;
+import com.example.demo.Strategy.FiringStrategy;
+import com.example.demo.Strategy.MovementStrategy;
+
 import factories.ProjectilesImplement;
 import factories.interfaces.ComponentsFactory;
 import factories.interfaces.ProjectilesFactory;

@@ -1,5 +1,6 @@
-package com.example.demo;
+package com.example.demo.Strategy;
 
+import com.example.demo.FighterPlane;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

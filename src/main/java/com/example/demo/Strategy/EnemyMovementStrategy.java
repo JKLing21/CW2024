@@ -1,4 +1,7 @@
-package com.example.demo;
+package com.example.demo.Strategy;
+
+import com.example.demo.FighterPlane;
+
 /**
  * Implements the MovementStrategy interface 
  * which defines movement behavior for enemy plane.

@@ -1,13 +1,13 @@
 package factories;
 
 import com.example.demo.Boss;
-import com.example.demo.FiringStrategy;
-import com.example.demo.EnemyMovementStrategy;
-import com.example.demo.EnemyFiringStrategy;
 import com.example.demo.EnemyPlane;
 import com.example.demo.ImgAssetLoader;
-import com.example.demo.MovementStrategy;
 import com.example.demo.UserPlane;
+import com.example.demo.Strategy.EnemyFiringStrategy;
+import com.example.demo.Strategy.EnemyMovementStrategy;
+import com.example.demo.Strategy.FiringStrategy;
+import com.example.demo.Strategy.MovementStrategy;
 
 import factories.interfaces.ActorFactory;
 import factories.interfaces.ComponentsFactory;
