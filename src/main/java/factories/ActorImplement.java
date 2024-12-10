@@ -14,28 +14,29 @@ import factories.interfaces.ComponentsFactory;
 import factories.interfaces.ProjectilesFactory;
 
 public class ActorImplement implements ActorFactory {
+	
+	private final ComponentsFactory componentsFactory;
+	private final ImgAssetLoader assetLoader;
+	
+	public ActorImplement() {
+		this.componentsFactory = new ComponentsImplement();
+		this.assetLoader = new ImgAssetLoader() {};
+	}
 
 	@Override
 	public UserPlane createUserPlane(int initialHealth, double screenWidth, ProjectilesFactory projectilesFactory) {
-		ComponentsFactory factory = new ComponentsImplement();
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
-		return new UserPlane(initialHealth, screenWidth, projectilesFactory, factory, assetLoader);
+		return new UserPlane(initialHealth, screenWidth, projectilesFactory, componentsFactory, assetLoader);
 	}
 
 	@Override
 	public EnemyPlane createEnemyPlane(double initialXPos, double initialYPos) {
-		ComponentsFactory factory = new ComponentsImplement();
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
 		MovementStrategy movementStrategy = new EnemyMovementStrategy();
 		FiringStrategy firingStrategy = new EnemyFiringStrategy(new ProjectilesImplement()); 
-		return new EnemyPlane(initialXPos, initialYPos, factory, assetLoader, movementStrategy, firingStrategy);
+		return new EnemyPlane(initialXPos, initialYPos, componentsFactory, assetLoader, movementStrategy, firingStrategy);
 	}
 
 	@Override
 	public Boss createBoss() {
-		ComponentsFactory factory = new ComponentsImplement();
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
-		return new Boss(factory, assetLoader);
+		return new Boss(componentsFactory, assetLoader);
 	}
-
 }

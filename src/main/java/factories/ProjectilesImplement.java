@@ -9,26 +9,28 @@ import factories.interfaces.ComponentsFactory;
 import factories.interfaces.ProjectilesFactory;
 
 public class ProjectilesImplement implements ProjectilesFactory {
+	
+	private final ComponentsFactory componentsFactory;
+	private final ImgAssetLoader assetLoader;
+	
+	public ProjectilesImplement() {
+		this.componentsFactory = new ComponentsImplement();
+		this.assetLoader = new ImgAssetLoader() {};
+	}
 
 	@Override
 	public UserProjectile createUserProjectile(double initialXPos, double initialYPos, double screenWidth) {
-		ComponentsFactory factory = new ComponentsImplement();
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
-		return new UserProjectile(initialXPos, initialYPos, screenWidth, factory, assetLoader);
+		return new UserProjectile(initialXPos, initialYPos, screenWidth, componentsFactory, assetLoader);
 	}
 
 	@Override
 	public EnemyProjectile createEnemyProjectile(double initialX, double initialY) {
-		ComponentsFactory factory = new ComponentsImplement();
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
-		return new EnemyProjectile(initialX, initialY, factory, assetLoader);
+		return new EnemyProjectile(initialX, initialY, componentsFactory, assetLoader);
 	}
 
 	@Override
 	public BossProjectile createBossProjectile(double initialYPos) {
-		ComponentsFactory factory = new ComponentsImplement();
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {};
-		return new BossProjectile(initialYPos, factory, assetLoader);
+		return new BossProjectile(initialYPos, componentsFactory, assetLoader);
 	}
 
 }

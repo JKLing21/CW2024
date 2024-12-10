@@ -32,10 +32,12 @@ public class ComponentsImplement implements ComponentsFactory {
 
 	private final ImgViewFactory imgViewFactory;
 	private final UIControlFactory uiControlFactory;
+	private final ImgAssetLoader assetLoader;
 
 	public ComponentsImplement() {
 		this.imgViewFactory = new ImgViewFactoryImpl();
 		this.uiControlFactory = new UIControlFactoryImpl();
+		this.assetLoader = new ImgAssetLoader() {};
 	}
 
 	@Override
@@ -58,8 +60,6 @@ public class ComponentsImplement implements ComponentsFactory {
 
 	@Override
 	public ShieldImage createShieldIcon(double xPosition, double yPosition, double size) {
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {
-		};
 		ShieldImage shieldIcon = new ShieldImage(xPosition, yPosition, assetLoader);
 		shieldIcon.setFitHeight(size);
 		shieldIcon.setFitWidth(size);
@@ -68,8 +68,6 @@ public class ComponentsImplement implements ComponentsFactory {
 
 	@Override
 	public GameOverImage createGameOverImage(double xPosition, double yPosition) {
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {
-		};
 		return new GameOverImage(xPosition, yPosition, assetLoader);
 	}
 
@@ -92,8 +90,6 @@ public class ComponentsImplement implements ComponentsFactory {
 	@Override
 	public MainMenu createMainMenu(Controller controller) {
 		ComponentsFactory componentsFactory = new ComponentsImplement();
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {
-		};
 		return new MainMenu(controller, componentsFactory, assetLoader);
 	}
 
@@ -104,15 +100,11 @@ public class ComponentsImplement implements ComponentsFactory {
 
 	@Override
 	public ShieldImage createShieldImage(double xPosition, double yPosition) {
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {
-		};
 		return new ShieldImage(xPosition, yPosition, assetLoader);
 	}
 
 	@Override
 	public WinImage createWinImage(double xPosition, double yPosition) {
-		ImgAssetLoader assetLoader = new ImgAssetLoader() {
-		};
 		return new WinImage(xPosition, yPosition, assetLoader);
 	}
 
