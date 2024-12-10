@@ -2,14 +2,23 @@ package com.example.demo;
 
 import com.example.demo.controller.Controller;
 
+import factories.ActorImplement;
+import factories.interfaces.ActorFactory;
+import factories.interfaces.AssetFactory;
+import factories.interfaces.ComponentsFactory;
+
 public class LevelTwo extends LevelParent {
 
-	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background2.jpg";
+	public static final String BACKGROUND_IMAGE = "background2";
+	private ActorFactory actorFactory;
 	private final Boss boss;
 
-	public LevelTwo(double screenHeight, double screenWidth, Controller controller) {
-		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, 5, controller);
-		boss = new Boss();
+	public LevelTwo(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
+			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory) {
+		super(backgroundImageName, screenHeight, screenWidth, playerInitialHealth, controller, componentsFactory,
+				assetFactory);
+		this.actorFactory = new ActorImplement();
+		this.boss = actorFactory.createBoss();
 		this.levelView = instantiateLevelView();
 	}
 
@@ -40,7 +49,7 @@ public class LevelTwo extends LevelParent {
 
 	@Override
 	protected LevelView instantiateLevelView() {
-		return new LevelView(getRoot(), getInitialHealth());
+		return new LevelView(getRoot(), getInitialHealth(), getComponentsFactory());
 	}
 
 	@Override

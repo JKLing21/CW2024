@@ -1,10 +1,10 @@
 package com.example.demo;
 
+import factories.interfaces.ComponentsFactory;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.ParallelTransition;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,23 +21,16 @@ public class TransitionScene {
     private final Text transitionText;
     private final ImageView planeImageView;
 
-    public TransitionScene(Stage stage, String message, double width, double height) {
+    public TransitionScene(Stage stage, String message, double width, double height,  ComponentsFactory componentsFactory) {
         this.stage = stage;
 
         transitionText = new Text(message);
         transitionText.setFont(Font.font("Arial", FontWeight.BOLD, 50));
-
         transitionText.setFill(Color.RED);
 
-        Image planeImage = new Image(getClass().getResource("/com/example/demo/images/userplane.png").toExternalForm());
-        planeImageView = new ImageView(planeImage);
-        planeImageView.setFitWidth(120); 
-        planeImageView.setFitHeight(30);
+        planeImageView = componentsFactory.getImgViewFactory().createPlaneImageView(120, 30);
 
-        Image backgroundImage = new Image(getClass().getResource("/com/example/demo/images/stormy_sky.jpg").toExternalForm());
-        ImageView backgroundImageView = new ImageView(backgroundImage);
-        backgroundImageView.setFitWidth(width);
-        backgroundImageView.setFitHeight(height);
+        ImageView backgroundImageView = componentsFactory.getImgViewFactory().createBackgroundImageView(width, height);
 
         Pane transitionPane = new Pane(backgroundImageView, transitionText, planeImageView);
         this.transitionScene = new Scene(transitionPane, width, height);

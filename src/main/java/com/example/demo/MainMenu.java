@@ -1,39 +1,44 @@
 package com.example.demo;
 
 import com.example.demo.controller.Controller;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Pane;
+
+import factories.interfaces.ComponentsFactory;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class MainMenu {
 
     private StackPane root;
     private Controller controller;
+    private final Image MainMenuImage;
 
-    public MainMenu(Controller controller) {
+    public MainMenu(Controller controller, ComponentsFactory componentsFactory, ImgAssetLoader assetLoader) {
         this.controller = controller;
+        this.MainMenuImage = assetLoader.loadImage("MainMenu");
+        if (MainMenuImage == null) {
+            System.out.println("Background image not found.");
+            return;
+        }
 
-        Button startButton = new Button("Start Game");
-        Button settingsButton = new Button("Settings");
-        Button exitButton = new Button("Quit");
-
-        startButton.setOnAction(e -> {
+		Button startButton = componentsFactory.createMenuButton("Start Game", e -> {
             try {
                 this.controller.launchGame();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
-        settingsButton.setOnAction(e -> this.controller.showSettings());
-        exitButton.setOnAction(e -> showQuitConfirmation());
+
+		Button settingsButton = componentsFactory.createMenuButton("Settings", e -> this.controller.showSettings());
+		Button exitButton = componentsFactory.createMenuButton("Quit", e -> showQuitConfirmation());
 
         VBox menuPane = new VBox(20);
         menuPane.setAlignment(Pos.BOTTOM_CENTER);
@@ -44,7 +49,7 @@ public class MainMenu {
 
         root = new StackPane();
 
-        ImageView background = new ImageView(new Image(getClass().getResource("/com/example/demo/images/MainMenu.jpeg").toString()));
+        ImageView background = new ImageView(MainMenuImage);
         background.fitWidthProperty().bind(root.widthProperty());
         background.fitHeightProperty().bind(root.heightProperty());
         background.setPreserveRatio(false);

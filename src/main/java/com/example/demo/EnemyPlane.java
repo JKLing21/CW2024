@@ -1,33 +1,38 @@
 package com.example.demo;
 
+import com.example.demo.Strategy.FiringStrategy;
+import com.example.demo.Strategy.MovementStrategy;
+
+import factories.interfaces.ComponentsFactory;
+import javafx.scene.image.Image;
+
 public class EnemyPlane extends FighterPlane {
 
-	private static final String IMAGE_NAME = "enemyplane.png";
 	private static final int IMAGE_HEIGHT = 60;
-	private static final int HORIZONTAL_VELOCITY = -6;
-	private static final double PROJECTILE_X_POSITION_OFFSET = -76.0;
-	private static final double PROJECTILE_Y_POSITION_OFFSET = 22;
 	private static final int INITIAL_HEALTH = 1;
-	private static final double FIRE_RATE = .01;
+	private final Image enemyImage;
 
-	public EnemyPlane(double initialXPos, double initialYPos) {
-		super(IMAGE_NAME, IMAGE_HEIGHT, initialXPos, initialYPos, INITIAL_HEALTH);
+	private MovementStrategy movementStrategy;
+	private final FiringStrategy firingStrategy;
+
+	public EnemyPlane(double initialXPos, double initialYPos, ComponentsFactory factory, ImgAssetLoader assetLoader,
+			MovementStrategy movementStrategy, FiringStrategy firingStrategy) {
+		super(IMAGE_HEIGHT, initialXPos, initialYPos, INITIAL_HEALTH, factory);
+		this.enemyImage = assetLoader.loadImage("enemyplane");
+		this.movementStrategy = movementStrategy;
+		this.firingStrategy = firingStrategy;
+		ImageProperties.applyProperties(this, enemyImage, initialXPos, initialYPos, IMAGE_HEIGHT, null, true);
 	}
 
 	@Override
 	public void updatePosition() {
-		moveHorizontally(HORIZONTAL_VELOCITY);
+		movementStrategy.move(this);
 	}
 
 	@Override
-	public ActiveActorDestructible fireProjectile() {
-		if (Math.random() < FIRE_RATE) {
-			double projectileXPosition = getProjectileXPosition(PROJECTILE_X_POSITION_OFFSET);
-			double projectileYPostion = getProjectileYPosition(PROJECTILE_Y_POSITION_OFFSET);
-			return new EnemyProjectile(projectileXPosition, projectileYPostion);
-		}
-		return null;
-	}
+    public ActiveActorDestructible fireProjectile() {
+        return firingStrategy.fire(this);
+    }
 
 	@Override
 	public void updateActor() {
