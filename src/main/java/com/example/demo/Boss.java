@@ -30,8 +30,9 @@ public class Boss extends FighterPlane {
 
 	public Boss(ComponentsFactory factory, ImgAssetLoader assetLoader) {
 		super(IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH, factory);
-		this.bossImage = assetLoader.loadImage("bossplane");
-		ImageProperties.applyProperties(this, bossImage, INITIAL_X_POSITION, INITIAL_Y_POSITION, IMAGE_HEIGHT, null, true);
+		this.bossImage = assetLoader.loadAsset("bossplane");
+		ImageProperties.applyProperties(this, bossImage, INITIAL_X_POSITION, INITIAL_Y_POSITION, IMAGE_HEIGHT, null,
+				true);
 		this.bossHealthBar = new BossHealthBar(500, factory);
 		this.bossShielding = new BossShieldStrategy(factory, bossHealthBar, INITIAL_X_POSITION, INITIAL_Y_POSITION);
 		this.projectileFactory = new ProjectilesImplement();
@@ -75,20 +76,19 @@ public class Boss extends FighterPlane {
 
 	@Override
 	public ActiveActorDestructible fireProjectile() {
-	    return firingStrategy.fire(this);
+		return firingStrategy.fire(this);
 	}
 
 	@Override
 	public void takeDamage() {
 		if (bossShielding.isShielded()) {
-		    setEffect(new Glow(0.8));
+			setEffect(new Glow(0.8));
 		} else {
-		    super.takeDamage();
-		    setEffect(null);
-		    double healthPercentage = (double) getHealth() / getMaxHealth();
-		    bossHealthBar.updateHealth(healthPercentage);
+			super.takeDamage();
+			setEffect(null);
+			double healthPercentage = (double) getHealth() / getMaxHealth();
+			bossHealthBar.updateHealth(healthPercentage);
 		}
-
 	}
 
 	public double getProjectileInitialPosition() {

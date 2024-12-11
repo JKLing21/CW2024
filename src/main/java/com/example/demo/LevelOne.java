@@ -19,9 +19,9 @@ public class LevelOne extends LevelParent {
 	private final ActorFactory actorFactory;
 
 	public LevelOne(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
-			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory) {
+			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory, AudioManager audioManager) {
 		super(backgroundImageName, screenHeight, screenWidth, playerInitialHealth, controller, componentsFactory,
-				assetFactory);
+				assetFactory, audioManager);
 		this.actorFactory = new ActorImplement();
 		lastEnemySpawnTime = System.currentTimeMillis();
 	}

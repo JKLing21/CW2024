@@ -10,7 +10,7 @@ public class WinImage extends ImageView {
 	private final Image winImage;
 	
 	public WinImage(double xPosition, double yPosition, ImgAssetLoader assetLoader) {
-		this.winImage = assetLoader.loadImage("youwin");
+		this.winImage = assetLoader.loadAsset("youwin");
 		setImage(winImage);
 		this.setVisible(false);
 		this.setFitHeight(HEIGHT);

@@ -1,5 +1,6 @@
 package factories;
 
+import com.example.demo.AudioManager;
 import com.example.demo.Boss;
 import com.example.demo.EnemyPlane;
 import com.example.demo.ImgAssetLoader;
@@ -24,8 +25,8 @@ public class ActorImplement implements ActorFactory {
 	}
 
 	@Override
-	public UserPlane createUserPlane(int initialHealth, double screenWidth, ProjectilesFactory projectilesFactory) {
-		return new UserPlane(initialHealth, screenWidth, projectilesFactory, componentsFactory, assetLoader);
+	public UserPlane createUserPlane(int initialHealth, double screenWidth, ProjectilesFactory projectilesFactory, AudioManager audioManager) {
+		return new UserPlane(initialHealth, screenWidth, projectilesFactory, componentsFactory, assetLoader, audioManager);
 	}
 
 	@Override

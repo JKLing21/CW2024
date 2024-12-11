@@ -11,7 +11,7 @@ public class EnemyProjectile extends Projectile {
 
 	public EnemyProjectile(double initialXPos, double initialYPos, ComponentsFactory factory, ImgAssetLoader assetLoader) {
 		super(IMAGE_HEIGHT, initialXPos, initialYPos, factory);
-		this.userProjectileImg = assetLoader.loadImage("enemyFire");
+		this.userProjectileImg = assetLoader.loadAsset("enemyFire");
 		ImageProperties.applyProperties(this, userProjectileImg, initialXPos, initialYPos, IMAGE_HEIGHT, null, true);
 	}
 

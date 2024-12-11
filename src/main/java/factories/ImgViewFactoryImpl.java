@@ -19,7 +19,7 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 
 	@Override
 	public ImageView createImageView(String assetName, double width, double height) {
-		Image image = assetLoader.loadImage(assetName);
+		Image image = assetLoader.loadAsset(assetName);
 		ImageView imageView = new ImageView(image);
 		imageView.setFitWidth(width);
 		imageView.setFitHeight(height);
@@ -30,7 +30,7 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 	public ImageView createPauseButton(double xPosition, double yPosition, double width, double height,
 			EventHandler<MouseEvent> action) {
 
-		Image pauseImage = assetLoader.loadImage("PauseIcon");
+		Image pauseImage = assetLoader.loadAsset("PauseIcon");
 		ImageView pauseButton = new ImageView(pauseImage);
 		pauseButton.setFitWidth(width);
 		pauseButton.setFitHeight(height);
@@ -43,7 +43,7 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 	@Override
 	public ImageView createResumeButton(double width, double height, EventHandler<MouseEvent> action) {
 
-		Image resumeImage = assetLoader.loadImage("ResumeIcon");
+		Image resumeImage = assetLoader.loadAsset("ResumeIcon");
 		ImageView imageView = new ImageView(resumeImage);
 		imageView.setFitWidth(width);
 		imageView.setFitHeight(height);
@@ -54,7 +54,7 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 	@Override
 	public ImageView createSettingsButton(double width, double height, EventHandler<MouseEvent> action) {
 
-		Image settingsImage = assetLoader.loadImage("SettingsIcon");
+		Image settingsImage = assetLoader.loadAsset("SettingsIcon");
 		ImageView imageView = new ImageView(settingsImage);
 		imageView.setFitWidth(width);
 		imageView.setFitHeight(height);
@@ -65,7 +65,7 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 	@Override
 	public ImageView createMainMenuButton(double width, double height, EventHandler<MouseEvent> action) {
 
-		Image mainMenuImage = assetLoader.loadImage("MainMenuIcon");
+		Image mainMenuImage = assetLoader.loadAsset("MainMenuIcon");
 		ImageView imageView = new ImageView(mainMenuImage);
 		imageView.setFitWidth(width);
 		imageView.setFitHeight(height);
@@ -75,7 +75,7 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 
 	@Override
 	public ImageView createRestartButton(double width, double height, EventHandler<MouseEvent> action) {
-		Image mainMenuImage = assetLoader.loadImage("RestartIcon");
+		Image mainMenuImage = assetLoader.loadAsset("RestartIcon");
 		ImageView imageView = new ImageView(mainMenuImage);
 		imageView.setFitWidth(width);
 		imageView.setFitHeight(height);
@@ -86,7 +86,7 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 	@Override
 	public ImageView createPauseMenuBackground(double width, double height, double translateX, double translateY) {
 
-		Image backgroundImage = assetLoader.loadImage("rectangle_container");
+		Image backgroundImage = assetLoader.loadAsset("rectangle_container");
 		ImageView backgroundImageView = new ImageView(backgroundImage);
 		backgroundImageView.setFitWidth(width);
 		backgroundImageView.setFitHeight(height);
@@ -98,7 +98,7 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 	@Override
 	public ImageView createPlaneImageView(double width, double height) {
 
-		Image planeImage = assetLoader.loadImage("userplane");
+		Image planeImage = assetLoader.loadAsset("userplane");
 		ImageView planeImageView = new ImageView(planeImage);
 		planeImageView.setFitWidth(width);
 		planeImageView.setFitHeight(height);
@@ -108,7 +108,7 @@ public class ImgViewFactoryImpl implements ImgViewFactory {
 	@Override
 	public ImageView createBackgroundImageView(double width, double height) {
 
-		Image backgroundImage = assetLoader.loadImage("stormy_sky");
+		Image backgroundImage = assetLoader.loadAsset("stormy_sky");
 		ImageView backgroundImageView = new ImageView(backgroundImage);
 		backgroundImageView.setFitWidth(width);
 		backgroundImageView.setFitHeight(height);

@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.lang.reflect.Constructor;
 import java.util.Stack;
 
+import com.example.demo.AudioAssetLoader;
+import com.example.demo.AudioManager;
 import com.example.demo.ImageManager;
 import com.example.demo.ImgAssetLoader;
 import com.example.demo.LevelParent;
@@ -24,6 +26,8 @@ public class Controller {
 
 	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelOne";
 	private final Stage stage;
+	private final AudioManager audioManager;
+	private final AudioAssetLoader audioAssetLoader;
 	private Stack<Scene> sceneStack = new Stack<>();
 	private ImageManager imageManager;
 	private AssetFactory assetFactory;
@@ -31,6 +35,8 @@ public class Controller {
 
 	public Controller(Stage stage, double screenWidth) {
 		this.stage = stage;
+		this.audioAssetLoader = new AudioAssetLoader() {};
+		this.audioManager = new AudioManager(audioAssetLoader);
 		this.imageManager = ImageManager.getInstance();
 		this.assetFactory = new AssetsImplement(imageManager);
 		this.componentsFactory = new ComponentsImplement();
@@ -44,6 +50,8 @@ public class Controller {
 		Scene menuScene = new Scene(mainMenu.getMenuPane(), stage.getWidth(), stage.getHeight());
 		menuScene.getStylesheets().add(getClass().getResource("/com/example/demo/css/MainMenu.css").toExternalForm());
 		pushScene(menuScene);
+		audioManager.playBackgroundMusic("MainMenuBGM");
+		audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
 	}
 
 	public void launchGame() throws Exception {
@@ -62,12 +70,13 @@ public class Controller {
 	}
 
 	private void goToLevel(String className) throws Exception {
+		audioManager.stopBackgroundMusic();
 		Class<?> myClass = Class.forName(className);
 		String backgroundImage = (String) myClass.getField("BACKGROUND_IMAGE").get(null);
 		Constructor<?> constructor = myClass.getConstructor(String.class, double.class, double.class, int.class,
-				Controller.class, ComponentsFactory.class, AssetFactory.class);
+				Controller.class, ComponentsFactory.class, AssetFactory.class, AudioManager.class);
 		LevelParent myLevel = (LevelParent) constructor.newInstance(backgroundImage, stage.getHeight(),
-				stage.getWidth(), 5, this, componentsFactory, assetFactory);
+				stage.getWidth(), 5, this, componentsFactory, assetFactory, audioManager);
 		myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue != null && !newValue.isEmpty()) {
 				TransitionScene.fadeOutCurrentScene(stage, () -> {
@@ -85,6 +94,24 @@ public class Controller {
 		pushScene(scene);
 		myLevel.startGame();
 		applyFadeInTransition(scene);
+		
+		if (className.equals(LEVEL_ONE_CLASS_NAME)) {
+            audioManager.playBackgroundMusic("LevelOneBGM");
+            audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
+        } else if (className.equals("com.example.demo.LevelTwo")) {
+            audioManager.playBackgroundMusic("BossBGM");
+            audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
+        }
+	}
+	
+	public void updateBackgroundMusicVolume(double volume) {
+	    audioManager.setBackgroundMusicVolume(volume);
+	    System.out.println("Background music volume updated to: " + volume);
+	}
+
+	public void updateSoundEffectsVolume(double volume) {
+	    audioManager.setSoundEffectsVolume(volume);
+	    System.out.println("Sound effects volume updated to: " + volume);
 	}
 
 	private void applyFadeInTransition(Scene scene) {
@@ -108,7 +135,7 @@ public class Controller {
 
 	public void showSettings() {
 		ComponentsFactory componentsFactory = new ComponentsImplement();
-		GameSettings gameSettings = new GameSettings(this, componentsFactory);
+		GameSettings gameSettings = new GameSettings(this, componentsFactory, audioManager);
 		Scene settingsScene = new Scene(gameSettings.getSettingsPane(), stage.getWidth(), stage.getHeight());
 		settingsScene.getStylesheets()
 				.add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
@@ -120,10 +147,13 @@ public class Controller {
 	}
 
 	private void pushScene(Scene scene) {
-		sceneStack.push(scene);
-		stage.setScene(scene);
-		stage.show();
-		applyFadeInTransition(scene);
+	    if (!sceneStack.isEmpty() && sceneStack.peek() == scene) {
+	        return;
+	    }
+	    sceneStack.push(scene);
+	    stage.setScene(scene);
+	    stage.show();
+	    applyFadeInTransition(scene);
 	}
 
 	public void goBack() {
@@ -137,4 +167,8 @@ public class Controller {
 			}
 		}
 	}
+	
+	public AudioManager getAudioManager() {
+        return audioManager;
+    }
 }

@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import java.util.Map;
 import static java.util.Map.entry;
 
-public abstract class ImgAssetLoader implements AssetsLoader {
+public abstract class ImgAssetLoader implements AssetsLoader<Image> {
 	
 	protected static final Map<String, String> imagePaths = Map.ofEntries (
 			entry("background1", "/com/example/demo/images/background1.jpg"),
@@ -30,7 +30,7 @@ public abstract class ImgAssetLoader implements AssetsLoader {
 	);
 	
 	@Override
-	public Image loadImage(String assetName) {
+	public Image loadAsset(String assetName) {
 	    String path = imagePaths.get(assetName);
 	    if (path != null) {
 	        try {

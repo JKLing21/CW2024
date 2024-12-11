@@ -14,9 +14,9 @@ public class LevelTwo extends LevelParent {
 	private final Boss boss;
 
 	public LevelTwo(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
-			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory) {
+			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory, AudioManager audioManager) {
 		super(backgroundImageName, screenHeight, screenWidth, playerInitialHealth, controller, componentsFactory,
-				assetFactory);
+				assetFactory, audioManager);
 		this.actorFactory = new ActorImplement();
 		this.boss = actorFactory.createBoss();
 		this.levelView = instantiateLevelView();

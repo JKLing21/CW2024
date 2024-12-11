@@ -15,6 +15,6 @@ public class ImageManager extends ImgAssetLoader {
     }
 
     public Image getImage(String assetName) {
-        return loadImage(assetName);
+        return loadAsset(assetName);
     }
 }

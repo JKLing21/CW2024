@@ -19,6 +19,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -65,4 +68,18 @@ public interface ComponentsFactory {
 	Button createMenuButton(String text, EventHandler<ActionEvent> action);
 
 	Text createKillCountText();
+
+	BorderPane createMainSettingsLayout(HBox titleBox, VBox soundSettingsPane, HBox backButtonBox);
+
+	VBox createSoundSettingsLayout(VBox soundEffectsBox, VBox backgroundMusicBox, Button resetToDefaultButton);
+
+	HBox createSliderWithToggle(Slider slider, ToggleButton toggleButton);
+
+	HBox createTitleBox(Label label);
+	
+	VBox createSoundEffectsBox(VBox soundEffectsBox);
+
+    VBox createBackgroundMusicBox(VBox backgroundMusicBox);
+
+	HBox createBackButtonBox(Button button);
 }
