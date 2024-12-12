@@ -6,6 +6,7 @@ import factories.ActorImplement;
 import factories.interfaces.ActorFactory;
 import factories.interfaces.AssetFactory;
 import factories.interfaces.ComponentsFactory;
+import javafx.stage.Stage;
 
 public class LevelTwo extends LevelParent {
 
@@ -16,12 +17,15 @@ public class LevelTwo extends LevelParent {
     private static final long ENEMY_SPAWN_COOLDOWN = 1500;
     private long lastEnemySpawnTime = 0;
     private ActorFactory actorFactory;
+    @SuppressWarnings("unused")
+    private final Stage stage;
 
     public LevelTwo(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
             Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory,
-            AudioManager audioManager) {
+            AudioManager audioManager, Stage stage) {
         super(backgroundImageName, screenHeight, screenWidth, playerInitialHealth, controller, componentsFactory,
                 assetFactory, audioManager);
+        this.stage = stage;
         this.actorFactory = new ActorImplement();
     }
 

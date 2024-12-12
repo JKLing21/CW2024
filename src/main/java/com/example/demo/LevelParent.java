@@ -33,8 +33,8 @@ public abstract class LevelParent {
 	private final double enemyMaximumYPosition;
 
 	private final Group root;
-	private final Timeline timeline;
-	private final Controller controller;
+	protected final Timeline timeline;
+	protected final Controller controller;
 	private final UserPlane user;
 	private final Scene scene;
 	private final ImageView background;
@@ -44,13 +44,13 @@ public abstract class LevelParent {
 	private int initialHealth;
 	protected Group uiLayer;
 	private ProjectilesFactory projectilesFactory = new ProjectilesImplement();
-	private final ComponentsFactory componentsFactory;
+	protected final ComponentsFactory componentsFactory;
 	@SuppressWarnings("unused")
 	private final AssetFactory assetFactory;
 	private CollisionManager collisionManager;
 	private final PauseManager pauseManager;
 	private final UserFiringStrategy userFiringStrategy;
-	private final AudioManager audioManager;
+	protected final AudioManager audioManager;
 
 	private final List<ActiveActorDestructible> friendlyUnits;
 	private final List<ActiveActorDestructible> enemyUnits;
@@ -115,15 +115,15 @@ public abstract class LevelParent {
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
 		if (shouldShowKillCount()) {
-	        levelView.showKillCountText();
-	    }
+			levelView.showKillCountText();
+		}
 
 		ImageView pauseImageView = componentsFactory.getImgViewFactory().createPauseButton(screenWidth - 60, 10, 50, 50,
 				e -> togglePause());
 		uiLayer.getChildren().add(pauseImageView);
 		if (isLevelOne()) {
-            levelView.showInstructions();
-        }
+			levelView.showInstructions();
+		}
 		Pane layeredPane = new Pane();
 		layeredPane.getChildren().addAll(root, uiLayer);
 
@@ -155,7 +155,7 @@ public abstract class LevelParent {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public int getInitialHealth() {
 		return initialHealth;
 	}
@@ -279,17 +279,15 @@ public abstract class LevelParent {
 		levelView.updateKillCount(user.getNumberOfKills(), getKillTarget());
 	}
 
-	protected void winGame() {
-		timeline.stop();
-		levelView.showWinImage();
-		audioManager.stopBackgroundMusic();
-	}
-
 	protected void loseGame() {
 		isGameOver = true;
 		timeline.stop();
-		levelView.showGameOverImage();
 		audioManager.stopBackgroundMusic();
+		TransitionScene.fadeOutCurrentScene(controller.getStage(), () -> {
+			LoseScreen loseScreen = new LoseScreen(controller.getStage(), new ImgAssetLoaderImpl(), componentsFactory,
+					this, controller);
+			loseScreen.showLoseScreen();
+		});
 	}
 
 	protected UserPlane getUser() {
@@ -333,13 +331,17 @@ public abstract class LevelParent {
 	public void togglePause() {
 		pauseManager.togglePause();
 	}
-	
+
 	protected boolean isLevelOne() {
-        return false;
-    }
-	
+		return false;
+	}
+
 	protected boolean shouldShowKillCount() {
-	    return true;
+		return true;
+	}
+
+	public Scene getScene() {
+		return scene;
 	}
 
 }

@@ -76,9 +76,9 @@ public class Controller {
 	        Class<?> myClass = Class.forName(className);
 	        String backgroundImage = (String) myClass.getField("BACKGROUND_IMAGE").get(null);
 	        Constructor<?> constructor = myClass.getConstructor(String.class, double.class, double.class, int.class,
-	                Controller.class, ComponentsFactory.class, AssetFactory.class, AudioManager.class);
+	                Controller.class, ComponentsFactory.class, AssetFactory.class, AudioManager.class, Stage.class);
 	        LevelParent myLevel = (LevelParent) constructor.newInstance(backgroundImage, stage.getHeight(),
-	                stage.getWidth(), 5, this, componentsFactory, assetFactory, audioManager);
+	                stage.getWidth(), 5, this, componentsFactory, assetFactory, audioManager, stage);
 	        myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
 	            if (newValue != null && !newValue.isEmpty()) {
 	                if (newValue.equals("com.example.demo.LevelThree")) {
@@ -107,11 +107,12 @@ public class Controller {
 
 	        if (className.equals(LEVEL_ONE_CLASS_NAME)) {
 	            audioManager.playBackgroundMusic("LevelOneBGM");
-	            audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
+	        } else if (className.equals("com.example.demo.LevelTwo")) {
+	            audioManager.playBackgroundMusic("LevelTwoBGM");
 	        } else if (className.equals("com.example.demo.LevelThree")) {
 	            audioManager.playBackgroundMusic("BossBGM");
-	            audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
 	        }
+	        audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
 	    } catch (InvocationTargetException e) {
 	        e.printStackTrace();
 	        System.err.println("Root cause: " + e.getCause());
@@ -189,4 +190,9 @@ public class Controller {
 	public AudioManager getAudioManager() {
         return audioManager;
     }
+	
+	public Stage getStage() {
+	    return stage;
+	}
+
 }

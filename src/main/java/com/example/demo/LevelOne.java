@@ -7,6 +7,7 @@ import factories.interfaces.ActorFactory;
 import factories.interfaces.AssetFactory;
 import factories.interfaces.ComponentsFactory;
 import javafx.scene.Group;
+import javafx.stage.Stage;
 
 public class LevelOne extends LevelParent {
 
@@ -18,12 +19,15 @@ public class LevelOne extends LevelParent {
 	private long lastEnemySpawnTime = 300;
 
 	private final ActorFactory actorFactory;
+	@SuppressWarnings("unused")
+	private final Stage stage;
 
 	public LevelOne(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
-			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory, AudioManager audioManager) {
+			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory, AudioManager audioManager, Stage stage) {
 		super(backgroundImageName, screenHeight, screenWidth, playerInitialHealth, controller, componentsFactory,
 				assetFactory, audioManager);
 		this.actorFactory = new ActorImplement();
+		this.stage = stage;
 		lastEnemySpawnTime = System.currentTimeMillis();
 	}
 	
