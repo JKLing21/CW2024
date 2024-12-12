@@ -89,17 +89,17 @@ public class LevelView {
         }
     }
 
-    public void updateKillCount(int killCount) {
-        killCountString.set("Kills: " + killCount);
+    public void updateKillCount(int currentKills, int killTarget) {
+        int remainingKills = killTarget - currentKills;
+        killCountString.set("Remaining kills to advance: " + remainingKills);
     }
 
     private void positionKillCountText() {
         if (killCountText != null) {
-            // Modify position as needed
-            double centerX = (screenWidth - 720);
-            double topY = 20;
+            double centerX = (screenWidth - 830);
+            double topY = 10;
 
-            killCountText.setStyle("-fx-font-size: 30px; -fx-fill: white;");
+            killCountText.setStyle("-fx-font-size: 28px; -fx-fill: white;");
             killCountText.setLayoutX(centerX);
             killCountText.setLayoutY(topY);
 

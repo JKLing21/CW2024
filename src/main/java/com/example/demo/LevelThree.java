@@ -10,7 +10,7 @@ import javafx.scene.Group;
 
 public class LevelThree extends LevelParent {
 
-	public static final String BACKGROUND_IMAGE = "background2";
+	public static final String BACKGROUND_IMAGE = "background3";
 	private ActorFactory actorFactory;
 	private final Boss boss;
 

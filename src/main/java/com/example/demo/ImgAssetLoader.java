@@ -9,6 +9,8 @@ public abstract class ImgAssetLoader implements AssetsLoader<Image> {
 	protected static final Map<String, String> imagePaths = Map.ofEntries (
 			entry("background1", "/com/example/demo/images/background1.jpg"),
 			entry("background2", "/com/example/demo/images/background2.jpg"),
+			entry("background3", "/com/example/demo/images/background3.png"),
+			entry("background4", "/com/example/demo/images/background4.png"),
 			entry("bossplane", "/com/example/demo/images/bossplane.png"),
 			entry("enemyFire", "/com/example/demo/images/enemyFire.png"),
 			entry("enemyplane", "/com/example/demo/images/enemyplane.png"),
@@ -26,6 +28,8 @@ public abstract class ImgAssetLoader implements AssetsLoader<Image> {
 			entry("stormy_sky", "/com/example/demo/images/stormy_sky.jpg"),
 			entry("userfire", "/com/example/demo/images/userfire.png"),
 			entry("userplane", "/com/example/demo/images/userplane.png"),
+			entry("warplane", "/com/example/demo/images/warplane.png"),
+			entry("warplaneFire", "/com/example/demo/images/warplaneFire.png"),
 			entry("youwin", "/com/example/demo/images/youwin.png")	
 	);
 	

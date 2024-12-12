@@ -49,7 +49,7 @@ public class LevelTwo extends LevelParent {
 			double yUpperBound = 55;
 	        double yLowerBound = getEnemyMaximumYPosition();
 	        double newEnemyInitialYPosition = yUpperBound + Math.random() * (yLowerBound - yUpperBound);
-			ActiveActorDestructible newEnemy = actorFactory.createEnemyPlane(getScreenWidth(),
+			ActiveActorDestructible newEnemy = actorFactory.createWarPlane(getScreenWidth(),
 					newEnemyInitialYPosition);
 			addEnemyUnit(newEnemy);
 			lastEnemySpawnTime = currentTime;

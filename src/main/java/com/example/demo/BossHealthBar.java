@@ -27,7 +27,7 @@ public class BossHealthBar {
 		this.width = width;
 		healthBarBackground = factory.createHealthBarBackground(width, 15, Color.MAROON);
 		healthBar = factory.createHealthBar(width, 15, Color.RED);
-		bossNameText = factory.createBossNameText("Skybound Tyrant", Font.font("Arial", FontWeight.BOLD, 18), Color.WHITE);
+		bossNameText = factory.createBossNameText("Skybound Tyrant", Font.font("Arial", FontWeight.BOLD, 18), Color.RED);
 		shieldIcon = factory.createShieldIcon(0, 0, 35);
 	}
 	/**

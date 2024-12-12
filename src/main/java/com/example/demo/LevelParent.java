@@ -276,7 +276,7 @@ public abstract class LevelParent {
 
 	private void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
-		levelView.updateKillCount(user.getNumberOfKills());
+		levelView.updateKillCount(user.getNumberOfKills(), getKillTarget());
 	}
 
 	protected void winGame() {

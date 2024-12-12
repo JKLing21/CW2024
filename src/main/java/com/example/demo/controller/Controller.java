@@ -113,12 +113,10 @@ public class Controller {
 	            audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
 	        }
 	    } catch (InvocationTargetException e) {
-	        // Handle the InvocationTargetException
 	        e.printStackTrace();
 	        System.err.println("Root cause: " + e.getCause());
 	        e.getCause().printStackTrace();
 	    } catch (Exception e) {
-	        // Handle other exceptions
 	        e.printStackTrace();
 	        System.err.println("Error occurred while loading level: " + e.getMessage());
 	    }
