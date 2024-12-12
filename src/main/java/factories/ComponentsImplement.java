@@ -88,8 +88,8 @@ public class ComponentsImplement implements ComponentsFactory {
 	}
 
 	@Override
-	public LevelView createLevelView(Group root, int heartsToDisplay) {
-		return new LevelView(root, heartsToDisplay, this);
+	public LevelView createLevelView(Group root, int heartsToDisplay, double screenWidth, Group uiLayer) {
+		return new LevelView(root, heartsToDisplay, this, screenWidth, uiLayer);
 	}
 
 	@Override

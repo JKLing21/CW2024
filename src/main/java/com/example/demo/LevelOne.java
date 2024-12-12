@@ -6,6 +6,7 @@ import factories.ActorImplement;
 import factories.interfaces.ActorFactory;
 import factories.interfaces.AssetFactory;
 import factories.interfaces.ComponentsFactory;
+import javafx.scene.Group;
 
 public class LevelOne extends LevelParent {
 
@@ -14,7 +15,7 @@ public class LevelOne extends LevelParent {
 	private static final int TOTAL_ENEMIES = 5;
 	private static final int KILLS_TO_ADVANCE = 5;
 	private static final long ENEMY_SPAWN_COOLDOWN = 1500;
-	private long lastEnemySpawnTime = 0;
+	private long lastEnemySpawnTime = 300;
 
 	private final ActorFactory actorFactory;
 
@@ -25,6 +26,11 @@ public class LevelOne extends LevelParent {
 		this.actorFactory = new ActorImplement();
 		lastEnemySpawnTime = System.currentTimeMillis();
 	}
+	
+	 @Override
+	    protected boolean isLevelOne() {
+	        return true;
+	    }
 
 	@Override
 	protected void checkIfGameOver() {
@@ -59,7 +65,8 @@ public class LevelOne extends LevelParent {
 
 	@Override
 	protected LevelView instantiateLevelView() {
-		return new LevelView(getRoot(), getInitialHealth(), getComponentsFactory());
+		Group uiLayer = new Group();
+		return new LevelView(getRoot(), getInitialHealth(), getComponentsFactory(), getScreenWidth(), uiLayer);
 	}
 
 	@Override

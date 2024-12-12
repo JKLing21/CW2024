@@ -21,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.lang.reflect.InvocationTargetException;
 
 public class Controller {
 
@@ -70,38 +71,57 @@ public class Controller {
 	}
 
 	private void goToLevel(String className) throws Exception {
-		audioManager.stopBackgroundMusic();
-		Class<?> myClass = Class.forName(className);
-		String backgroundImage = (String) myClass.getField("BACKGROUND_IMAGE").get(null);
-		Constructor<?> constructor = myClass.getConstructor(String.class, double.class, double.class, int.class,
-				Controller.class, ComponentsFactory.class, AssetFactory.class, AudioManager.class);
-		LevelParent myLevel = (LevelParent) constructor.newInstance(backgroundImage, stage.getHeight(),
-				stage.getWidth(), 5, this, componentsFactory, assetFactory, audioManager);
-		myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue != null && !newValue.isEmpty()) {
-				TransitionScene.fadeOutCurrentScene(stage, () -> {
-					TransitionScene transitionScene = new TransitionScene(stage, "A mighty foe stands before you...",
-							stage.getWidth(), stage.getHeight(), componentsFactory);
-					transitionScene.showTransition(() -> {
-						goToNextLevel(newValue);
-					});
-				});
-			}
-		});
+	    audioManager.stopBackgroundMusic();
+	    try {
+	        Class<?> myClass = Class.forName(className);
+	        String backgroundImage = (String) myClass.getField("BACKGROUND_IMAGE").get(null);
+	        Constructor<?> constructor = myClass.getConstructor(String.class, double.class, double.class, int.class,
+	                Controller.class, ComponentsFactory.class, AssetFactory.class, AudioManager.class);
+	        LevelParent myLevel = (LevelParent) constructor.newInstance(backgroundImage, stage.getHeight(),
+	                stage.getWidth(), 5, this, componentsFactory, assetFactory, audioManager);
+	        myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
+	            if (newValue != null && !newValue.isEmpty()) {
+	                if (newValue.equals("com.example.demo.LevelThree")) {
+	                    TransitionScene.fadeOutCurrentScene(stage, () -> {
+	                        TransitionScene transitionScene = new TransitionScene(stage, "A mighty foe stands before you...",
+	                                stage.getWidth(), stage.getHeight(), componentsFactory);
+	                        transitionScene.showTransition(() -> goToNextLevel(newValue));
+	                    });
+	                } else if (newValue.equals("com.example.demo.LevelTwo")) {
+	                    TransitionScene.fadeOutCurrentScene(stage, () -> {
+	                        TransitionScene transitionScene = new TransitionScene(stage, null,
+	                                stage.getWidth(), stage.getHeight(), componentsFactory);
+	                        transitionScene.showTransition(() -> goToNextLevel(newValue));
+	                    });
+	                } else {
+	                    goToNextLevel(newValue);
+	                }
+	            }
+	        });
 
-		Scene scene = myLevel.initializeScene();
-		scene.getStylesheets().add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
-		pushScene(scene);
-		myLevel.startGame();
-		applyFadeInTransition(scene);
-		
-		if (className.equals(LEVEL_ONE_CLASS_NAME)) {
-            audioManager.playBackgroundMusic("LevelOneBGM");
-            audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
-        } else if (className.equals("com.example.demo.LevelTwo")) {
-            audioManager.playBackgroundMusic("BossBGM");
-            audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
-        }
+	        Scene scene = myLevel.initializeScene();
+	        scene.getStylesheets().add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
+	        pushScene(scene);
+	        myLevel.startGame();
+	        applyFadeInTransition(scene);
+
+	        if (className.equals(LEVEL_ONE_CLASS_NAME)) {
+	            audioManager.playBackgroundMusic("LevelOneBGM");
+	            audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
+	        } else if (className.equals("com.example.demo.LevelThree")) {
+	            audioManager.playBackgroundMusic("BossBGM");
+	            audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
+	        }
+	    } catch (InvocationTargetException e) {
+	        // Handle the InvocationTargetException
+	        e.printStackTrace();
+	        System.err.println("Root cause: " + e.getCause());
+	        e.getCause().printStackTrace();
+	    } catch (Exception e) {
+	        // Handle other exceptions
+	        e.printStackTrace();
+	        System.err.println("Error occurred while loading level: " + e.getMessage());
+	    }
 	}
 	
 	public void updateBackgroundMusicVolume(double volume) {
@@ -124,13 +144,13 @@ public class Controller {
 	}
 
 	private void goToNextLevel(String levelName) {
-		try {
-			goToLevel(levelName);
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("Error occurred while loading level: " + e.getMessage());
-			alert.show();
-		}
+	    try {
+	        goToLevel(levelName);
+	    } catch (Exception e) {
+	        Alert alert = new Alert(AlertType.ERROR);
+	        alert.setContentText("Error occurred while loading level: " + e.getMessage());
+	        alert.show();
+	    }
 	}
 
 	public void showSettings() {

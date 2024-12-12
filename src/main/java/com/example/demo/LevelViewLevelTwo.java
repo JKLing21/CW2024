@@ -10,8 +10,8 @@ public class LevelViewLevelTwo extends LevelView {
 	private final Group root;
 	private final ShieldImage shieldImage;
 
-	public LevelViewLevelTwo(Group root, int heartsToDisplay, ComponentsFactory componentsFactory) {
-		super(root, heartsToDisplay, componentsFactory);
+	public LevelViewLevelTwo(Group root, int heartsToDisplay, ComponentsFactory componentsFactory, double screenWidth, Group uiLayer) {
+		super(root, heartsToDisplay, componentsFactory, screenWidth, uiLayer);
 		this.root = root;
 		this.shieldImage = componentsFactory.createShieldImage(SHIELD_X_POSITION, SHIELD_Y_POSITION);
 		addImagesToRoot();

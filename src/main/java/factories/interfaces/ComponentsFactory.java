@@ -45,7 +45,7 @@ public interface ComponentsFactory {
 
 	ImageView createHeartImage();
 
-	LevelView createLevelView(Group root, int heartsToDisplay);
+	LevelView createLevelView(Group root, int heartsToDisplay, double screenWidth, Group uiLayer);
 
 	MainMenu createMainMenu(Controller controller);
 

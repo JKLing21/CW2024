@@ -42,6 +42,7 @@ public abstract class LevelParent {
 	private PauseScreen pauseScreen;
 	private KeyEventHandlers keyEventHandlers;
 	private int initialHealth;
+	protected Group uiLayer;
 	private ProjectilesFactory projectilesFactory = new ProjectilesImplement();
 	private final ComponentsFactory componentsFactory;
 	@SuppressWarnings("unused")
@@ -89,7 +90,8 @@ public abstract class LevelParent {
 		this.screenWidth = screenWidth;
 		this.collisionManager = new CollisionManager(root, screenWidth);
 		this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
-		this.levelView = componentsFactory.createLevelView(root, playerInitialHealth);
+		this.uiLayer = new Group();
+		this.levelView = componentsFactory.createLevelView(root, playerInitialHealth, screenWidth, uiLayer);
 		initializeTimeline();
 		friendlyUnits.add(user);
 
@@ -112,12 +114,16 @@ public abstract class LevelParent {
 		initializeBackground();
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
+		if (shouldShowKillCount()) {
+	        levelView.showKillCountText();
+	    }
 
-		Group uiLayer = new Group();
 		ImageView pauseImageView = componentsFactory.getImgViewFactory().createPauseButton(screenWidth - 60, 10, 50, 50,
 				e -> togglePause());
 		uiLayer.getChildren().add(pauseImageView);
-
+		if (isLevelOne()) {
+            levelView.showInstructions();
+        }
 		Pane layeredPane = new Pane();
 		layeredPane.getChildren().addAll(root, uiLayer);
 
@@ -149,7 +155,7 @@ public abstract class LevelParent {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public int getInitialHealth() {
 		return initialHealth;
 	}
@@ -327,4 +333,13 @@ public abstract class LevelParent {
 	public void togglePause() {
 		pauseManager.togglePause();
 	}
+	
+	protected boolean isLevelOne() {
+        return false;
+    }
+	
+	protected boolean shouldShowKillCount() {
+	    return true;
+	}
+
 }
