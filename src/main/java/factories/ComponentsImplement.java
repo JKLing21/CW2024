@@ -1,14 +1,12 @@
 package factories;
 
-import com.example.demo.GameOverImage;
-import com.example.demo.HeartDisplay;
-import com.example.demo.ImgAssetLoader;
-import com.example.demo.LevelParent;
-import com.example.demo.LevelView;
-import com.example.demo.MainMenu;
-import com.example.demo.PauseScreen;
-import com.example.demo.ShieldImage;
-import com.example.demo.WinImage;
+import com.example.demo.Actors.Components.HeartDisplay;
+import com.example.demo.Actors.Components.Shield;
+import com.example.demo.Assets.ImgAssetLoader;
+import com.example.demo.Levels.LevelParent;
+import com.example.demo.Screens.LevelScreen;
+import com.example.demo.Screens.MainMenu;
+import com.example.demo.Screens.PauseScreen;
 import com.example.demo.controller.Controller;
 
 import factories.interfaces.ComponentsFactory;
@@ -64,16 +62,11 @@ public class ComponentsImplement implements ComponentsFactory {
 	}
 
 	@Override
-	public ShieldImage createShieldIcon(double xPosition, double yPosition, double size) {
-		ShieldImage shieldIcon = new ShieldImage(xPosition, yPosition, assetLoader);
+	public Shield createShieldIcon(double xPosition, double yPosition, double size) {
+		Shield shieldIcon = new Shield(xPosition, yPosition, assetLoader);
 		shieldIcon.setFitHeight(size);
 		shieldIcon.setFitWidth(size);
 		return shieldIcon;
-	}
-
-	@Override
-	public GameOverImage createGameOverImage(double xPosition, double yPosition) {
-		return new GameOverImage(xPosition, yPosition, assetLoader);
 	}
 
 	@Override
@@ -88,8 +81,8 @@ public class ComponentsImplement implements ComponentsFactory {
 	}
 
 	@Override
-	public LevelView createLevelView(Group root, int heartsToDisplay, double screenWidth, Group uiLayer) {
-		return new LevelView(root, heartsToDisplay, this, screenWidth, uiLayer);
+	public LevelScreen createLevelView(Group root, int heartsToDisplay, double screenWidth, Group uiLayer) {
+		return new LevelScreen(root, heartsToDisplay, this, screenWidth, uiLayer);
 	}
 
 	@Override
@@ -104,13 +97,8 @@ public class ComponentsImplement implements ComponentsFactory {
 	}
 
 	@Override
-	public ShieldImage createShieldImage(double xPosition, double yPosition) {
-		return new ShieldImage(xPosition, yPosition, assetLoader);
-	}
-
-	@Override
-	public WinImage createWinImage(double xPosition, double yPosition) {
-		return new WinImage(xPosition, yPosition, assetLoader);
+	public Shield createShieldImage(double xPosition, double yPosition) {
+		return new Shield(xPosition, yPosition, assetLoader);
 	}
 
 	@Override

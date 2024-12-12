@@ -3,13 +3,13 @@ package com.example.demo.controller;
 import java.lang.reflect.Constructor;
 import java.util.Stack;
 
-import com.example.demo.AudioAssetLoader;
-import com.example.demo.AudioManager;
-import com.example.demo.ImageManager;
-import com.example.demo.ImgAssetLoader;
-import com.example.demo.LevelParent;
-import com.example.demo.MainMenu;
-import com.example.demo.TransitionScene;
+import com.example.demo.Assets.AudioAssetLoader;
+import com.example.demo.Assets.ImgAssetLoader;
+import com.example.demo.Levels.LevelParent;
+import com.example.demo.Managers.AudioManager;
+import com.example.demo.Managers.ImageManager;
+import com.example.demo.Screens.MainMenu;
+import com.example.demo.Screens.TransitionScene;
 
 import factories.AssetsImplement;
 import factories.ComponentsImplement;
@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Controller {
 
-	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelOne";
+	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.Levels.LevelOne";
 	private final Stage stage;
 	private final AudioManager audioManager;
 	private final AudioAssetLoader audioAssetLoader;
@@ -81,13 +81,13 @@ public class Controller {
 	                stage.getWidth(), 5, this, componentsFactory, assetFactory, audioManager, stage);
 	        myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
 	            if (newValue != null && !newValue.isEmpty()) {
-	                if (newValue.equals("com.example.demo.LevelThree")) {
+	                if (newValue.equals("com.example.demo.Levels.LevelThree")) {
 	                    TransitionScene.fadeOutCurrentScene(stage, () -> {
 	                        TransitionScene transitionScene = new TransitionScene(stage, "A mighty foe stands before you...",
 	                                stage.getWidth(), stage.getHeight(), componentsFactory);
 	                        transitionScene.showTransition(() -> goToNextLevel(newValue));
 	                    });
-	                } else if (newValue.equals("com.example.demo.LevelTwo")) {
+	                } else if (newValue.equals("com.example.demo.Levels.LevelTwo")) {
 	                    TransitionScene.fadeOutCurrentScene(stage, () -> {
 	                        TransitionScene transitionScene = new TransitionScene(stage, null,
 	                                stage.getWidth(), stage.getHeight(), componentsFactory);
@@ -107,9 +107,9 @@ public class Controller {
 
 	        if (className.equals(LEVEL_ONE_CLASS_NAME)) {
 	            audioManager.playBackgroundMusic("LevelOneBGM");
-	        } else if (className.equals("com.example.demo.LevelTwo")) {
+	        } else if (className.equals("com.example.demo.Levels.LevelTwo")) {
 	            audioManager.playBackgroundMusic("LevelTwoBGM");
-	        } else if (className.equals("com.example.demo.LevelThree")) {
+	        } else if (className.equals("com.example.demo.Levels.LevelThree")) {
 	            audioManager.playBackgroundMusic("BossBGM");
 	        }
 	        audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());

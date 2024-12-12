@@ -1,9 +1,10 @@
 package com.example.demo.Strategy;
 
-import com.example.demo.FighterPlane;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.example.demo.Actors.Planes.FighterPlane;
 /**
  * Implements the MovementStrategy interface 
  * which defines movement behavior for boss plane.

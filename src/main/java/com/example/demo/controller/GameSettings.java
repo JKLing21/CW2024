@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import java.util.prefs.Preferences;
 
-import com.example.demo.AudioAssetLoader;
-import com.example.demo.AudioManager;
+import com.example.demo.Assets.AudioAssetLoader;
+import com.example.demo.Managers.AudioManager;
 
 import factories.interfaces.ComponentsFactory;
 import javafx.scene.control.Button;

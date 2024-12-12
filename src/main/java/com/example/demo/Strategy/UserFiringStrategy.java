@@ -1,8 +1,8 @@
 package com.example.demo.Strategy;
 
-import com.example.demo.ActiveActorDestructible;
-import com.example.demo.FighterPlane;
-import com.example.demo.UserPlane;
+import com.example.demo.Actors.ActiveActorDestructible;
+import com.example.demo.Actors.Planes.FighterPlane;
+import com.example.demo.Actors.Planes.UserPlane;
 
 import factories.interfaces.ProjectilesFactory;
 /**

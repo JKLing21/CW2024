@@ -1,9 +1,9 @@
 package factories.interfaces;
 
-import com.example.demo.BossProjectile;
-import com.example.demo.EnemyProjectile;
-import com.example.demo.UserProjectile;
-import com.example.demo.WarPlaneProjectile;
+import com.example.demo.Actors.Projectiles.BossProjectile;
+import com.example.demo.Actors.Projectiles.EnemyProjectile;
+import com.example.demo.Actors.Projectiles.UserProjectile;
+import com.example.demo.Actors.Projectiles.WarPlaneProjectile;
 
 public interface ProjectilesFactory {
 	UserProjectile createUserProjectile(double initialXPos, double initialYPos, double screenWidth);

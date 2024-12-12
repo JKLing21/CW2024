@@ -1,6 +1,6 @@
 package factories;
 
-import com.example.demo.ImgAssetLoader;
+import com.example.demo.Assets.ImgAssetLoader;
 
 import factories.interfaces.ImgViewFactory;
 import javafx.event.EventHandler;

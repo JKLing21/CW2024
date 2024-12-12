@@ -1,8 +1,9 @@
 package com.example.demo.Strategy;
 
-import com.example.demo.ActiveActorDestructible;
-import com.example.demo.FighterPlane;
-import com.example.demo.WarPlane;
+import com.example.demo.Actors.ActiveActorDestructible;
+import com.example.demo.Actors.Planes.FighterPlane;
+import com.example.demo.Actors.Planes.WarPlane;
+
 import factories.interfaces.ProjectilesFactory;
 
 public class WarPlaneFiringStrategy implements FiringStrategy {

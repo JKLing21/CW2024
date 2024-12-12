@@ -1,10 +1,10 @@
 package factories;
 
-import com.example.demo.BossProjectile;
-import com.example.demo.EnemyProjectile;
-import com.example.demo.ImgAssetLoader;
-import com.example.demo.UserProjectile;
-import com.example.demo.WarPlaneProjectile;
+import com.example.demo.Actors.Projectiles.BossProjectile;
+import com.example.demo.Actors.Projectiles.EnemyProjectile;
+import com.example.demo.Actors.Projectiles.UserProjectile;
+import com.example.demo.Actors.Projectiles.WarPlaneProjectile;
+import com.example.demo.Assets.ImgAssetLoader;
 
 import factories.interfaces.ComponentsFactory;
 import factories.interfaces.ProjectilesFactory;

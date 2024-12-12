@@ -1,11 +1,11 @@
 package factories;
 
-import com.example.demo.AudioManager;
-import com.example.demo.Boss;
-import com.example.demo.EnemyPlane;
-import com.example.demo.ImgAssetLoader;
-import com.example.demo.UserPlane;
-import com.example.demo.WarPlane;
+import com.example.demo.Actors.Planes.Boss;
+import com.example.demo.Actors.Planes.EnemyPlane;
+import com.example.demo.Actors.Planes.UserPlane;
+import com.example.demo.Actors.Planes.WarPlane;
+import com.example.demo.Assets.ImgAssetLoader;
+import com.example.demo.Managers.AudioManager;
 import com.example.demo.Strategy.EnemyFiringStrategy;
 import com.example.demo.Strategy.EnemyMovementStrategy;
 import com.example.demo.Strategy.WarPlaneFiringStrategy;

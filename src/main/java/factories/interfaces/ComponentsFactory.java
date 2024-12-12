@@ -1,13 +1,11 @@
 package factories.interfaces;
 
-import com.example.demo.GameOverImage;
-import com.example.demo.HeartDisplay;
-import com.example.demo.LevelParent;
-import com.example.demo.LevelView;
-import com.example.demo.MainMenu;
-import com.example.demo.PauseScreen;
-import com.example.demo.ShieldImage;
-import com.example.demo.WinImage;
+import com.example.demo.Actors.Components.HeartDisplay;
+import com.example.demo.Actors.Components.Shield;
+import com.example.demo.Levels.LevelParent;
+import com.example.demo.Screens.LevelScreen;
+import com.example.demo.Screens.MainMenu;
+import com.example.demo.Screens.PauseScreen;
 import com.example.demo.controller.Controller;
 
 import javafx.event.ActionEvent;
@@ -37,23 +35,19 @@ public interface ComponentsFactory {
 
 	Text createBossNameText(String name, Font font, Color color);
 
-	ShieldImage createShieldIcon(double xPosition, double yPosition, double size);
-
-	GameOverImage createGameOverImage(double xPosition, double yPosition);
+	Shield createShieldIcon(double xPosition, double yPosition, double size);
 
 	HeartDisplay createHeartDisplay(double xPosition, double yPosition, int heartsToDisplay);
 
 	ImageView createHeartImage();
 
-	LevelView createLevelView(Group root, int heartsToDisplay, double screenWidth, Group uiLayer);
+	LevelScreen createLevelView(Group root, int heartsToDisplay, double screenWidth, Group uiLayer);
 
 	MainMenu createMainMenu(Controller controller);
 
 	PauseScreen createPauseScreen(Group root, Scene scene, LevelParent levelParent, Controller controller);
 
-	ShieldImage createShieldImage(double xPosition, double yPosition);
-
-	WinImage createWinImage(double xPosition, double yPosition);
+	Shield createShieldImage(double xPosition, double yPosition);
 
 	Rectangle createHitbox(double width, double height, Color color, Color stroke);
 
