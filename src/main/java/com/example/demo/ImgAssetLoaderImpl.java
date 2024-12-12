@@ -5,8 +5,8 @@ import javafx.scene.image.Image;
 public class ImgAssetLoaderImpl extends ImgAssetLoader {
 	
     @Override
-    public Image loadImage(String name) {
+    public Image loadAsset(String name) {
     	
-        return super.loadImage(name);
+        return super.loadAsset(name);
     }
 }

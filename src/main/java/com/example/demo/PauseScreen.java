@@ -78,7 +78,7 @@ public class PauseScreen {
         return menuContainer;
     }
     /**
-     * Creates top button container, including resume and settings buttons.
+     * Creates top button container, including resume, settings and restart buttons.
      *
      * @return HBox container for top buttons.
      */
@@ -86,11 +86,12 @@ public class PauseScreen {
         HBox topButtonContainer = new HBox(20);
         topButtonContainer.setAlignment(Pos.CENTER);
 
-        ImageView resumeButton = componentsFactory.getImgViewFactory().createResumeButton(85, 75, e -> levelParent.togglePause());
+        ImageView resumeButton = componentsFactory.getImgViewFactory().createResumeButton(78, 50, e -> levelParent.togglePause());
         ImageView settingsButton = componentsFactory.getImgViewFactory().createSettingsButton(90, 75, e -> showSettings());
+        ImageView restartButton = componentsFactory.getImgViewFactory().createRestartButton(95, 75, e -> levelParent.restartGame());
         settingsButton.getStyleClass().add("settings-button");
 
-        topButtonContainer.getChildren().addAll(resumeButton, settingsButton);
+        topButtonContainer.getChildren().addAll(resumeButton, settingsButton, restartButton);
         return topButtonContainer;
     }
     /**

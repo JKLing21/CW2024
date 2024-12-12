@@ -18,7 +18,7 @@ public class EnemyPlane extends FighterPlane {
 	public EnemyPlane(double initialXPos, double initialYPos, ComponentsFactory factory, ImgAssetLoader assetLoader,
 			MovementStrategy movementStrategy, FiringStrategy firingStrategy) {
 		super(IMAGE_HEIGHT, initialXPos, initialYPos, INITIAL_HEALTH, factory);
-		this.enemyImage = assetLoader.loadImage("enemyplane");
+		this.enemyImage = assetLoader.loadAsset("enemyplane");
 		this.movementStrategy = movementStrategy;
 		this.firingStrategy = firingStrategy;
 		ImageProperties.applyProperties(this, enemyImage, initialXPos, initialYPos, IMAGE_HEIGHT, null, true);

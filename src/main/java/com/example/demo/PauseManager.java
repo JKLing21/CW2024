@@ -16,6 +16,7 @@ public class PauseManager {
     private final Scene scene;
     private final LevelParent levelParent;
     private final Controller controller;
+    private final AudioManager audioManager;
     private final ComponentsFactory componentsFactory;
     private final PauseScreen pauseScreen;
     protected boolean isPaused = false;
@@ -27,11 +28,12 @@ public class PauseManager {
      * @param levelParent: Manages the game state.
      * @param controller: Controller for handling game logic.
      */
-    public PauseManager(Group root, Scene scene, LevelParent levelParent, Controller controller) {
+    public PauseManager(Group root, Scene scene, LevelParent levelParent, Controller controller, AudioManager audioManager) {
         this.root = root;
         this.scene = scene;
         this.levelParent = levelParent;
         this.controller = controller;
+        this.audioManager = audioManager;
         this.componentsFactory = levelParent.getComponentsFactory();
         this.pauseScreen = new PauseScreen(root, scene, levelParent, controller);
         this.isPaused = false;
@@ -53,9 +55,11 @@ public class PauseManager {
         isPaused = !isPaused;
         if (isPaused) {
             levelParent.getTimeline().pause();
+            audioManager.pauseBackgroundMusic();
             pauseScreen.showPauseMenu();
         } else {
             levelParent.getTimeline().play();
+            audioManager.resumeBackgroundMusic();
             pauseScreen.hidePauseMenu();
         }
         root.requestFocus();

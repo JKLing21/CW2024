@@ -33,7 +33,8 @@ public abstract class LevelParent {
 	private final double enemyMaximumYPosition;
 
 	private final Group root;
-	private final Timeline timeline;
+	protected final Timeline timeline;
+	protected final Controller controller;
 	private final UserPlane user;
 	private final Scene scene;
 	private final ImageView background;
@@ -41,13 +42,15 @@ public abstract class LevelParent {
 	private PauseScreen pauseScreen;
 	private KeyEventHandlers keyEventHandlers;
 	private int initialHealth;
+	protected Group uiLayer;
 	private ProjectilesFactory projectilesFactory = new ProjectilesImplement();
-	private final ComponentsFactory componentsFactory;
+	protected final ComponentsFactory componentsFactory;
 	@SuppressWarnings("unused")
 	private final AssetFactory assetFactory;
 	private CollisionManager collisionManager;
 	private final PauseManager pauseManager;
 	private final UserFiringStrategy userFiringStrategy;
+	protected final AudioManager audioManager;
 
 	private final List<ActiveActorDestructible> friendlyUnits;
 	private final List<ActiveActorDestructible> enemyUnits;
@@ -60,14 +63,18 @@ public abstract class LevelParent {
 	private boolean transitioningToNextLevel = false;
 
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
-			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory) {
+			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory,
+			AudioManager audioManager) {
 		this.root = new Group();
 		this.scene = new Scene(root, screenWidth, screenHeight);
 		this.timeline = new Timeline();
+		this.controller = controller;
+		this.audioManager = audioManager;
+		this.audioManager.preloadSoundEffect("planefire");
 		ActorFactory actorFactory = new ActorImplement();
-		this.user = actorFactory.createUserPlane(playerInitialHealth, screenWidth, projectilesFactory);
+		this.user = actorFactory.createUserPlane(playerInitialHealth, screenWidth, projectilesFactory, audioManager);
 		this.componentsFactory = componentsFactory;
-		this.pauseManager = new PauseManager(root, scene, this, controller);
+		this.pauseManager = new PauseManager(root, scene, this, controller, audioManager);
 		this.pauseScreen = componentsFactory.createPauseScreen(root, scene, this, controller);
 		this.initialHealth = playerInitialHealth;
 		this.friendlyUnits = new ArrayList<>();
@@ -83,7 +90,8 @@ public abstract class LevelParent {
 		this.screenWidth = screenWidth;
 		this.collisionManager = new CollisionManager(root, screenWidth);
 		this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
-		this.levelView = componentsFactory.createLevelView(root, playerInitialHealth);
+		this.uiLayer = new Group();
+		this.levelView = componentsFactory.createLevelView(root, playerInitialHealth, screenWidth, uiLayer);
 		initializeTimeline();
 		friendlyUnits.add(user);
 
@@ -106,12 +114,16 @@ public abstract class LevelParent {
 		initializeBackground();
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
+		if (shouldShowKillCount()) {
+			levelView.showKillCountText();
+		}
 
-		Group uiLayer = new Group();
 		ImageView pauseImageView = componentsFactory.getImgViewFactory().createPauseButton(screenWidth - 60, 10, 50, 50,
 				e -> togglePause());
 		uiLayer.getChildren().add(pauseImageView);
-
+		if (isLevelOne()) {
+			levelView.showInstructions();
+		}
 		Pane layeredPane = new Pane();
 		layeredPane.getChildren().addAll(root, uiLayer);
 
@@ -123,6 +135,25 @@ public abstract class LevelParent {
 	public void startGame() {
 		root.requestFocus();
 		timeline.play();
+	}
+
+	public void restartGame() {
+		try {
+			timeline.stop();
+			root.getChildren().clear();
+			user.setHealth(initialHealth);
+			user.setNumberOfKills(0);
+			friendlyUnits.clear();
+			enemyUnits.clear();
+			userProjectiles.clear();
+			enemyProjectiles.clear();
+			initializeFriendlyUnits();
+			levelView.showHeartDisplay();
+			timeline.play();
+			controller.resetAndRelaunchGame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public int getInitialHealth() {
@@ -142,6 +173,7 @@ public abstract class LevelParent {
 			transitioningToNextLevel = true;
 			nextLevelProperty.set(levelName);
 			timeline.stop();
+			audioManager.fadeOut(Duration.seconds(2));
 		}
 	}
 
@@ -244,18 +276,18 @@ public abstract class LevelParent {
 
 	private void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
-		levelView.updateKillCount(user.getNumberOfKills());
-	}
-
-	protected void winGame() {
-		timeline.stop();
-		levelView.showWinImage();
+		levelView.updateKillCount(user.getNumberOfKills(), getKillTarget());
 	}
 
 	protected void loseGame() {
 		isGameOver = true;
 		timeline.stop();
-		levelView.showGameOverImage();
+		audioManager.stopBackgroundMusic();
+		TransitionScene.fadeOutCurrentScene(controller.getStage(), () -> {
+			LoseScreen loseScreen = new LoseScreen(controller.getStage(), new ImgAssetLoaderImpl(), componentsFactory,
+					this, controller);
+			loseScreen.showLoseScreen();
+		});
 	}
 
 	protected UserPlane getUser() {
@@ -299,4 +331,17 @@ public abstract class LevelParent {
 	public void togglePause() {
 		pauseManager.togglePause();
 	}
+
+	protected boolean isLevelOne() {
+		return false;
+	}
+
+	protected boolean shouldShowKillCount() {
+		return true;
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+
 }

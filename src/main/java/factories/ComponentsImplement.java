@@ -16,6 +16,7 @@ import factories.interfaces.ImgViewFactory;
 import factories.interfaces.UIControlFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,6 +24,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -37,7 +41,8 @@ public class ComponentsImplement implements ComponentsFactory {
 	public ComponentsImplement() {
 		this.imgViewFactory = new ImgViewFactoryImpl();
 		this.uiControlFactory = new UIControlFactoryImpl();
-		this.assetLoader = new ImgAssetLoader() {};
+		this.assetLoader = new ImgAssetLoader() {
+		};
 	}
 
 	@Override
@@ -83,8 +88,8 @@ public class ComponentsImplement implements ComponentsFactory {
 	}
 
 	@Override
-	public LevelView createLevelView(Group root, int heartsToDisplay) {
-		return new LevelView(root, heartsToDisplay, this);
+	public LevelView createLevelView(Group root, int heartsToDisplay, double screenWidth, Group uiLayer) {
+		return new LevelView(root, heartsToDisplay, this, screenWidth, uiLayer);
 	}
 
 	@Override
@@ -147,6 +152,55 @@ public class ComponentsImplement implements ComponentsFactory {
 	public Text createKillCountText() {
 		return new Text(10, 40, "Kills: 0");
 	}
+
+	@Override
+	public BorderPane createMainSettingsLayout(HBox titleBox, VBox soundSettingsPane, HBox backButtonBox) {
+		BorderPane mainPane = new BorderPane();
+		mainPane.setTop(titleBox);
+		mainPane.setCenter(soundSettingsPane);
+		mainPane.setBottom(backButtonBox);
+		return mainPane;
+	}
+
+	@Override
+	public VBox createSoundSettingsLayout(VBox soundEffectsBox, VBox backgroundMusicBox, Button resetToDefaultButton) {
+		VBox soundSettingsPane = new VBox(20, soundEffectsBox, backgroundMusicBox, resetToDefaultButton);
+		soundSettingsPane.setAlignment(Pos.CENTER);
+		return soundSettingsPane;
+	}
+
+	@Override
+	public HBox createSliderWithToggle(Slider slider, ToggleButton toggleButton) {
+		HBox sliderWithToggleBox = new HBox(10, slider, toggleButton);
+		sliderWithToggleBox.setAlignment(Pos.CENTER);
+		return sliderWithToggleBox;
+	}
+
+	@Override
+	public HBox createTitleBox(Label label) {
+		HBox titleBox = new HBox(label);
+		titleBox.setAlignment(Pos.CENTER);
+		return titleBox;
+	}
+
+	@Override
+	public HBox createBackButtonBox(Button button) {
+		HBox backButtonBox = new HBox(button);
+		backButtonBox.setAlignment(Pos.CENTER);
+		return backButtonBox;
+	}
+	
+	@Override
+    public VBox createSoundEffectsBox(VBox soundEffectsBox) {
+        soundEffectsBox.setAlignment(Pos.CENTER);
+        return soundEffectsBox;
+    }
+
+    @Override
+    public VBox createBackgroundMusicBox(VBox backgroundMusicBox) {
+        backgroundMusicBox.setAlignment(Pos.CENTER);
+        return backgroundMusicBox;
+    }
 
 	@Override
 	public ImgViewFactory getImgViewFactory() {

@@ -43,13 +43,13 @@ public class TransitionScene {
 
     public void showTransition(Runnable onTransitionEnd) {
 
-        FadeTransition fadeInText = new FadeTransition(Duration.seconds(3), transitionText);
+        FadeTransition fadeInText = new FadeTransition(Duration.seconds(2.5), transitionText);
         fadeInText.setFromValue(0);
         fadeInText.setToValue(1);
         fadeInText.setCycleCount(1);
         fadeInText.setAutoReverse(true);
 
-        TranslateTransition planeAnimation = new TranslateTransition(Duration.seconds(2.2), planeImageView);
+        TranslateTransition planeAnimation = new TranslateTransition(Duration.seconds(2.5), planeImageView);
         planeAnimation.setFromX(-planeImageView.getFitWidth());
         planeAnimation.setToX(transitionScene.getWidth() + planeImageView.getFitWidth());
         planeAnimation.setCycleCount(1);

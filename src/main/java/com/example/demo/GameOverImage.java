@@ -10,7 +10,7 @@ public class GameOverImage extends ImageView {
     private final Image gameOverImage;
 
 	public GameOverImage(double xPosition, double yPosition, ImgAssetLoader assetLoader) {
-        this.gameOverImage = assetLoader.loadImage("gameover");
+        this.gameOverImage = assetLoader.loadAsset("gameover");
         setImage(gameOverImage);
         setFitWidth(GAME_OVER_IMAGE_WIDTH);
         setFitHeight(GAME_OVER_IMAGE_HEIGHT);

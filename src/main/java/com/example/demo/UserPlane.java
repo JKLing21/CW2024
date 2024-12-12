@@ -16,18 +16,20 @@ public class UserPlane extends FighterPlane {
 	private int numberOfKills;
 	private boolean isFiring;
 	private final Image planeImage;
+	private AudioManager audioManager;
 
 	private final UserMovementStrategy movementStrategy;
 	private final FiringStrategy firingStrategy;
 
 	public UserPlane(int initialHealth, double screenWidth, ProjectilesFactory projectilesFactory,
-			ComponentsFactory factory, ImgAssetLoader assetLoader) {
+			ComponentsFactory factory, ImgAssetLoader assetLoader, AudioManager audioManager) {
 		super(IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth, factory);
-		this.planeImage = assetLoader.loadImage("userplane");
+		this.planeImage = assetLoader.loadAsset("userplane");
 		ImageProperties.applyProperties(this, planeImage, INITIAL_X_POSITION, INITIAL_Y_POSITION, IMAGE_HEIGHT, null, true);
 		this.health = 5;
 		this.firingStrategy = new UserFiringStrategy(projectilesFactory, screenWidth);
 		this.movementStrategy = new UserMovementStrategy(this);
+		this.audioManager = audioManager;
 	}
 
 	@Override
@@ -91,5 +93,13 @@ public class UserPlane extends FighterPlane {
 	public void setHealth(int health) {
 		this.health = health;
 	}
+	
+	public AudioManager getAudioManager() {
+        return audioManager;
+    }
+
+    public void setAudioManager(AudioManager audioManager) {
+        this.audioManager = audioManager;
+    }
 
 }

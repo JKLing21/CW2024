@@ -23,7 +23,7 @@ public class MainMenu {
 
     public MainMenu(Controller controller, ComponentsFactory componentsFactory, ImgAssetLoader assetLoader) {
         this.controller = controller;
-        this.MainMenuImage = assetLoader.loadImage("MainMenu");
+        this.MainMenuImage = assetLoader.loadAsset("MainMenu");
         if (MainMenuImage == null) {
             System.out.println("Background image not found.");
             return;

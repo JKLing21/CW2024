@@ -12,7 +12,7 @@ public class BossProjectile extends Projectile {
 
 	public BossProjectile(double initialYPos, ComponentsFactory factory, ImgAssetLoader assetLoader) {
 		super(IMAGE_HEIGHT, INITIAL_X_POSITION, initialYPos, factory);
-		this.bossProjectileImg = assetLoader.loadImage("fireball");
+		this.bossProjectileImg = assetLoader.loadAsset("fireball");
 		ImageProperties.applyProperties(this, bossProjectileImg, (double) INITIAL_X_POSITION, initialYPos, IMAGE_HEIGHT, null, true);
 	}
 

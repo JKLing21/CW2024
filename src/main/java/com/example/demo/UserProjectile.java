@@ -14,7 +14,7 @@ public class UserProjectile extends Projectile {
 	public UserProjectile(double initialXPos, double initialYPos, double screenWidth, ComponentsFactory factory, ImgAssetLoader assetLoader) {
 		super(IMAGE_HEIGHT, initialXPos, initialYPos, factory);
 		this.screenWidth = screenWidth;
-		this.userProjectileImg = assetLoader.loadImage("userfire");
+		this.userProjectileImg = assetLoader.loadAsset("userfire");
 		ImageProperties.applyProperties(this, userProjectileImg, initialXPos, initialYPos, IMAGE_HEIGHT, null, true);
 	}
 

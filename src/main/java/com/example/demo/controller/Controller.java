@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.lang.reflect.Constructor;
 import java.util.Stack;
 
+import com.example.demo.AudioAssetLoader;
+import com.example.demo.AudioManager;
 import com.example.demo.ImageManager;
 import com.example.demo.ImgAssetLoader;
 import com.example.demo.LevelParent;
@@ -19,11 +21,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.lang.reflect.InvocationTargetException;
 
 public class Controller {
 
 	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.LevelOne";
 	private final Stage stage;
+	private final AudioManager audioManager;
+	private final AudioAssetLoader audioAssetLoader;
 	private Stack<Scene> sceneStack = new Stack<>();
 	private ImageManager imageManager;
 	private AssetFactory assetFactory;
@@ -31,6 +36,8 @@ public class Controller {
 
 	public Controller(Stage stage, double screenWidth) {
 		this.stage = stage;
+		this.audioAssetLoader = new AudioAssetLoader() {};
+		this.audioManager = new AudioManager(audioAssetLoader);
 		this.imageManager = ImageManager.getInstance();
 		this.assetFactory = new AssetsImplement(imageManager);
 		this.componentsFactory = new ComponentsImplement();
@@ -44,37 +51,86 @@ public class Controller {
 		Scene menuScene = new Scene(mainMenu.getMenuPane(), stage.getWidth(), stage.getHeight());
 		menuScene.getStylesheets().add(getClass().getResource("/com/example/demo/css/MainMenu.css").toExternalForm());
 		pushScene(menuScene);
+		audioManager.playBackgroundMusic("MainMenuBGM");
+		audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
 	}
 
 	public void launchGame() throws Exception {
 		stage.show();
 		goToLevel(LEVEL_ONE_CLASS_NAME);
 	}
+	
+	public void resetAndRelaunchGame() {
+	    try {
+	        sceneStack.clear();
+	        showMainMenu();
+	        launchGame();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	private void goToLevel(String className) throws Exception {
-		Class<?> myClass = Class.forName(className);
-		String backgroundImage = (String) myClass.getField("BACKGROUND_IMAGE").get(null);
-		Constructor<?> constructor = myClass.getConstructor(String.class, double.class, double.class, int.class,
-				Controller.class, ComponentsFactory.class, AssetFactory.class);
-		LevelParent myLevel = (LevelParent) constructor.newInstance(backgroundImage, stage.getHeight(),
-				stage.getWidth(), 5, this, componentsFactory, assetFactory);
-		myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue != null && !newValue.isEmpty()) {
-				TransitionScene.fadeOutCurrentScene(stage, () -> {
-					TransitionScene transitionScene = new TransitionScene(stage, "A mighty foe stands before you...",
-							stage.getWidth(), stage.getHeight(), componentsFactory);
-					transitionScene.showTransition(() -> {
-						goToNextLevel(newValue);
-					});
-				});
-			}
-		});
+	    audioManager.stopBackgroundMusic();
+	    try {
+	        Class<?> myClass = Class.forName(className);
+	        String backgroundImage = (String) myClass.getField("BACKGROUND_IMAGE").get(null);
+	        Constructor<?> constructor = myClass.getConstructor(String.class, double.class, double.class, int.class,
+	                Controller.class, ComponentsFactory.class, AssetFactory.class, AudioManager.class, Stage.class);
+	        LevelParent myLevel = (LevelParent) constructor.newInstance(backgroundImage, stage.getHeight(),
+	                stage.getWidth(), 5, this, componentsFactory, assetFactory, audioManager, stage);
+	        myLevel.nextLevelProperty().addListener((observable, oldValue, newValue) -> {
+	            if (newValue != null && !newValue.isEmpty()) {
+	                if (newValue.equals("com.example.demo.LevelThree")) {
+	                    TransitionScene.fadeOutCurrentScene(stage, () -> {
+	                        TransitionScene transitionScene = new TransitionScene(stage, "A mighty foe stands before you...",
+	                                stage.getWidth(), stage.getHeight(), componentsFactory);
+	                        transitionScene.showTransition(() -> goToNextLevel(newValue));
+	                    });
+	                } else if (newValue.equals("com.example.demo.LevelTwo")) {
+	                    TransitionScene.fadeOutCurrentScene(stage, () -> {
+	                        TransitionScene transitionScene = new TransitionScene(stage, null,
+	                                stage.getWidth(), stage.getHeight(), componentsFactory);
+	                        transitionScene.showTransition(() -> goToNextLevel(newValue));
+	                    });
+	                } else {
+	                    goToNextLevel(newValue);
+	                }
+	            }
+	        });
 
-		Scene scene = myLevel.initializeScene();
-		scene.getStylesheets().add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
-		pushScene(scene);
-		myLevel.startGame();
-		applyFadeInTransition(scene);
+	        Scene scene = myLevel.initializeScene();
+	        scene.getStylesheets().add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
+	        pushScene(scene);
+	        myLevel.startGame();
+	        applyFadeInTransition(scene);
+
+	        if (className.equals(LEVEL_ONE_CLASS_NAME)) {
+	            audioManager.playBackgroundMusic("LevelOneBGM");
+	        } else if (className.equals("com.example.demo.LevelTwo")) {
+	            audioManager.playBackgroundMusic("LevelTwoBGM");
+	        } else if (className.equals("com.example.demo.LevelThree")) {
+	            audioManager.playBackgroundMusic("BossBGM");
+	        }
+	        audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
+	    } catch (InvocationTargetException e) {
+	        e.printStackTrace();
+	        System.err.println("Root cause: " + e.getCause());
+	        e.getCause().printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.err.println("Error occurred while loading level: " + e.getMessage());
+	    }
+	}
+	
+	public void updateBackgroundMusicVolume(double volume) {
+	    audioManager.setBackgroundMusicVolume(volume);
+	    System.out.println("Background music volume updated to: " + volume);
+	}
+
+	public void updateSoundEffectsVolume(double volume) {
+	    audioManager.setSoundEffectsVolume(volume);
+	    System.out.println("Sound effects volume updated to: " + volume);
 	}
 
 	private void applyFadeInTransition(Scene scene) {
@@ -87,18 +143,18 @@ public class Controller {
 	}
 
 	private void goToNextLevel(String levelName) {
-		try {
-			goToLevel(levelName);
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("Error occurred while loading level: " + e.getMessage());
-			alert.show();
-		}
+	    try {
+	        goToLevel(levelName);
+	    } catch (Exception e) {
+	        Alert alert = new Alert(AlertType.ERROR);
+	        alert.setContentText("Error occurred while loading level: " + e.getMessage());
+	        alert.show();
+	    }
 	}
 
 	public void showSettings() {
 		ComponentsFactory componentsFactory = new ComponentsImplement();
-		GameSettings gameSettings = new GameSettings(this, componentsFactory);
+		GameSettings gameSettings = new GameSettings(this, componentsFactory, audioManager);
 		Scene settingsScene = new Scene(gameSettings.getSettingsPane(), stage.getWidth(), stage.getHeight());
 		settingsScene.getStylesheets()
 				.add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
@@ -110,10 +166,13 @@ public class Controller {
 	}
 
 	private void pushScene(Scene scene) {
-		sceneStack.push(scene);
-		stage.setScene(scene);
-		stage.show();
-		applyFadeInTransition(scene);
+	    if (!sceneStack.isEmpty() && sceneStack.peek() == scene) {
+	        return;
+	    }
+	    sceneStack.push(scene);
+	    stage.setScene(scene);
+	    stage.show();
+	    applyFadeInTransition(scene);
 	}
 
 	public void goBack() {
@@ -127,4 +186,13 @@ public class Controller {
 			}
 		}
 	}
+	
+	public AudioManager getAudioManager() {
+        return audioManager;
+    }
+	
+	public Stage getStage() {
+	    return stage;
+	}
+
 }
