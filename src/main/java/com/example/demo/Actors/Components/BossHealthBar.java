@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 /**
- * Represents the bossplane health bar and related UI components
+ * BossHealthBar class represents the bossplane health bar and related UI components
  * Including the health bar, health bar background, bossplane's name text label, 
  * and shield icon indicating the bossplane's shielding status.
  */
