@@ -1,0 +1,14 @@
+module:com.example.demo
+com.example.demo
+com.example.demo.Actors
+com.example.demo.Actors.Components
+com.example.demo.Actors.Planes
+com.example.demo.Actors.Projectiles
+com.example.demo.Assets
+com.example.demo.Factories
+com.example.demo.Factories.Interfaces
+com.example.demo.Levels
+com.example.demo.Managers
+com.example.demo.Screens
+com.example.demo.Strategy
+com.example.demo.utils
