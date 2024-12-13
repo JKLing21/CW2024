@@ -1,17 +1,17 @@
-package factories;
+package com.example.demo.Factories;
 
+import com.example.demo.Controller;
 import com.example.demo.Actors.Components.HeartDisplay;
 import com.example.demo.Actors.Components.Shield;
 import com.example.demo.Assets.ImgAssetLoader;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
+import com.example.demo.Factories.Interfaces.ImgViewFactory;
+import com.example.demo.Factories.Interfaces.UIControlFactory;
 import com.example.demo.Levels.LevelParent;
 import com.example.demo.Screens.LevelScreen;
 import com.example.demo.Screens.MainMenu;
 import com.example.demo.Screens.PauseScreen;
-import com.example.demo.controller.Controller;
 
-import factories.interfaces.ComponentsFactory;
-import factories.interfaces.ImgViewFactory;
-import factories.interfaces.UIControlFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;

@@ -1,6 +1,7 @@
 package com.example.demo.Actors;
 
-import factories.interfaces.ComponentsFactory;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
+
 import javafx.scene.Group;
 /**
  * ActiveActorDestructible class represents destructible active actor in game, which is entity that can be destroyed.

@@ -1,10 +1,10 @@
 package com.example.demo.Managers;
 
-import com.example.demo.controller.Controller;
+import com.example.demo.Controller;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 import com.example.demo.Levels.LevelParent;
 import com.example.demo.Screens.PauseScreen;
 
-import factories.interfaces.ComponentsFactory;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 /**

@@ -1,4 +1,4 @@
-package factories.interfaces;
+package com.example.demo.Factories.Interfaces;
 
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;

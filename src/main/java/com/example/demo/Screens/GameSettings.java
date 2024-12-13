@@ -1,11 +1,12 @@
-package com.example.demo.controller;
+package com.example.demo.Screens;
 
 import java.util.prefs.Preferences;
 
+import com.example.demo.Controller;
 import com.example.demo.Assets.AudioAssetLoader;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 import com.example.demo.Managers.AudioManager;
 
-import factories.interfaces.ComponentsFactory;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;

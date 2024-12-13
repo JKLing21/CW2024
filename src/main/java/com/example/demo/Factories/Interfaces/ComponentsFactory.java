@@ -1,12 +1,12 @@
-package factories.interfaces;
+package com.example.demo.Factories.Interfaces;
 
+import com.example.demo.Controller;
 import com.example.demo.Actors.Components.HeartDisplay;
 import com.example.demo.Actors.Components.Shield;
 import com.example.demo.Levels.LevelParent;
 import com.example.demo.Screens.LevelScreen;
 import com.example.demo.Screens.MainMenu;
 import com.example.demo.Screens.PauseScreen;
-import com.example.demo.controller.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

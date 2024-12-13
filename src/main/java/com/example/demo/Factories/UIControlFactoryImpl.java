@@ -1,6 +1,7 @@
-package factories;
+package com.example.demo.Factories;
 
-import factories.interfaces.UIControlFactory;
+import com.example.demo.Factories.Interfaces.UIControlFactory;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;

@@ -3,8 +3,7 @@ package com.example.demo.Strategy;
 import com.example.demo.Actors.ActiveActorDestructible;
 import com.example.demo.Actors.Planes.EnemyPlane;
 import com.example.demo.Actors.Planes.FighterPlane;
-
-import factories.interfaces.ProjectilesFactory;
+import com.example.demo.Factories.Interfaces.ProjectilesFactory;
 /**
  * Implements the FiringStrategy interface 
  * which defines firing behavior for enemy plane.

@@ -1,6 +1,7 @@
 package com.example.demo.Actors;
 
-import factories.interfaces.ComponentsFactory;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
+
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;

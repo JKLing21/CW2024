@@ -1,8 +1,8 @@
-package factories;
+package com.example.demo.Factories;
 
+import com.example.demo.Factories.Interfaces.AssetFactory;
 import com.example.demo.Managers.ImageManager;
 
-import factories.interfaces.AssetFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

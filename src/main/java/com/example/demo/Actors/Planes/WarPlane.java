@@ -2,10 +2,11 @@ package com.example.demo.Actors.Planes;
 
 import com.example.demo.Actors.ActiveActorDestructible;
 import com.example.demo.Assets.ImgAssetLoader;
-import com.example.demo.Managers.ImageProperties;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 import com.example.demo.Strategy.FiringStrategy;
 import com.example.demo.Strategy.MovementStrategy;
-import factories.interfaces.ComponentsFactory;
+import com.example.demo.utils.ImageProperties;
+
 import javafx.scene.image.Image;
 /**
  * Warplane class represents war plane in game.

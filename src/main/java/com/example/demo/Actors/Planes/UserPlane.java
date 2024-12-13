@@ -2,14 +2,14 @@ package com.example.demo.Actors.Planes;
 
 import com.example.demo.Actors.ActiveActorDestructible;
 import com.example.demo.Assets.ImgAssetLoader;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
+import com.example.demo.Factories.Interfaces.ProjectilesFactory;
 import com.example.demo.Managers.AudioManager;
-import com.example.demo.Managers.ImageProperties;
 import com.example.demo.Strategy.FiringStrategy;
 import com.example.demo.Strategy.UserFiringStrategy;
 import com.example.demo.Strategy.UserMovementStrategy;
+import com.example.demo.utils.ImageProperties;
 
-import factories.interfaces.ComponentsFactory;
-import factories.interfaces.ProjectilesFactory;
 import javafx.scene.image.Image;
 /**
  * UserPlane class represents user's plane in game.

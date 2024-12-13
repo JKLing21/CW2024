@@ -1,9 +1,9 @@
 package com.example.demo.Screens;
 
+import com.example.demo.Controller;
 import com.example.demo.Assets.ImgAssetLoader;
-import com.example.demo.controller.Controller;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 
-import factories.interfaces.ComponentsFactory;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;

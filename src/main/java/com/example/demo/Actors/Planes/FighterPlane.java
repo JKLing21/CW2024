@@ -1,8 +1,8 @@
 package com.example.demo.Actors.Planes;
 
 import com.example.demo.Actors.ActiveActorDestructible;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 
-import factories.interfaces.ComponentsFactory;
 import javafx.scene.image.ImageView;
 /**
  * FighterPlane class represents fighter plane in game.

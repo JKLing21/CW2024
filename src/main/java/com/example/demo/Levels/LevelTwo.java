@@ -1,14 +1,14 @@
 package com.example.demo.Levels;
 
+import com.example.demo.Controller;
 import com.example.demo.Actors.ActiveActorDestructible;
+import com.example.demo.Factories.ActorImplement;
+import com.example.demo.Factories.Interfaces.ActorFactory;
+import com.example.demo.Factories.Interfaces.AssetFactory;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 import com.example.demo.Managers.AudioManager;
 import com.example.demo.Screens.LevelScreen;
-import com.example.demo.controller.Controller;
 
-import factories.ActorImplement;
-import factories.interfaces.ActorFactory;
-import factories.interfaces.AssetFactory;
-import factories.interfaces.ComponentsFactory;
 import javafx.stage.Stage;
 /**
  * LevelTwo class represents second level of the game.

@@ -1,10 +1,13 @@
-package factories;
+package com.example.demo.Factories;
 
 import com.example.demo.Actors.Planes.Boss;
 import com.example.demo.Actors.Planes.EnemyPlane;
 import com.example.demo.Actors.Planes.UserPlane;
 import com.example.demo.Actors.Planes.WarPlane;
 import com.example.demo.Assets.ImgAssetLoader;
+import com.example.demo.Factories.Interfaces.ActorFactory;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
+import com.example.demo.Factories.Interfaces.ProjectilesFactory;
 import com.example.demo.Managers.AudioManager;
 import com.example.demo.Strategy.EnemyFiringStrategy;
 import com.example.demo.Strategy.EnemyMovementStrategy;
@@ -12,10 +15,6 @@ import com.example.demo.Strategy.WarPlaneFiringStrategy;
 import com.example.demo.Strategy.WarPlaneMovementStrategy;
 import com.example.demo.Strategy.FiringStrategy;
 import com.example.demo.Strategy.MovementStrategy;
-
-import factories.interfaces.ActorFactory;
-import factories.interfaces.ComponentsFactory;
-import factories.interfaces.ProjectilesFactory;
 
 public class ActorImplement implements ActorFactory {
 	

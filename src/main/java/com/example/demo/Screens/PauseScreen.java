@@ -1,9 +1,9 @@
 package com.example.demo.Screens;
 
+import com.example.demo.Controller;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 import com.example.demo.Levels.LevelParent;
-import com.example.demo.controller.Controller;
 
-import factories.interfaces.ComponentsFactory;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;

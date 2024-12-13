@@ -8,7 +8,6 @@ module com.example.demo {
 	opens com.example.demo to javafx.fxml;
 
 	exports com.example.demo;
-	exports com.example.demo.controller;
 	exports com.example.demo.Assets;
 	exports com.example.demo.Managers;
 	exports com.example.demo.Levels;
@@ -17,8 +16,8 @@ module com.example.demo {
 	exports com.example.demo.Actors.Planes;
 	exports com.example.demo.Actors.Projectiles;
 	exports com.example.demo.Actors.Components;
-	exports factories;
-	exports factories.interfaces;
 	exports com.example.demo.Strategy;
+	exports com.example.demo.Factories;
+	exports com.example.demo.Factories.Interfaces;
 
 }

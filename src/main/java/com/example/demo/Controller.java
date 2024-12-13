@@ -1,20 +1,21 @@
-package com.example.demo.controller;
+package com.example.demo;
 
 import java.lang.reflect.Constructor;
 import java.util.Stack;
 
 import com.example.demo.Assets.AudioAssetLoader;
 import com.example.demo.Assets.ImgAssetLoader;
+import com.example.demo.Factories.AssetsImplement;
+import com.example.demo.Factories.ComponentsImplement;
+import com.example.demo.Factories.Interfaces.AssetFactory;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 import com.example.demo.Levels.LevelParent;
 import com.example.demo.Managers.AudioManager;
 import com.example.demo.Managers.ImageManager;
+import com.example.demo.Screens.GameSettings;
 import com.example.demo.Screens.MainMenu;
 import com.example.demo.Screens.TransitionScene;
 
-import factories.AssetsImplement;
-import factories.ComponentsImplement;
-import factories.interfaces.AssetFactory;
-import factories.interfaces.ComponentsFactory;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;

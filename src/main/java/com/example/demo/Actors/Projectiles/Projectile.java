@@ -1,8 +1,7 @@
 package com.example.demo.Actors.Projectiles;
 
 import com.example.demo.Actors.ActiveActorDestructible;
-
-import factories.interfaces.ComponentsFactory;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 /**
  * Projectile class represents projectile in game.
  * Projectile is an abstract class that extends ActiveActorDestructible and provides common functionality

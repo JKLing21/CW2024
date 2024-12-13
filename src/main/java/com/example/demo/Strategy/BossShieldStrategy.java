@@ -3,8 +3,7 @@ package com.example.demo.Strategy;
 import com.example.demo.Actors.Components.BossHealthBar;
 import com.example.demo.Actors.Components.Shield;
 import com.example.demo.Actors.Planes.Boss;
-
-import factories.interfaces.ComponentsFactory;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 /**
  * Implements the BossShielding interface which manages shielding mechanics for
  * boss plane.

@@ -1,6 +1,5 @@
 package com.example.demo.Screens;
 
-import factories.interfaces.ComponentsFactory;
 import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -14,6 +13,7 @@ import java.util.List;
 
 import com.example.demo.Actors.ActiveActor;
 import com.example.demo.Actors.Components.HeartDisplay;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
 /**
  * LevelScreen class manages UI elements and interactions across game levels.
  */

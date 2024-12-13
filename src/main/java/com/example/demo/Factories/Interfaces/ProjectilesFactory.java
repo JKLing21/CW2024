@@ -1,4 +1,4 @@
-package factories.interfaces;
+package com.example.demo.Factories.Interfaces;
 
 import com.example.demo.Actors.Projectiles.BossProjectile;
 import com.example.demo.Actors.Projectiles.EnemyProjectile;

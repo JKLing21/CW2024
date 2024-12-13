@@ -1,6 +1,7 @@
 package com.example.demo.Screens;
 
-import factories.interfaces.ComponentsFactory;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.ParallelTransition;

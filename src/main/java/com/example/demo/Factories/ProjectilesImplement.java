@@ -1,13 +1,12 @@
-package factories;
+package com.example.demo.Factories;
 
 import com.example.demo.Actors.Projectiles.BossProjectile;
 import com.example.demo.Actors.Projectiles.EnemyProjectile;
 import com.example.demo.Actors.Projectiles.UserProjectile;
 import com.example.demo.Actors.Projectiles.WarPlaneProjectile;
 import com.example.demo.Assets.ImgAssetLoader;
-
-import factories.interfaces.ComponentsFactory;
-import factories.interfaces.ProjectilesFactory;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
+import com.example.demo.Factories.Interfaces.ProjectilesFactory;
 
 public class ProjectilesImplement implements ProjectilesFactory {
 	

@@ -4,7 +4,7 @@ import java.util.prefs.Preferences;
 
 import com.example.demo.Assets.AudioAssetLoader;
 import com.example.demo.Assets.CacheSoundEffect;
-import com.example.demo.controller.GameSettings;
+import com.example.demo.Screens.GameSettings;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

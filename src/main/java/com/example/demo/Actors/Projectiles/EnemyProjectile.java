@@ -1,9 +1,9 @@
 package com.example.demo.Actors.Projectiles;
 
 import com.example.demo.Assets.ImgAssetLoader;
-import com.example.demo.Managers.ImageProperties;
+import com.example.demo.Factories.Interfaces.ComponentsFactory;
+import com.example.demo.utils.ImageProperties;
 
-import factories.interfaces.ComponentsFactory;
 import javafx.scene.image.Image;
 /**
  * EnemyProjectile class represents projectile fired by enemy plane in game.

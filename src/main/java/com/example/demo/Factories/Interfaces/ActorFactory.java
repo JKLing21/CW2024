@@ -1,4 +1,4 @@
-package factories.interfaces;
+package com.example.demo.Factories.Interfaces;
 
 import com.example.demo.Actors.Planes.Boss;
 import com.example.demo.Actors.Planes.EnemyPlane;

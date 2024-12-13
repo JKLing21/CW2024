@@ -1,7 +1,7 @@
 package com.example.demo.Actors.Components;
 
 import com.example.demo.Assets.ImgAssetLoader;
-import com.example.demo.Managers.ImageProperties;
+import com.example.demo.utils.ImageProperties;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
