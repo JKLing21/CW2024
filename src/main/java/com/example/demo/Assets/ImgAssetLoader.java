@@ -4,9 +4,15 @@ import javafx.scene.image.Image;
 import java.util.Map;
 
 import static java.util.Map.entry;
-
+/**
+ * ImgAssetLoader is an abstract class responsible for loading image assets in game.
+ * ImgAssetLoader class implements AssetsLoader interface to provide a method for loading image files.
+ */
 public abstract class ImgAssetLoader implements AssetsLoader<Image> {
-	
+	/**
+	 * Map containing paths to image assets.
+	 * Keys are names of the image assets, and the values are the corresponding file paths.
+	 */
 	protected static final Map<String, String> imagePaths = Map.ofEntries (
 			entry("background1", "/com/example/demo/images/background1.jpg"),
 			entry("background2", "/com/example/demo/images/background2.jpg"),
@@ -33,7 +39,12 @@ public abstract class ImgAssetLoader implements AssetsLoader<Image> {
 			entry("warplaneFire", "/com/example/demo/images/warplaneFire.png"),
 			entry("youwin", "/com/example/demo/images/youwin.png")	
 	);
-	
+	/**
+	 * Loads image asset by its name.
+	 *
+	 * @param assetName: name of image asset to load.
+	 * @return loaded Image object, or null if asset could not be loaded.
+	 */
 	@Override
 	public Image loadAsset(String assetName) {
 	    String path = imagePaths.get(assetName);

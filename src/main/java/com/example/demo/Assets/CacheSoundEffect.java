@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 /**
- * Manages cache of MediaPlayer instances for sound effects
+ * CacheSoundEffect class manages cache of MediaPlayer instances for sound effects
  * in order to optimise game performance
  * by reusing the existing MediaPlayer objects
  * instead of creating new ones for every single playback.
