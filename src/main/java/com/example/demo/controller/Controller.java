@@ -22,7 +22,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.lang.reflect.InvocationTargetException;
-
+/**
+ * Controller class manages flow of the game, including scene transitions,
+ * level loading, and audio management. It acts as the central hub for controlling
+ * the game's main menu, levels and settings.
+ */
 public class Controller {
 
 	private static final String LEVEL_ONE_CLASS_NAME = "com.example.demo.Levels.LevelOne";
@@ -33,7 +37,13 @@ public class Controller {
 	private ImageManager imageManager;
 	private AssetFactory assetFactory;
 	private ComponentsFactory componentsFactory;
-
+	/**
+	 * Constructs new Controller instance.
+	 * Initialises stage, audio manager, and other necessary components.
+	 *
+	 * @param stage: primary stage of the application.
+	 * @param screenWidth: width of screen.
+	 */
 	public Controller(Stage stage, double screenWidth) {
 		this.stage = stage;
 		this.audioAssetLoader = new AudioAssetLoader() {};
@@ -42,7 +52,10 @@ public class Controller {
 		this.assetFactory = new AssetsImplement(imageManager);
 		this.componentsFactory = new ComponentsImplement();
 	}
-
+	/**
+	 * Displays main menu of the game.
+	 * Initialises main menu scene and sets it as current scene.
+	 */
 	public void showMainMenu() {
 		ComponentsFactory componentsFactory = new ComponentsImplement();
 		ImgAssetLoader assetLoader = new ImgAssetLoader() {
@@ -54,12 +67,18 @@ public class Controller {
 		audioManager.playBackgroundMusic("MainMenuBGM");
 		audioManager.setBackgroundMusicVolume(audioManager.getBackgroundMusicVolume());
 	}
-
+	/**
+	 * Launches the game by showing the stage and transitioning to first level.
+	 *
+	 * @throws Exception If an error occurs while loading first level.
+	 */
 	public void launchGame() throws Exception {
 		stage.show();
 		goToLevel(LEVEL_ONE_CLASS_NAME);
 	}
-	
+	/**
+	 * Resets game and relaunches it by clearing the scene stack, showing main menu and launching the game.
+	 */
 	public void resetAndRelaunchGame() {
 	    try {
 	        sceneStack.clear();
@@ -69,7 +88,12 @@ public class Controller {
 	        e.printStackTrace();
 	    }
 	}
-
+	/**
+	 * Loads and transitions to specified level.
+	 *
+	 * @param className: fully qualified class name of level to load.
+	 * @throws Exception if an error occurs while loading the level.
+	 */
 	private void goToLevel(String className) throws Exception {
 	    audioManager.stopBackgroundMusic();
 	    try {
@@ -122,17 +146,29 @@ public class Controller {
 	        System.err.println("Error occurred while loading level: " + e.getMessage());
 	    }
 	}
-	
+	/**
+	 * Updates background music volume.
+	 *
+	 * @param volume: new volume level for background music.
+	 */
 	public void updateBackgroundMusicVolume(double volume) {
 	    audioManager.setBackgroundMusicVolume(volume);
 	    System.out.println("Background music volume updated to: " + volume);
 	}
-
+	/**
+	 * Updates sound effects volume.
+	 *
+	 * @param volume: new volume level for sound effects.
+	 */
 	public void updateSoundEffectsVolume(double volume) {
 	    audioManager.setSoundEffectsVolume(volume);
 	    System.out.println("Sound effects volume updated to: " + volume);
 	}
-
+	/**
+	 * Applies fade-in transition to given scene.
+	 *
+	 * @param scene: scene to which fade-in transition is applied.
+	 */
 	private void applyFadeInTransition(Scene scene) {
 		FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), scene.getRoot());
 		fadeIn.setFromValue(0);
@@ -141,7 +177,11 @@ public class Controller {
 		fadeIn.setAutoReverse(false);
 		fadeIn.play();
 	}
-
+	/**
+	 * Transitions to next level specified by level name.
+	 *
+	 * @param levelName: fully qualified class name of next level.
+	 */
 	private void goToNextLevel(String levelName) {
 	    try {
 	        goToLevel(levelName);
@@ -151,7 +191,9 @@ public class Controller {
 	        alert.show();
 	    }
 	}
-
+	/**
+	 * Displays game settings screen.
+	 */
 	public void showSettings() {
 		ComponentsFactory componentsFactory = new ComponentsImplement();
 		GameSettings gameSettings = new GameSettings(this, componentsFactory, audioManager);
@@ -160,11 +202,17 @@ public class Controller {
 				.add(getClass().getResource("/com/example/demo/css/Settings.css").toExternalForm());
 		pushScene(settingsScene);
 	}
-
+	/**
+	 * Transitions back to main menu.
+	 */
 	public void goToMainMenu() {
 		showMainMenu();
 	}
-
+	/**
+	 * Pushes new scene onto scene stack and sets it as current scene.
+	 *
+	 * @param scene: scene to push onto the stack.
+	 */
 	private void pushScene(Scene scene) {
 	    if (!sceneStack.isEmpty() && sceneStack.peek() == scene) {
 	        return;
@@ -174,7 +222,9 @@ public class Controller {
 	    stage.show();
 	    applyFadeInTransition(scene);
 	}
-
+	/**
+	 * Goes back to previous scene in scene stack.
+	 */
 	public void goBack() {
 		if (!sceneStack.isEmpty()) {
 			sceneStack.pop();
@@ -186,11 +236,19 @@ public class Controller {
 			}
 		}
 	}
-	
+	/**
+	 * Gets audio manager instance.
+	 *
+	 * @return audio manager.
+	 */
 	public AudioManager getAudioManager() {
         return audioManager;
     }
-	
+	/**
+	 * Gets primary stage of application.
+	 *
+	 * @return primary stage.
+	 */
 	public Stage getStage() {
 	    return stage;
 	}

@@ -36,7 +36,11 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
+/**
+ * LevelParent class represents parent class for all levels in game.
+ * LevelParent is an abstract class which provides common functionality for managing game levels,
+ * including initialising game scene, handling game logic, and managing actors.
+ */
 public abstract class LevelParent {
 
 	private static final double SCREEN_HEIGHT_ADJUSTMENT = 90;
@@ -74,7 +78,19 @@ public abstract class LevelParent {
 	private final StringProperty nextLevelProperty = new SimpleStringProperty();
 	private boolean isGameOver = false;
 	private boolean transitioningToNextLevel = false;
-
+	/**
+	 * Constructs new LevelParent instance.
+	 * Initialises level with its background image, screen dimensions, player health and other dependencies.
+	 *
+	 * @param backgroundImageName: name of background image for the level.
+	 * @param screenHeight: height of screen.
+	 * @param screenWidth: width of screen.
+	 * @param playerInitialHealth: initial health of the player.
+	 * @param controller: controller which manages the game flow.
+	 * @param componentsFactory: ComponentsFactory used for components creation.
+	 * @param assetFactory: AssetsFactory used for assets creation.
+	 * @param audioManager: AudioManager for playing audio.
+	 */
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth,
 			Controller controller, ComponentsFactory componentsFactory, AssetFactory assetFactory,
 			AudioManager audioManager) {
@@ -112,17 +128,40 @@ public abstract class LevelParent {
 		keyEventHandlers.attachHandlers(scene);
 		keyEventHandlers.addPauseKeyBinding(scene, () -> this.togglePause());
 	}
-
+	/**
+	 * Initialises the player's plane for the level.
+	 * Method that must be implemented by subclasses.
+	 */
 	protected abstract void initializeFriendlyUnits();
-
+	/**
+	 * Checks if game is over based on the player's status and number of kills.
+	 * Method that must be implemented by subclasses.
+	 */
 	protected abstract void checkIfGameOver();
-
+	/**
+	 * Spawns enemy units at regular intervals.
+	 * Method that must be implemented by subclasses.
+	 */
 	protected abstract void spawnEnemyUnits();
-
+	/**
+	 * Instantiates level view, which includes the game screen and UI elements.
+	 * Method that must be implemented by subclasses.
+	 *
+	 * @return LevelScreen instance representing level view.
+	 */
 	protected abstract LevelScreen instantiateLevelView();
-
+	/**
+	 * Gets kill target required to advance to next level.
+	 * Method that must be implemented by subclasses.
+	 *
+	 * @return kill target.
+	 */
 	protected abstract int getKillTarget();
-
+	/**
+	 * Initialises game scene with background, friendly units, and UI elements.
+	 *
+	 * @return initialised Scene.
+	 */
 	public Scene initializeScene() {
 		initializeBackground();
 		initializeFriendlyUnits();
@@ -144,12 +183,17 @@ public abstract class LevelParent {
 		keyEventHandlers.attachHandlers(scene);
 		return scene;
 	}
-
+	/**
+	 * Starts game by requesting focus and playing timeline.
+	 */
 	public void startGame() {
 		root.requestFocus();
 		timeline.play();
 	}
-
+	/**
+	 * Restarts the game by stopping the timeline, clearing the root, resetting the player's health and kills,
+	 * and reinitialising friendly units.
+	 */
 	public void restartGame() {
 		try {
 			timeline.stop();
@@ -168,19 +212,35 @@ public abstract class LevelParent {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Gets initial health of the player.
+	 *
+	 * @return initial health.
+	 */
 	public int getInitialHealth() {
 		return initialHealth;
 	}
-
+	/**
+	 * Gets ComponentsFactory.
+	 *
+	 * @return components factory.
+	 */
 	public ComponentsFactory getComponentsFactory() {
 		return componentsFactory;
 	}
-
+	/**
+	 * Gets PauseManager.
+	 *
+	 * @return pause manager.
+	 */
 	public PauseManager getPauseManager() {
 		return pauseManager;
 	}
-
+	/**
+	 * Transitions to next level specified by the level name.
+	 *
+	 * @param levelName: fully qualified class name of next level.
+	 */
 	public void goToNextLevel(String levelName) {
 		if (!isGameOver && !transitioningToNextLevel && user.getHealth() > 0) {
 			transitioningToNextLevel = true;
@@ -189,11 +249,18 @@ public abstract class LevelParent {
 			audioManager.fadeOut(Duration.seconds(2));
 		}
 	}
-
+	/**
+	 * Gets property representing next level to transition to.
+	 *
+	 * @return next level property.
+	 */
 	public StringProperty nextLevelProperty() {
 		return nextLevelProperty;
 	}
-
+	/**
+	 * Updates game scene by checking for game over conditions, spawning enemies, updating actors,
+	 * handling collisions, and removing destroyed actors.
+	 */
 	private void updateScene() {
 		if (isGameOver || transitioningToNextLevel || pauseManager.isPaused) {
 			return;
@@ -229,22 +296,32 @@ public abstract class LevelParent {
 			}
 		}
 	}
-
+	/**
+	 * Initialises timeline for game loop.
+	 */
 	private void initializeTimeline() {
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame gameLoop = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> updateScene());
 		timeline.getKeyFrames().add(gameLoop);
 	}
-
+	/**
+	 * Gets timeline for game loop.
+	 *
+	 * @return timeline.
+	 */
 	public Timeline getTimeline() {
 		return timeline;
 	}
-
+	/**
+	 * Initialises background image for the level.
+	 */
 	private void initializeBackground() {
 		background.setFocusTraversable(true);
 		root.getChildren().add(background);
 	}
-
+	/**
+	 * Generates enemy fire by having each enemy plane fire the projectile.
+	 */
 	private void generateEnemyFire() {
 		enemyUnits.forEach(enemy -> {
 			if (enemy instanceof FighterPlane) {
@@ -253,7 +330,11 @@ public abstract class LevelParent {
 			}
 		});
 	}
-
+	/**
+	 * Spawns enemy projectile and adds it to the scene.
+	 *
+	 * @param projectile: enemy projectile to spawn.
+	 */
 	private void spawnEnemyProjectile(ActiveActorDestructible projectile) {
 		if (projectile != null) {
 			root.getChildren().add(projectile);
@@ -261,21 +342,29 @@ public abstract class LevelParent {
 			levelView.addHitboxesToScene(root, (ActiveActor) projectile);
 		}
 	}
-
+	/**
+	 * Updates all actors in game.
+	 */
 	private void updateActors() {
 		friendlyUnits.forEach(plane -> plane.updateActor());
 		enemyUnits.forEach(enemy -> enemy.updateActor());
 		userProjectiles.forEach(projectile -> projectile.updateActor());
 		enemyProjectiles.forEach(projectile -> projectile.updateActor());
 	}
-
+	/**
+	 * Removes all destroyed actors from scene and the respective lists.
+	 */
 	private void removeAllDestroyedActors() {
 		removeDestroyedActors(friendlyUnits);
 		removeDestroyedActors(enemyUnits);
 		removeDestroyedActors(userProjectiles);
 		removeDestroyedActors(enemyProjectiles);
 	}
-
+	/**
+	 * Removes destroyed actors from given list.
+	 *
+	 * @param actors: list of actors to remove destroyed actors from.
+	 */
 	private void removeDestroyedActors(List<ActiveActorDestructible> actors) {
 		List<ActiveActorDestructible> destroyedActors = actors.stream().filter(actor -> actor.isDestroyed())
 				.collect(Collectors.toList());
@@ -286,12 +375,17 @@ public abstract class LevelParent {
 		});
 		actors.removeAll(destroyedActors);
 	}
-
+	/**
+	 * Updates level view by removing hearts and updating kill count.
+	 */
 	private void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
 		levelView.updateKillCount(user.getNumberOfKills(), getKillTarget());
 	}
-
+	/**
+	 * Handles game over condition by stopping the timeline, stopping background music,
+	 * and showing lose screen.
+	 */
 	protected void loseGame() {
 		isGameOver = true;
 		timeline.stop();
@@ -302,57 +396,107 @@ public abstract class LevelParent {
 			loseScreen.showLoseScreen();
 		});
 	}
-
+	/**
+	 * Gets userplane.
+	 *
+	 * @return userplane.
+	 */
 	protected UserPlane getUser() {
 		return user;
 	}
-
+	/**
+	 * Gets root group of scene.
+	 *
+	 * @return root group.
+	 */
 	protected Group getRoot() {
 		return root;
 	}
-
+	/**
+	 * Gets current number of enemies.
+	 *
+	 * @return current number of enemies.
+	 */
 	protected int getCurrentNumberOfEnemies() {
 		return enemyUnits.size();
 	}
-
+	/**
+	 * Adds enemy unit to scene and enemy units list.
+	 *
+	 * @param enemy: enemy unit to add.
+	 */
 	protected void addEnemyUnit(ActiveActorDestructible enemy) {
 		enemyUnits.add(enemy);
 		root.getChildren().add(enemy);
 		levelView.addHitboxesToScene(root, (ActiveActor) enemy);
 	}
-
+	/**
+	 * Gets maximum Y position for enemies.
+	 *
+	 * @return maximum Y position for enemies.
+	 */
 	protected double getEnemyMaximumYPosition() {
 		return enemyMaximumYPosition;
 	}
-
+	/**
+	 * Gets the screen width.
+	 *
+	 * @return screen width.
+	 */
 	protected double getScreenWidth() {
 		return screenWidth;
 	}
-
+	/**
+	 * Gets screen height.
+	 *
+	 * @return screen height.
+	 */
 	protected double getScreenHeight() {
 		return screenHeight;
 	}
-
+	/**
+	 * Checks if userplane is destroyed.
+	 *
+	 * @return True, if userplane is destroyed, false otherwise.
+	 */
 	protected boolean userIsDestroyed() {
 		return user.isDestroyed();
 	}
-
+	/**
+	 * Gets level view.
+	 *
+	 * @return level view.
+	 */
 	protected LevelScreen getLevelView() {
 		return levelView;
 	}
-
+	/**
+	 * Toggles pause state of the game.
+	 */
 	public void togglePause() {
 		pauseManager.togglePause();
 	}
-
+	/**
+	 * Checks if current level is Level One.
+	 *
+	 * @return True, if current level is Level One, false otherwise.
+	 */
 	protected boolean isLevelOne() {
 		return false;
 	}
-
+	/**
+	 * Checks if kill count should be shown.
+	 *
+	 * @return True, if kill count should be shown, false otherwise.
+	 */
 	protected boolean shouldShowKillCount() {
 		return true;
 	}
-
+	/**
+	 * Gets scene of the level.
+	 *
+	 * @return scene of the level.
+	 */
 	public Scene getScene() {
 		return scene;
 	}
