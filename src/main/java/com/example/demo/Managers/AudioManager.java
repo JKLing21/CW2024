@@ -13,7 +13,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 /**
- * Manages background music and sound effects, including music volume control, 
+ * AudioManager class manages background music and sound effects, including music volume control, 
  * fading effects and toggling audio on/off.
  */
 public class AudioManager {

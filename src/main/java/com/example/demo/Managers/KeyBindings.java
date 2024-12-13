@@ -4,7 +4,7 @@ import javafx.scene.input.KeyCode;
 import java.util.EnumMap;
 import java.util.Map;
 /**
- * Manages mapping between key codes and the corresponding player's plane actions.
+ * KeyBindings class manages mapping between key codes and the corresponding player's plane actions.
  * It provides an abstraction layer for handling key bindings
  * allowing it to be customisable or extended key mappings in the future.
  */
@@ -23,7 +23,7 @@ public class KeyBindings {
      * Retrieves action associated with specified key code.
      *
      * @param keyCode: key code for which the action is to be retrieved
-     * @return corresponding {@link KeyAction} or null if no action is mapped
+     * @return corresponding KeyAction or null if no action is mapped
      */
     public KeyAction getAction(KeyCode keyCode) {
         return keyActionMap.get(keyCode);

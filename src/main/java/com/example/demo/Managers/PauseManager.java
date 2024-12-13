@@ -8,7 +8,7 @@ import factories.interfaces.ComponentsFactory;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 /**
-* Manages pause state of the game.
+* PauseManager class manages pause state of the game.
 * Handles toggling of pause state, pausing and resuming game timeline,
 * and also displaying and hiding the pause screen.
 */

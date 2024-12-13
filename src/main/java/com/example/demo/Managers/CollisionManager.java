@@ -9,7 +9,7 @@ import java.util.List;
 import javafx.scene.Group;
 
 /**
- * Manages collisions between various actors. It handles collisions detection,
+ * CollisionManager class manages collisions between various actors. It handles collisions detection,
  * applying damage and managing destruction of actors.
  */
 public class CollisionManager {
@@ -20,7 +20,7 @@ public class CollisionManager {
 	/**
 	 * Constructs the CollisionManager for collision detection management.
 	 * 
-	 * @param root:        root Group which holds all game objects.
+	 * @param root: root Group which holds all game objects.
 	 * @param screenWidth: width of screen for collision detection logic.
 	 */
 	public CollisionManager(Group root, double screenWidth) {

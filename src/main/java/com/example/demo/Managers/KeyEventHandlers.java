@@ -6,9 +6,9 @@ import com.example.demo.Levels.LevelParent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 /**
- * Handles the keyboard events, which includes movements, firing, and pausing.
+ * KeyEventHandlers class handles the keyboard events, which includes movements, firing, and pausing.
  * It manages interaction between the player's inputs and game logic
- * through {@link UserPlane} and {@link LevelParent} classes.
+ * through UserPlane and LevelParent classes.
  */
 public class KeyEventHandlers {
     private final UserPlane user;
