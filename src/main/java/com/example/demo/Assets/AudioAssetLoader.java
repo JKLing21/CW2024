@@ -17,8 +17,7 @@ public class AudioAssetLoader implements AssetsLoader<Media> {
 			entry("MainMenuBGM", "/com/example/demo/audio/MainMenuBGM.mp3"),
 			entry("LevelOneBGM", "/com/example/demo/audio/LevelOneBGM.mp3"),
 			entry("LevelTwoBGM", "/com/example/demo/audio/LevelTwoBGM.mp3"),
-			entry("BossBGM", "/com/example/demo/audio/BossLevelBGM.mp3"),
-			entry("planefire", "/com/example/demo/audio/planefire.wav")
+			entry("BossBGM", "/com/example/demo/audio/BossLevelBGM.mp3")
 			);
 	/**
 	 * Loads audio asset by its name.

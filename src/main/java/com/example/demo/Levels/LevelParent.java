@@ -99,7 +99,6 @@ public abstract class LevelParent {
 		this.timeline = new Timeline();
 		this.controller = controller;
 		this.audioManager = audioManager;
-		this.audioManager.preloadSoundEffect("planefire");
 		ActorFactory actorFactory = new ActorImplement();
 		this.user = actorFactory.createUserPlane(playerInitialHealth, screenWidth, projectilesFactory, audioManager);
 		this.componentsFactory = componentsFactory;
