@@ -1,7 +1,8 @@
-# Project Title
+# COMP2042 Coursework
+LING JUN KIT 20509915
 
 # GitHub Repository
-[Project Repository](https://github.com/your-username/your-repository)
+[Project Repository](https://github.com/JKLing21/CW2024)
 
 ---
 
@@ -63,17 +64,68 @@ Notes:
 If you encounter issues, verify the JavaFX library configuration and VM arguments.
 
 # Implemented and Working Properly
+1. **Main Menu**
+* Main menu screen of a game, where players can choose to start the game, access settings, or quit the game
+  - Details :
+  * Start Game: Launches the game by calling controller.launchGame().
+  * Settings: Opens the settings screen through controller.showSettings().
+  * Quit: Prompts the user with a confirmation dialog to quit the game.
+
+ 2. **Game Settings**
+* settings screen for the game, allowing player to configure sound effects and background music.
+* Providing controls for adjusting volume and toggling sound on/off
+  - Details :
+  * Using sliders to adjust sound effects and background music volume.
+  * Using toggle buttons to toggle sound effects and background music on/off.
+  * Preserved music settings using preferences for future sessions.
+ 
+3. **In game pause button & Pause Screen**
+* player can toggle the pause button using cursor or 'p' button.
+* pause screen provides functionality to display and hide the pause menu when the game is paused. Pause Screen has a set of buttons which are Resume, Settings, Restart, and Main Menu buttons.
+  - Details :
+  The pause menu is initially hidden and can be shown by calling the showPauseMenu() method.
+
+4. **Transition Scene**
+*  visually appealing transitions between different game states, such as level changes or game-over screens, with animated effects.
+  - Details :
+Transition scene plays two animations in parallel which is a fade-in effect for the transition message and a horizontal translation for the plane image. It also accepts a callback (onTransitionEnd) that executes once the animations are complete, signaling the end of the transition.
+
+5. **Boss Health Bar**
+* The boss health bar provides visual feedback to the player about how much damage they have dealt to the boss. It allows the player to track their progress throughout the fight, which enhances the feeling of achievement and motivates them to keep going.
+ - Details :
+updateHealth(double healthPercentage) adjusts the width of the health bar based on the boss's current health percentage.
+
+6. **Boss Shielded Glowing Effect**
+* When the shield is active, it applies a glowing effect to the boss plane, making it visually distinct and signaling to the player that the boss is shielded. The shield icon is also displayed next to the boss's health bar to further indicate its active status. If the shield is inactive, the glow effect is removed, and the shield icon is hidden, giving a clear visual cue that the boss is vulnerable.
+_ Details :
+The shield effect is applied visually to the boss plane using the applyShieldEffect method.
+
+7. **UserPlane dual shooting styles**
+* provides two distinct shooting styles: continuous firing and rapid firing.
+- Details :
+The fireContinuous method allows the user plane to fire continuously at a consistent rate, with a delay defined by FIRE_RATE_DELAY.
+Then, the fireRapid method enables rapid firing, where the user plane can fire projectiles at a faster rate, governed by the RAPID_FIRE_DELAY. This allows for a faster-paced attack, providing a more aggressive shooting style.
+
+8. **In-game instruction**
+* Display on-screen instructions to guide the player.
+- Details : 
+It shows instructions like "Press UP and DOWN arrow keys to move" and "Press SPACE to fire" with a fade-in and fade-out effect to ensure they appear and disappear smoothly during gameplay.
+
+9. **Kill Count Display**
+* The kill count is dynamically updated to show the remaining kills required to advance to the next level.
+- Details :
+The count is displayed on the screen with a StringProperty binding that updates the UI text based on the current number of kills and target kills.
+
+# Implemented but Not Working Properly
+1. **Kill Count Display**
+*
+# Features Not Implemented
+
+# New Java Classes
 |        |        |       |
 |-----------------|---------------|----------------|
 |  |  |  |
 |  |  |  |
-
-# Implemented but Not Working Properly
-
-# Features Not Implemented
-
-# New Java Classes
-
 ## Modified Java Classes
 
 ## Unexpected Problems
