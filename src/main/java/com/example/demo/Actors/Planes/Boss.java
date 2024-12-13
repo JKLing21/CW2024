@@ -18,7 +18,11 @@ import factories.interfaces.ProjectilesFactory;
 import javafx.scene.Group;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
-
+/**
+ * Boss class represents boss fighter plane in game.
+ * Boss class extends FighterPlane class and implements specific behaviors for bossplane,
+ * such as strategies for movement, firing and shielding.
+ */
 public class Boss extends FighterPlane {
 
 	private static final double INITIAL_X_POSITION = 1000.0;
@@ -34,7 +38,14 @@ public class Boss extends FighterPlane {
 	private final MovementStrategy movementStrategy;
 	private FiringStrategy firingStrategy;
 	private final BossShielding bossShielding;
-
+	/**
+	 * Constructs new boss instance.
+	 * Initialises bossplane with its image, health bar, shield and each different strategies 
+	 * such as strategies for movement, firing and shielding.
+	 *
+	 * @param factory: ComponentsFactory used for components creation.
+	 * @param assetLoader: ImgAssetLoader used for loading images.
+	 */
 	public Boss(ComponentsFactory factory, ImgAssetLoader assetLoader) {
 		super(IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH, factory);
 		this.bossImage = assetLoader.loadAsset("bossplane");
@@ -51,12 +62,16 @@ public class Boss extends FighterPlane {
 					bossHealthBar.getBossNameText(), shieldImage);
 		}
 	}
-
+	/**
+	 * Updates position of bossplane based on boss's movement strategy.
+	 */
 	@Override
 	public void updatePosition() {
 		movementStrategy.move(this);
 	}
-
+	/**
+	 * Updates bossplane actor by updating its position, shield and the health bar.
+	 */
 	@Override
 	public void updateActor() {
 		updatePosition();
@@ -64,28 +79,52 @@ public class Boss extends FighterPlane {
 		bossShielding.applyShieldEffect(this);
 		bossHealthBar.updatePosition(400, 20);
 	}
-
+	/**
+	 * Gets bossplane's health bar.
+	 *
+	 * @return BossHealthBar instance.
+	 */
 	public BossHealthBar getBossHealthBar() {
 		return bossHealthBar;
 	}
-
+	/**
+	 * Gets bossplane's health bar rectangle.
+	 *
+	 * @return health bar rectangle.
+	 */
 	public javafx.scene.shape.Rectangle getHealthBar() {
 		return bossHealthBar.getHealthBar();
 	}
-
+	/**
+	 * Gets bossplane's health bar background rectangle.
+	 *
+	 * @return bossplane's health bar background rectangle.
+	 */
 	public javafx.scene.shape.Rectangle getHealthBarBackground() {
 		return bossHealthBar.getHealthBarBackground();
 	}
-
+	/**
+	 * Gets bossplane's name text.
+	 *
+	 * @return bossplane's name text.
+	 */
 	public javafx.scene.text.Text getBossNameText() {
 		return bossHealthBar.getBossNameText();
 	}
-
+	/**
+	 * Fires boss projectile based on boss's firing strategy.
+	 *
+	 * @return fired projectile as ActiveActorDestructible.
+	 */
 	@Override
 	public ActiveActorDestructible fireProjectile() {
 		return firingStrategy.fire(this);
 	}
-
+	/**
+	 * Handles damage taking of bossplane.
+	 * If boss is shielded, applies the glowing effect; 
+	 * otherwise, reduces boss's health and updates health bar.
+	 */
 	@Override
 	public void takeDamage() {
 		if (bossShielding.isShielded()) {
@@ -97,7 +136,11 @@ public class Boss extends FighterPlane {
 			bossHealthBar.updateHealth(healthPercentage);
 		}
 	}
-
+	/**
+	 * Gets initial Y position for boss's projectile.
+	 *
+	 * @return initial Y position of boss's projectile.
+	 */
 	public double getProjectileInitialPosition() {
 		return getLayoutY() + getTranslateY() + PROJECTILE_Y_POSITION_OFFSET;
 	}
