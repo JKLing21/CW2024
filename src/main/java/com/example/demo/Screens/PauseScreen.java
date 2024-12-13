@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.Group;
 /**
- * Manages the pause menu UI in game.
+ * PauseScreen class manages the pause menu UI in game.
  * It creates and displays the pause menu
  */
 public class PauseScreen {
@@ -41,7 +41,7 @@ public class PauseScreen {
         initializePauseScreen();
     }
     /**
-     * Initializes pause screen by creating and positioning pause menu components.
+     * Initialises pause screen by creating and positioning pause menu components.
      */
     private void initializePauseScreen() {
         pauseMenu = new StackPane();

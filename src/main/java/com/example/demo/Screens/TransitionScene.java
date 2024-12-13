@@ -13,14 +13,24 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+/**
+ * TransitionScene class manages transition scene between game levels and states.
+ */
 public class TransitionScene {
 
     private final Stage stage;
     private final Scene transitionScene;
     private final Text transitionText;
     private final ImageView planeImageView;
-
+    /**
+     * Constructs new TransitionScene instance.
+     *
+     * @param stage: primary stage of the application.
+     * @param message: message to display during transition scene.
+     * @param width: width of transition scene.
+     * @param height: height of transition scene.
+     * @param componentsFactory: ComponentsFactory used for UI components creation.
+     */
     public TransitionScene(Stage stage, String message, double width, double height,  ComponentsFactory componentsFactory) {
         this.stage = stage;
 
@@ -40,7 +50,11 @@ public class TransitionScene {
         planeImageView.setLayoutY(height - planeImageView.getFitHeight() - 100); 
         planeImageView.setLayoutX(-planeImageView.getFitWidth());
     }
-
+    /**
+     * Displays transition scene with animations and executes a callback when transition scene ends.
+     *
+     * @param onTransitionEnd: callback to execute after transition scene finishes.
+     */
     public void showTransition(Runnable onTransitionEnd) {
 
         FadeTransition fadeInText = new FadeTransition(Duration.seconds(2.5), transitionText);
@@ -61,11 +75,20 @@ public class TransitionScene {
         stage.setScene(transitionScene);
         parallelTransition.play();
     }
-
+    /**
+     * Returns transition scene.
+     *
+     * @return transition scene.
+     */
     public Scene getTransitionScene() {
         return this.transitionScene;
     }
-
+    /**
+     * Fades out current scene on stage and executes a callback when fade out is completed.
+     *
+     * @param stage: primary stage where current scene is displayed.
+     * @param callback: callback to execute after fade out finishes.
+     */
     public static void fadeOutCurrentScene(Stage stage, Runnable callback) {
         Scene currentScene = stage.getScene();
         if (currentScene != null) {

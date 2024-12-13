@@ -14,7 +14,9 @@ import java.util.List;
 
 import com.example.demo.Actors.ActiveActor;
 import com.example.demo.Actors.Components.HeartDisplay;
-
+/**
+ * LevelScreen class manages UI elements and interactions across game levels.
+ */
 public class LevelScreen {
 
     private static final double HEART_DISPLAY_X_POSITION = 5;
@@ -26,7 +28,16 @@ public class LevelScreen {
     private final StringProperty killCountString = new SimpleStringProperty("");
     private final Group uiLayer;
     private Text killCountText;
-
+    /**
+     * Constructs new LevelScreen instance.
+     *
+     * @param root: root group where level screen elements will be added.
+     * @param heartsToDisplay: number of hearts to display at the start of game.
+     * @param componentsFactory: ComponentsFactory used for components creation.
+     * @param screenWidth: width of screen.
+     * @param uiLayer: the group representing UI layer.
+     * @throws IllegalArgumentException if UI Layer is null.
+     */
     public LevelScreen(Group root, int heartsToDisplay, ComponentsFactory componentsFactory, double screenWidth, Group uiLayer) {
         if (uiLayer == null) {
             throw new IllegalArgumentException("UI Layer cannot be null");
@@ -40,18 +51,29 @@ public class LevelScreen {
 
         positionKillCountText();
     }
-
+    /**
+     * Adds heart display to root group.
+     */
     public void showHeartDisplay() {
         root.getChildren().add(heartDisplay.getContainer());
     }
-
+    /**
+     * Removes hearts from display based on remaining hearts.
+     *
+     * @param heartsRemaining: number of hearts remaining to be displayed.
+     */
     public void removeHearts(int heartsRemaining) {
         int currentNumberOfHearts = heartDisplay.getContainer().getChildren().size();
         for (int i = 0; i < currentNumberOfHearts - heartsRemaining; i++) {
             heartDisplay.removeHeart();
         }
     }
-
+    /**
+     * Adds hitbox of given actors to root group.
+     *
+     * @param root: root group where hitboxes will be added.
+     * @param actors: actors whose hitbox need to be added.
+     */
     public void addHitboxesToScene(Group root, ActiveActor... actors) {
         for (ActiveActor actor : actors) {
             Rectangle hitbox = actor.getHitbox();
@@ -60,18 +82,29 @@ public class LevelScreen {
             }
         }
     }
-
+    /**
+     * Removes hitbox of given actors from root group.
+     *
+     * @param actors: actors whose hitbox need to be removed.
+     */
     public void removeHitboxesFromScene(ActiveActor... actors) {
         for (ActiveActor actor : actors) {
             actor.removeHitboxFromScene(root);
         }
     }
-
+    /**
+     * Updates kill count text based on player's current kills and target kills.
+     *
+     * @param currentKills: player's current number of kills.
+     * @param killTarget: target number of kills to reach.
+     */
     public void updateKillCount(int currentKills, int killTarget) {
         int remainingKills = killTarget - currentKills;
         killCountString.set("Remaining kills to advance: " + remainingKills);
     }
-
+    /**
+     * Positions kill count text on screen.
+     */
     private void positionKillCountText() {
         if (killCountText != null) {
             double centerX = (screenWidth - 830);
@@ -86,14 +119,17 @@ public class LevelScreen {
             }
         }
     }
-
-
+    /**
+     * Adds kill count text to UI layer if it's not already present.
+     */
     public void showKillCountText() {
         if (!uiLayer.getChildren().contains(killCountText)) {
             uiLayer.getChildren().add(killCountText);
         }
     }
-
+    /**
+     * Displays instructions on screen with fade in and fade out effects.
+     */
     public void showInstructions() {
         List<Text> instructionTexts = new ArrayList<>();
         instructionTexts.add(createInstructionText("Press UP and DOWN arrow keys to move", 400, 110));
@@ -105,7 +141,14 @@ public class LevelScreen {
             applyFadeTransition(text);
         });
     }
-
+    /**
+     * Creates new instruction text with given content and position.
+     *
+     * @param text: text content of instruction.
+     * @param x: x-coordinate of text.
+     * @param y: y-coordinate of text.
+     * @return created Text object.
+     */
     private Text createInstructionText(String text, double x, double y) {
         Text instructionText = new Text(text);
         instructionText.setStyle("-fx-font-size: 30px; -fx-fill: white;");
@@ -114,7 +157,11 @@ public class LevelScreen {
         instructionText.setLayoutY(y);
         return instructionText;
     }
-
+    /**
+     * Applies fade in and fade out transition to given text.
+     *
+     * @param text: text to which the transition will be applied.
+     */
     private void applyFadeTransition(Text text) {
         if (text == null) {
             System.err.println("Error: Text object is null in applyFadeTransition.");
