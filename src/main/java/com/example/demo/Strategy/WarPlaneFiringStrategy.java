@@ -5,16 +5,29 @@ import com.example.demo.Actors.Planes.FighterPlane;
 import com.example.demo.Actors.Planes.WarPlane;
 
 import factories.interfaces.ProjectilesFactory;
-
+/**
+ * Implements the FiringStrategy interface 
+ * which defines firing behavior for warplane.
+ */
 public class WarPlaneFiringStrategy implements FiringStrategy {
 
     private static final double WAR_PLANE_FIRE_RATE = 0.01;
     private final ProjectilesFactory projectileFactory;
-
+    /**
+     * Constructs WarPlaneFiringStrategy with ProjectilesFactory.
+     *
+     * @param projectileFactory: factory method used to create warplane projectiles when warplane fires.
+     */
     public WarPlaneFiringStrategy(ProjectilesFactory projectileFactory) {
         this.projectileFactory = projectileFactory;
     }
-
+    /**
+     * Attempts to fire projectile from FighterPlane if it's instance of WarPlane.
+     * It checks if enemy should fire based on WAR_PLANE_FIRE_RATE.
+     *
+     * @param plane: warplane from which the projectile is to be fired.
+     * @return ActiveActorDestructible which represents the fired projectile, or null if no projectile was fired.
+     */
     @Override
     public ActiveActorDestructible fire(FighterPlane plane) {
         if (plane instanceof WarPlane) {
