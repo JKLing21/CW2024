@@ -20,7 +20,7 @@ public class LevelTwo extends LevelParent {
 	public static final String BACKGROUND_IMAGE = "background2";
 	private static final String NEXT_LEVEL = "com.example.demo.Levels.LevelThree";
 	private static final int TOTAL_ENEMIES = 5;
-	private static final int KILLS_TO_ADVANCE = 5;
+	private static final int KILLS_TO_ADVANCE = 10;
 	private static final long ENEMY_SPAWN_COOLDOWN = 1500;
 	private long lastEnemySpawnTime = 0;
 	private ActorFactory actorFactory;

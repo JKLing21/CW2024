@@ -40,7 +40,7 @@ public class KeyEventHandlers {
      *
      * @param keyCode: key code of the pressed key
      */
-    private void handleKeyPressed(KeyCode keyCode) {
+    protected void handleKeyPressed(KeyCode keyCode) {
         KeyAction action = keyBindings.getAction(keyCode);
         if (action == null) return;
 
@@ -62,7 +62,7 @@ public class KeyEventHandlers {
      *
      * @param keyCode the key code of the released key
      */
-    private void handleKeyReleased(KeyCode keyCode) {
+    protected void handleKeyReleased(KeyCode keyCode) {
         KeyAction action = keyBindings.getAction(keyCode);
         if (action == null) return;
 

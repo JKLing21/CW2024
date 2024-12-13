@@ -74,7 +74,7 @@ public class BossHealthBar {
 		healthBarBackground.setY(y);
 		healthBar.setX(x);
 		healthBar.setY(y);
-
+		
 		double textX = x + (width - bossNameText.getLayoutBounds().getWidth()) / 2;
 		double textY = y - 5;
 		bossNameText.setX(textX);

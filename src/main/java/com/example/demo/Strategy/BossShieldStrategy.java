@@ -9,7 +9,7 @@ import com.example.demo.Factories.Interfaces.ComponentsFactory;
  * boss plane.
  */
 public class BossShieldStrategy implements BossShielding {
-	private static final int MAX_FRAMES_WITH_SHIELD = 100;
+	public static final int MAX_FRAMES_WITH_SHIELD = 100;
 	private static final int SHIELD_COOLDOWN = 300;
 	private static final double BOSS_SHIELD_PROBABILITY = 0.008;
 
@@ -95,14 +95,14 @@ public class BossShieldStrategy implements BossShielding {
 	/**
      * Activates bossplane shield and resets frame counter.
      */
-	private void activateShield() {
+	protected void activateShield() {
 		isShielded = true;
 		framesWithShieldActivated = 0;
 	}
 	/**
      * Deactivates bossplane shield and resets frame counters.
      */
-	private void deactivateShield() {
+	protected void deactivateShield() {
 		isShielded = false;
 		framesWithShieldActivated = 0;
 		framesSinceShieldDeactivated = 0;
