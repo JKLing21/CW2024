@@ -118,15 +118,142 @@ The count is displayed on the screen with a StringProperty binding that updates 
 
 # Implemented but Not Working Properly
 1. **Kill Count Display**
-*
+* the kill count may return a negative value if multiple planes are taken down simultaneously.
+**Possible Solution:**
+using the Math.max() function, which will ensure that the kill count remains at zero when the player exceeds the required number of kills.
 # Features Not Implemented
 
 # New Java Classes
-|        |        |       |
-|-----------------|---------------|----------------|
-|  |  |  |
-|  |  |  |
-## Modified Java Classes
+# Package : exports com.example.demo.Actors.Components;
+1. **BossHealthBar class** 
+- represents the bossplane health bar and related UI components
+ * Including the health bar, health bar background, bossplane's name text label, 
+ * and shield icon indicating the bossplane's shielding status.
+   
+# Package : exports com.example.demo.Actors.Planes;
+2. **Warplane class**
+- represents war plane in game.
+# Package : exports com.example.demo.Actors.Projectiles;
+3. **WarPlaneProjectile class**
+- represents projectile fired by warplane in game.
 
+# Package : exports com.example.demo.Assets;
+4. **AssetsLoader**
+- responsible for loading assets, such as images and audio files.
+
+5. **AudioAssetLoader class**
+- responsible for loading audio assets in game.
+
+6. **ImgAssetLoader**
+
+7. CacheSoundEffect class
+8. ImgAssetLoaderImpl
+# Package : exports com.example.demo.Factories;
+  *  ActorImplement class
+  *  AssetsImplement class
+  *  ComponentsImplement class
+  * ImgViewFactoryImpl
+  *  ProjectilesImplement class
+  *  UIControlFactoryImpl class
+# Package : exports com.example.demo.Factories.Interfaces;
+  *  ActorFactory interface
+  * 17. AssetFactory interface
+18. ComponentsFactory
+19. ImgViewFactory
+20. ProjectilesFactory
+21. UIControlFactory
+# Package : exports com.example.demo.Levels;
+23. LevelThree class
+# Package : exports com.example.demo.Managers;
+25. AudioManager class
+26. CollisionManager
+27. ImageManager
+28. KeyAction
+29. KeyBindings class
+30. KeyEventHandlers
+31. PauseManager
+# Package : exports com.example.demo.Screens;
+33. GameSettings
+34. LoseScreen
+35. MainMenu
+36. PauseScreen
+37. TransitionScene
+38. WinScreen
+# Package : exports com.example.demo.Strategy;  
+39. BossFiringStrategy
+40. BossMovementStrategy
+41. BossShielding
+42. BossShieldStrategy
+43. EnemyFiringStrategy
+44. EnemyMovementStrategy
+45. FiringStrategy
+46. MovementStrategy
+47. UserFiringStrategy
+48. UserMovementStrategy
+49. WarPlaneFiringStrategy
+50. WarPlaneMovementStrategy
+# Package : exports com.example.demo.utils;
+51. ImageProperties
+## Modified Java Classes
+# Package : exports com.example.demo;
+1. Controller
+# Package : exports com.example.demo.Actors.Components;
+1.HeartDisplay
+2.Shield
+# Package : exports com.example.demo.Actors.Planes;
+1. Boss
+2. EnemyPlane
+3. UserPlane
+# Package : exports com.example.demo.Actors.Projectiles;
+1.BossProjectile
+2.EnemyProjectile
+3.UserProjectile
+4.Projectile
+# Package : exports com.example.demo.Actors;
+5.ActiveActor
+6. ActiveActorDestructible
+7.Destructible
+# Package : exports com.example.demo.Levels;
+1. LevelParent
+2. LevelOne
+3. LevelTwo
+# Package : exports com.example.demo.utils;
+LevelScreen (LevelView)
 ## Unexpected Problems
-Game Glitching/Lag During Level Transition
+1. **Game Glitching/Lag During Level Transition**
+**Description of the problem:**
+* When transitioning to the next level in the game, a glitch or lag occurred, affecting the gameplay experience. The game would freeze or experience noticeable delays, which was disruptive to the flow of the game.
+**Solution:**
+To resolve the problem, the Observable pattern was removed from the Controller class. This change simplified the level transition logic and eliminated the performance bottleneck caused by the pattern.
+* Removed the Observable and Observer pattern from the Controller class.
+* Simplified the level transition logic by directly invoking the next level without relying on Observable updates.
+
+2. **volume slider change not saved**
+**Description of the problem:**
+* The issue arises when the Slider control's value is not saved and the value reverts to its default setting each time the application is restarted. This is problematic as the application cannot remember the user's preferences.
+**Solution:**
+- initialize the Preferences object. This object will be used to store and retrieve the slider's value.
+- Added listener to save slider value when it changes.
+- the saved slider value is loaded from the Preferences when the application starts.
+
+3. **Pause Button Not Functioning as Expected**
+**Description of the problem:**
+pause button and 'p' key were not functioning correctly to pause and resume the game. The root cause was identified as incorrect focus management and improper handling of the pause state.
+**Solution:**
+* Focus Management:
+   - Removed unnecessary focus requests on the background node.
+   - Ensured the scene retains focus to receive key events by requesting focus on the root node.
+* Pause State Management:
+   - Centralized the pause state management in the `LevelParent` class.
+   - Updated the `togglePause()` method to correctly pause and resume the game timeline.
+* KeyEventHandlers Integration:
+   - Modified the `KeyEventHandlers` class to notify `LevelParent` when 'p' is pressed.
+   - Ensured that both the pause button and 'p' key trigger the same `togglePause()` method in `LevelParent`.
+
+4. **Glow effect persisting after shield deactivation**
+**Description of the problem:**
+when the shield is activated, the boss plane receives a glow effect to indicate its shielded state. However, after the shield deactivates, the glow effect continues to be applied, even though the shield is no longer active. This behavior causes the boss plane to appear as if it is still glowing, even though it has taken damage or is no longer shielded.
+The glow effect remained on the boss plane even after the shield was deactivated, which caused visual inconsistencies in the game.
+Root Cause: The glow effect was applied inside the takeDamage() method when the shield was active, but it was never removed once the shield was deactivated
+**Solution:**
+Explicitly remove the glow effect when the shield is not active or when the boss takes damage.
